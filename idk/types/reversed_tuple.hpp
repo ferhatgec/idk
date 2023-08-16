@@ -14,59 +14,44 @@
 
 #pragma once 
 
-#include "predefined.hpp"
-#include "../utilities/type_traits.hpp"
+#include "tuple.hpp"
 
 namespace idk {
-template<usize Index, typename T>
-struct TupleElement {
-    TupleElement() = default;
-    ~TupleElement()= default;
-
-    template<typename U>
-    TupleElement(U&& val) : _value(std::forward<U>(val)) {}
-
-    template<typename U>
-    TupleElement(const U& val) : _value(idk::RemoveReferenceType(const_cast<U&>(val))) {}
-
-    T _value;
-};
-
-template<typename... Types> struct Tuple;
+template<typename... Types> struct ReversedTuple;
 
 template<typename Head, typename... Tail>
-struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof...(Tail), Head> {
-    using BaseType = Tuple<Tail...>;
+struct ReversedTuple<Head, Tail...> : public ReversedTuple<Tail...>, public TupleElement<sizeof...(Tail), Head> {
+    using BaseType = ReversedTuple<Tail...>;
     using Element  = TupleElement<sizeof...(Tail), Head>;
 
-    Tuple() = default;
+    ReversedTuple() = default;
 
     template<typename HeadArg, typename... TailArgs>
-    Tuple(HeadArg&& head_arg, TailArgs&&... tail_args) 
+    ReversedTuple(HeadArg&& head_arg, TailArgs&&... tail_args) 
         : BaseType(std::forward<TailArgs>(tail_args)...), 
           Element(std::forward<HeadArg>(head_arg)) {}
 
     template<typename HeadArg, typename... TailArgs>
-    Tuple(const HeadArg& head_arg, const TailArgs&... tail_args) 
+    ReversedTuple(const HeadArg& head_arg, const TailArgs&... tail_args) 
         : BaseType(idk::RemoveReferenceType(const_cast<HeadArg&>(tail_args))...), 
           Element(idk::RemoveReferenceType(const_cast<HeadArg&>(head_arg))) {}
 
-    template<usize Index, usize Val = sizeof...(Tail) - Index>
+    template<usize Index>
     constexpr decltype(auto) 
     Get() {
-        if constexpr(Val == sizeof...(Tail))
+        if constexpr(Index == sizeof...(Tail))
             return Element::_value;
         else
-            return BaseType::template Get<Val>();
+            return BaseType::template Get<Index>();
     }
 
-    template<usize Index, usize Val = sizeof...(Tail) - Index>
+    template<usize Index>
     constexpr decltype(auto) 
     Get() const {
-        if constexpr(Val == sizeof...(Tail))
+        if constexpr(Index == sizeof...(Tail))
             return Element::_value;
         else
-            return BaseType::template Get<Val>();
+            return BaseType::template Get<Index>();
     }
 
     template<usize Val = sizeof...(Tail) + 1>
@@ -83,5 +68,5 @@ struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof.
 private:
 };
 
-template<> struct Tuple<> {};
+template<> struct ReversedTuple<> {};
 } // namespace idk
