@@ -16,6 +16,7 @@
 
 #include "predefined.hpp"
 #include "valueor.hpp"
+#include "../utilities/type_traits.hpp"
 #include <utility>
 #include <iostream>
 
@@ -124,6 +125,20 @@ public:
             ostr << val._p;
         return ostr;
     }
+
+    friend std::wostream& 
+    operator<<(std::wostream& ostr, StringView<CharType>&& val) noexcept {
+        if(!val.is_empty())
+            ostr << std::move(val._p);
+        return ostr;
+    }
+
+    friend std::wostream& 
+    operator<<(std::wostream& ostr, StringView<CharType>& val) noexcept {
+        if(!val.is_empty())
+            ostr << val._p;
+        return ostr;
+    }
     
     StringView<CharType>& 
     operator=(const StringView<CharType>& other) noexcept {
@@ -159,19 +174,27 @@ public:
     template<typename _CharType, typename _CharType2>
     friend bool 
     operator==(const StringView<_CharType>& left, const StringView<_CharType2>& right) noexcept {
-        if(!std::is_same_v<_CharType, _CharType2> || left.length() != right.length())
+        if(!idk::IsSameVal<_CharType, _CharType2> || left.length() != right.length())
             return false;
-
-        return strcmp(left._p, right._p) == 0;
+        
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType>>>, wchar_t> 
+                && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
+            return wcscmp(left._p, right._p) == 0; 
+        else
+            return std::strcmp(left._p, right._p) == 0;
     }
 
     template<typename _CharType, typename _CharType2>
     friend bool 
     operator==(const StringView<_CharType>& left, const _CharType2* right) noexcept {
-        if(!std::is_same_v<_CharType, _CharType2> || left.length() != length_char_p(const_cast<_CharType2*>(right)))
+        if(!idk::IsSameVal<_CharType, _CharType2> || left.length() != length_char_p(const_cast<_CharType2*>(right)))
             return false;
         
-        return strcmp(left._p, right) == 0;
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType>>>, wchar_t> 
+                && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
+            return wcscmp(left._p, right) == 0; 
+        else
+            return std::strcmp(left._p, right) == 0;
     }
 
     template<typename _CharType, typename _CharType2>

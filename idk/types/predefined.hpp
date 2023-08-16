@@ -45,27 +45,35 @@ constexpr usize cpp98 { 199711 },
     || defined(__TOS_WIN__) \
     || defined(__WINDOWS__)
     constexpr const char* os_platform { "windows" };
+#   define               _windows
 #elif defined(macintosh) \
     || defined(Macintosh) \
     || (defined(__APPLE__) && defined(__MACH__))
     constexpr const char* os_platform { "macos" };
+#   define               _macos
 #elif defined(__linux__) \
     || defined(linux) \
     || defined(__linux) \
     || defined(__gnu_linux__)
     constexpr const char* os_platform { "linux" };
+#   define               _linux
 #elif defined(__ANDROID__)
     constexpr const char* os_platform { "android" };
+#   define               _android
 #elif (defined(__FreeBSD_kernel__) && defined(__GLIBC__)) \
     || defined(__FreeBSD__) \
     || defined(__FreeBSD_kernel__)
     constexpr const char* os_platform { "freebsd" };
+#   define               _freebsd
 #elif defined(__DragonFly__)
     constexpr const char* os_platform { "dragonfly" };
+#   define               _dragonfly
 #elif defined(__OpenBSD__)
     constexpr const char* os_platform { "openbsd" };
+#   define               _openbsd
 #elif defined(__NetBSD__)
     constexpr const char* os_platform { "netbsd" };
+#   define               _netbsd
 #else
     constexpr const char* os_platform { "" };
 #endif
@@ -73,21 +81,28 @@ constexpr usize cpp98 { 199711 },
 #if defined(__x86_64__) \
     || defined(_M_X64)
     constexpr const char* cpu_arch { "x86_64" };
+#   define               _x86_64
 #elif defined(i386) \
     || defined(__i386__) \
     || defined(__i386) \
     || defined(_M_IX86)
     constexpr const char* cpu_arch { "x86_32" };
+#   define               _cpu_arch   "x86_32"
+#   define               _x86_32
 #elif defined(__aarch64__) \
     || defined(_M_ARM64)
     constexpr const char* cpu_arch { "arm64" };
+#   define               _cpu_arch   "arm64"
+#   define               _arm64
 #elif defined(mips) \
     || defined(__mips__) \
     || defined(__mips)
     constexpr const char* cpu_arch { "mips" };
+#   define               _mips
 #elif defined(__sparc__) \
     || defined(__sparc)
     constexpr const char* cpu_arch { "sparc" };
+#   define               _sparc
 #else
     constexpr const char* cpu_arch { "" };
 #endif
