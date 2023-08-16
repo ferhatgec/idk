@@ -18,4 +18,4 @@ for file in Path('idk').rglob('*.cpp'):
         remove_if_exists(f'{file}.lib')
         remove_if_exists(f'{file}.pdb')
 
-    sleep(0.3)
+    sleep(0.1)

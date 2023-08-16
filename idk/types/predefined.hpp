@@ -87,12 +87,10 @@ constexpr usize cpp98 { 199711 },
     || defined(__i386) \
     || defined(_M_IX86)
     constexpr const char* cpu_arch { "x86_32" };
-#   define               _cpu_arch   "x86_32"
 #   define               _x86_32
 #elif defined(__aarch64__) \
     || defined(_M_ARM64)
     constexpr const char* cpu_arch { "arm64" };
-#   define               _cpu_arch   "arm64"
 #   define               _arm64
 #elif defined(mips) \
     || defined(__mips__) \
