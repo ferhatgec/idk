@@ -20,8 +20,8 @@
 namespace idk {
 template<typename T>
 class Stack {
-    T _keep;
-    usize _elems { 0 };
+    T        _keep;
+    usize    _elems { 0 };
     Node<T>* _top;
 public:
     Stack() : _top(nullptr) {}

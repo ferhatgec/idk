@@ -19,10 +19,21 @@
 namespace idk {
 template<typename T>
 struct Node {
-    T _data;
+    T     _data;
     Node* _next;
         
     Node(const T& val) : _data(val), _next(nullptr) {}
-    Node(T&& val) : _data(std::move(val)) {}
+    Node(T&& val) : _data(std::move(val)), _next(nullptr) {}
+};
+
+template<typename T>
+class PNNode {
+public:
+    T       _data;
+    PNNode* _prev, 
+          * _next;
+
+    PNNode(const T& val) : _data(val), _prev(nullptr), _next(nullptr) {}
+    PNNode(T&& val) : _data(std::move(val)), _prev(nullptr), _next(nullptr) {}
 };
 } // namespace idk

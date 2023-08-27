@@ -20,10 +20,10 @@
 namespace idk {
 template<typename T>
 class Queue {
-    T _keep;
-    usize _elems { 0 };
+    T        _keep;
+    usize    _elems { 0 };
     Node<T>* _first,
-           *_rear;
+           * _rear;
 public:
     Queue() : _first(nullptr), _rear(nullptr) {}
     

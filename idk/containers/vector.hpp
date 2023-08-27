@@ -241,7 +241,7 @@ private:
     usize _capacity { _capacity_constant },
           _size { 0 }; 
 
-    Type _nullp;
+    Type  _nullp;
 
     static constexpr u16 _capacity_constant = 128;
 };
