@@ -25,11 +25,13 @@ public:
     PNIterator() : _curr(nullptr) {}
     PNIterator(PNNode<Type>* node) : _curr(node) {}
 
-    Type& operator*() const {
+    Type&
+    operator*() const {
         return this->_curr->_data;
     }
 
-    PNIterator& operator++() {
+    PNIterator&
+    operator++() {
         if(this->_curr != nullptr)
             this->_curr = this->_curr->_next;
 

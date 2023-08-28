@@ -38,7 +38,7 @@ public:
     Vec(Vec<Type>& val) : _p(val._p), _size(val._size), _capacity(val._capacity) {
 
     }
-
+    
     Vec(Vec<Type>&& val) {
         this = std::move(val);
     }
@@ -53,6 +53,11 @@ public:
 
     Vec(usize&& n, Type const& val) {
         this->reserve_if_needed_with_given_value(std::move(n), const_cast<Type&>(val));
+    }
+
+    Vec(std::initializer_list<Type> vals) {
+        for(const Type& val: vals)
+            this->push_back(val);
     }
 
     Vec() {
@@ -184,7 +189,8 @@ public:
         for(usize n = 0; (n < val) && (n < this->_size); ++n)
             temp[n] = this->_p[n];
 
-        delete[] this->_p;
+        if(!this->is_empty())
+            delete[] this->_p;
 
         this->_capacity = val;
         this->_p = temp;
@@ -236,13 +242,13 @@ public:
         return const_cast<Type*>(this->_p);
     }
 private:
+    static constexpr u16 _capacity_constant = 128;
+
     Type* _p;
 
     usize _capacity { _capacity_constant },
           _size { 0 }; 
 
     Type  _nullp;
-
-    static constexpr u16 _capacity_constant = 128;
 };
 } // namespace idk

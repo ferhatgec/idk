@@ -46,4 +46,13 @@ int main() {
     idk::Vec<std::string> test(10, std::string("test"));
 
     std::cout << test.at_without_check(9) << '\n';
+
+    idk::Vec<unsigned> numbers = {
+        1, 2, 3, 5, 8, 13, 21, 34
+    };
+
+    if(numbers.back_no_reference().try_get_value() != 34)
+        std::cerr << "[FAIL] numbers.back_no_reference().try_get_value() != 34\n";
+    else
+        std::cout << "[OK] numbers.back_no_reference().try_get_value() != 34\n";
 }

@@ -29,7 +29,6 @@ class List {
 
     Type          _empty;
 public:
-
     enum class Error {
         Out_Of_Range,
     };
