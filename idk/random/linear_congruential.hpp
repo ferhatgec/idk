@@ -26,7 +26,6 @@ class LinearCongruential : public idk::RandomBase<Type> {
     u32 _index { 0 };
 public:
     LinearCongruential(Type&& start, Type&& end) noexcept {
-        _state.fill(0);
         this->_btw_start_pos = std::move(start);
         this->_btw_end_pos   = std::move(end);
         this->init();

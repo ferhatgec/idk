@@ -68,10 +68,10 @@ public:
     
     void
     init() noexcept {
-        this->_state.change_val_at_index(0, this->_seed);
+        (void)this->_state.change_val_at_index(0, this->_seed);
 
         for(usize i = 1; i < this->_n; ++i)
-            this->_state.change_val_at_index(
+            (void)this->_state.change_val_at_index(
                 i, 
                 1812433253UL * (this->_state[i - 1].try_get_value() ^
                                 (this->_state[i - 1].try_get_value() >> 30))
@@ -91,7 +91,7 @@ private:
             if(x % 2 != 0)
                 xa ^= this->_matrix_a;
 
-            this->_state.change_val_at_index(i, this->_state[(i + this->_m) % this->_n].try_get_value() ^ xa);
+            (void)this->_state.change_val_at_index(i, this->_state[(i + this->_m) % this->_n].try_get_value() ^ xa);
         }
 
         this->_index = 0;
