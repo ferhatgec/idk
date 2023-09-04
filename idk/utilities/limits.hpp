@@ -15,6 +15,7 @@
 #pragma once
 
 #include "../types/predefined.hpp"
+#include <float.h>
 #include <type_traits>
 #include <climits>
 #include <cmath>

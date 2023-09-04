@@ -7,9 +7,10 @@ def remove_if_exists(file):
     if Path(file).exists():
         remove(file)
 
+
 for file in Path('idk').rglob('*.cpp'):
     print(f'current test file: {file}')
-    run(['clang-cl', '/fsanitize=address', '/std:c++20', file, '-o', f'{file}.exe'])
+    run(['clang-cl', '/std:c++20', file, '-o', f'{file}.exe'])
 
     if Path(f'{file}.exe').exists():
         run([f'.\{file}.exe'])

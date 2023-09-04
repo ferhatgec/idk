@@ -35,4 +35,15 @@ int main() {
         std::cout << "[OK] (x + l) == \"TestTest\"\n";
     else
         std::cerr << "[FAIL] (x + l) == \"TestTest\"\n";
+
+    idk::StringViewChar test = "idk";
+
+    std::cout << test << '\n';
+
+    test.clear();
+
+    if(!test.is_empty())
+        std::cerr << "[FAIL] !test.is_empty()\n";
+    else
+        std::cout << "[OK] !test.is_empty()\n";
 }

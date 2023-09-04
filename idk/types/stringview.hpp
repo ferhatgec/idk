@@ -217,10 +217,16 @@ public:
         
         const auto len = left.length() + right.length() + 1;
         CharType* val = new CharType[len];
-        val[0] = '\0';
-    
-        ::strcat_s(val, len, left.data());
-        ::strcat_s(val, len, right.data());
+        
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>) {
+            val[0] = L'\0';
+            ::wcscat_s(val, len, left.data());
+            ::wcscat_s(val, len, right.data());
+        } else {
+            val[0] = '\0';
+            ::strcat_s(val, len, left.data());
+            ::strcat_s(val, len, right.data());
+        }
     
         return StringView<CharType>(val);     
     }
@@ -233,10 +239,16 @@ public:
         
         const auto len = left.length() + this->length_char_p(right) + 1;
         CharType* val = new CharType[len];
-        val[0] = '\0';
     
-        ::strcat_s(val, len, left.data());
-        ::strcat_s(val, len, right.data());
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>) {
+            val[0] = L'\0';
+            ::wcscat_s(val, len, left.data());
+            ::wcscat_s(val, len, right.data());
+        } else {
+            val[0] = '\0';
+            ::strcat_s(val, len, left.data());
+            ::strcat_s(val, len, right.data());
+        }
     
         return StringView<CharType>(val);     
     }
@@ -259,7 +271,23 @@ public:
     }
 
     ValueOr<CharType, Error>
+    operator[](const usize& n) noexcept {
+        return this->at(n);
+    }
+
+    ValueOr<CharType, Error>
     at(const usize&& n) noexcept {
+        if(n < this->length())
+            return Expected(this->_p[n]);
+        
+        if(this->is_empty())
+            return Unexpected(Error::StringViewEmpty);
+        
+        return Unexpected(Error::Out_Of_Range);
+    }
+
+    ValueOr<CharType, Error>
+    at(const usize& n) noexcept {
         if(n < this->length())
             return Expected(this->_p[n]);
         
@@ -271,6 +299,11 @@ public:
 
     CharType
     at_without_check(const usize&& n) {
+        return this->_p[n];
+    }
+
+    CharType
+    at_without_check(const usize& n) {
         return this->_p[n];
     }
 
@@ -317,7 +350,10 @@ public:
             (pos + count) > val || this->is_empty())
             return 0;
         else
-            ::strncpy_s(dest, count + 1, this->_p + pos, count);
+            if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>)
+                ::wcsncpy_s(dest, count + 1, this->_p + pos, count);
+            else
+                ::strncpy_s(dest, count + 1, this->_p + pos, count);
 
         return count;
     }
@@ -399,6 +435,15 @@ public:
             return this->length_char_p(val) == 0;
 
         return strstr(this->_p, val) != NULL;
+    }
+
+    constexpr void 
+    clear() noexcept {
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_len = 0;
+        this->_p   = nullptr;
     }
 private:
     void 
