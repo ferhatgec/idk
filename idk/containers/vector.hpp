@@ -75,7 +75,6 @@ public:
         return this->at(std::move(n));
     }
 
-
     Type&
     front() {
         if(!this->is_empty())

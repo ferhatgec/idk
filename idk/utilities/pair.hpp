@@ -24,10 +24,10 @@ public:
     Pair() : _first(T()), _second(U()) {}
     
     Pair(T&& first, U&& second) 
-        : _first(std::move(first)), _second(std::move(second)) {}
+        : _first(first), _second(second) {}
 
     Pair(const T& first, const U& second) 
-        : _first(first), _second(second) {}
+        : _first(const_cast<T&>(first)), _second(const_cast<U&>(second)) {}
 
     ~Pair() = default;
     
@@ -52,29 +52,31 @@ public:
         return *this;
     }
 
+/*
     Pair<T, U>&
     operator=(Pair<T, U>&& other) noexcept {
-        if(other == this)
+        if(&other == this)
             return *this;
 
-        this->_first  = std::move(other._first);
-        this->_second = std::move(other._second);
+        this->_first  = other._first;
+        this->_second = other._second;
         
         return *this;
     }
+*/
 
-    template<typename _T, typename _U, typename Tn, typename Un>
+    template<typename Tn, typename Un>
     friend bool 
-    operator==(const Pair<_T, _U>& left, const Pair<Tn, Un>& right) noexcept {
-        if(!idk::IsSameVal<_T, Tn> || !idk::IsSameVal<_U, Un>)
+    operator==(const Pair<T, U>& left, const Pair<Tn, Un>& right) noexcept {
+        if(!idk::IsSameVal<T, Tn> || !idk::IsSameVal<U, Un>)
             return false;
 
         return (left._first == right._first) && (left._second == right._second);
     }
 
-    template<typename _T, typename _U, typename Tn, typename Un>
+    template<typename Tn, typename Un>
     friend bool 
-    operator!=(const Pair<_T, _U>& left, const Pair<Tn, Un>& right) noexcept {
+    operator!=(const Pair<T, U>& left, const Pair<Tn, Un>& right) noexcept {
         return !this->operator==(left, right);
     }
 
@@ -84,7 +86,7 @@ public:
 
 template<typename T, typename U>
 Pair<T, U> MakePair(T&& first, U&& second) noexcept {
-    return Pair<T, U>(std::move(first), std::move(second));
+    return Pair<T, U>(first, second);
 }
 
 template<typename T, typename U>

@@ -46,7 +46,7 @@ public:
     }
 
     StringView(const CharType* val, usize len)
-        : _p(val), _len(len) {}
+        : _p(const_cast<CharType*>(val)), _len(len) {}
 
     template<typename Num,
              typename = typename std::enable_if<std::is_arithmetic<Num>::value, Num>::type>
