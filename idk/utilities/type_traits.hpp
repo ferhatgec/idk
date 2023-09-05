@@ -128,8 +128,10 @@ template<typename T> inline constexpr bool IsVolatileVal        = IsVolatile<T>:
 template<typename T> inline constexpr bool IsBoundedArrayVal    = IsBoundedArray<T>::value   ;
 template<typename T, typename U> inline constexpr bool IsSameVal= IsSame<T, U>::value        ;
 
-template<typename T> inline constexpr bool ConjunctionType      = Conjunction<T>::type       ;
-template<typename T> inline constexpr bool DisjunctionType      = Disjunction<T>::type       ;
-template<bool T, typename U> inline constexpr bool EnableIfType = EnableIf<T, U>::type       ;
-template<typename T> inline constexpr T RemoveReferenceType     = RemoveReference<T>::type   ;
+template<typename T> inline constexpr bool ConjunctionType      = Conjunction<T>::type;
+template<typename T> inline constexpr bool DisjunctionType      = Disjunction<T>::type;
+
+template<typename T>                using RemoveReferenceType   = typename RemoveReference<T>::type;
+template<bool T, typename U = void> using EnableIfType          = typename EnableIf<T, U>::type    ;
+
 } // namespace idk
