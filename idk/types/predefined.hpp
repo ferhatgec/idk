@@ -30,6 +30,7 @@ using u64   = unsigned long long;
 
 using usize = unsigned long long;
 using size  = long long         ;
+using isize = long long         ;
 
 constexpr usize cpp98 { 199711 },
                 cpp11 { 201103 },

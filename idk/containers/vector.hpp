@@ -35,12 +35,15 @@ public:
             this->_capacity = this->_size = 0;
     }
 
-    Vec(Vec<Type>& val) : _p(val._p), _size(val._size), _capacity(val._capacity) {
-
-    }
+    Vec(Vec<Type>& val) : _p(val._p), _size(val._size), _capacity(val._capacity) {}
     
     Vec(Vec<Type>&& val) {
-        this = std::move(val);
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p        = std::move(val._p);
+        this->_size     = std::move(val._size);
+        this->_capacity = std::move(val._capacity);
     }
     
     Vec(usize&& n, Type&& val) {
@@ -61,18 +64,53 @@ public:
     }
 
     Vec() {
-        this->_p = nullptr;
+        this->_p        = nullptr;
         this->_capacity = this->_size = 0;
     }
 
     ~Vec() {
-        if(this->is_empty())
+        if(!this->is_empty())
             delete[] this->_p;
     }
 
     ValueOr<Type, Error> 
-    operator[](const usize&& n) noexcept {
+    operator[](usize&& n) noexcept {
         return this->at(std::move(n));
+    }
+
+    ValueOr<Type, Error> 
+    operator[](usize& n) noexcept {
+        return this->at(n);
+    }
+
+    Vec<Type>&
+    operator=(const Vec<Type>& other) noexcept {
+        if(&other == this)
+            return *this;
+
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_p        = other._p;
+        this->_size     = other._size;
+        this->_capacity = other._capacity;
+
+        return *this;
+    }
+
+    Vec<Type>&
+    operator=(Vec<Type>&& other) noexcept {
+        if(&other == this)
+            return *this;
+
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p        = std::move(other._p);
+        this->_size     = std::move(other._size);
+        this->_capacity = std::move(other._capacity);
+
+        return *this;
     }
 
     Type&
@@ -126,7 +164,12 @@ public:
     }
 
     ValueOr<Type, Error>
-    at(const usize&& n) noexcept {
+    at(usize&& n) noexcept {
+        return this->at(n);
+    }
+
+    ValueOr<Type, Error>
+    at(usize& n) noexcept {
         if(n < this->_size)
             return Expected<Type>(this->at_without_check(std::move(n)));
 
