@@ -110,7 +110,9 @@ template<typename...> struct Disjunction                           : false_type 
 template<typename B1> struct Disjunction<B1>                       : B1 {};
 template<typename B1, typename... Bn> struct Disjunction<B1, Bn...>: Conditional<bool(B1::value), B1, Disjunction<Bn...>>::type {};
 
-template<bool, typename T = void> struct EnableIf {}; 
+template<bool, typename T = void> struct EnableIf { 
+    using type = T; 
+}; 
 template<typename T> struct EnableIf<true, T> { 
     using type = T; 
 };
