@@ -32,6 +32,10 @@ using usize = unsigned long long;
 using size  = long long         ;
 using isize = long long         ;
 
+using f80   = long double       ;
+using f64   = double            ;
+using f32   = float             ;
+
 constexpr usize cpp98 { 199711 },
                 cpp11 { 201103 },
                 cpp14 { 201402 },
@@ -51,6 +55,8 @@ constexpr auto  e          { 2.71828182845904523536 },
                 _2invpi    { 0.636619772367581343076},
                 _2invsqrtpi{ 1.12837916709551257390 },
                 sqrt2      { 1.41421356237309504880 },
+                sqrt5      { 2.23606797749978980505 },
+                phi        { 1.61803398874989490252 },
                 invsqrt2   { 0.707106781186547524401};
 
 #if defined(_WIN16) \
