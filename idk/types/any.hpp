@@ -60,7 +60,8 @@ public:
     }
 
     template<typename Type>
-    Any& operator=(const Type& other) noexcept {
+    Any& 
+    operator=(const Type& other) noexcept {
         if(this == &other)
             return *this;
         
@@ -73,7 +74,8 @@ public:
     }
 
     [[nodiscard]]
-    bool operator==(const Any& right) const noexcept {
+    bool 
+    operator==(const Any& right) const noexcept {
         return (this->_data == right._data) && (this->_type_info == right._type_info);
     }
     
@@ -98,7 +100,8 @@ public:
     }
 
     template<typename Type>
-    idk::ValueOr<Type, Error> cast_to() {
+    idk::ValueOr<Type, Error> 
+    cast_to() {
         if(this->is_empty() || *this->_type_info != typeid(Type))
             return Unexpected<Error>(Error::BadCast);
 
@@ -119,7 +122,8 @@ public:
 public:
         holder(const Type& val) : _val(val) {}
         
-        holder_base* clone() const noexcept override {
+        holder_base* 
+        clone() const noexcept override {
             return new holder<Type>(this->_val);
         }
 

@@ -21,7 +21,8 @@ template<usize N>
 class [[nodiscard]] FactorialGenerator {
 public:
     [[nodiscard]]
-    static constexpr usize generate() noexcept {
+    static constexpr usize 
+    generate() noexcept {
         return N * FactorialGenerator<N - 1>::generate();
     }
 };
@@ -30,7 +31,8 @@ template<>
 class [[nodiscard]] FactorialGenerator<0> {
 public:
     [[nodiscard]]
-    static constexpr usize generate() noexcept {
+    static constexpr usize
+    generate() noexcept {
         return 1;
     }
 };

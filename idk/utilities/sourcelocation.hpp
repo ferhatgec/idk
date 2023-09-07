@@ -41,8 +41,8 @@ public:
         
 
     [[nodiscard]]
-    static
-    idk::SourceLocation current(
+    static idk::SourceLocation 
+    current(
         const idk::u64 line = __builtin_LINE(),
 #ifdef __clang__
         const idk::u64 column = __builtin_COLUMN(),

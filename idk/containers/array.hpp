@@ -164,9 +164,9 @@ public:
         return const_cast<Val*>(this->_arr);
     }
 
-
     [[nodiscard]]
-    bool change_val_at_index(usize&& index, const Val& replace) noexcept {
+    bool 
+    change_val_at_index(usize&& index, const Val& replace) noexcept {
         if(this->is_empty() || index >= this->size())
             return false;
 
@@ -182,7 +182,8 @@ public:
     }
 
     [[nodiscard]]
-    bool change_val_at_index(usize&& index, Val&& replace) noexcept {
+    bool 
+    change_val_at_index(usize&& index, Val&& replace) noexcept {
         if(this->is_empty() || index >= this->size())
             return false;
 
@@ -198,7 +199,8 @@ public:
     }
 
     [[nodiscard]]
-    bool change_val_at_index(usize index, const Val& replace) noexcept {
+    bool 
+    change_val_at_index(usize index, const Val& replace) noexcept {
         if(this->is_empty() || index >= this->size())
             return false;
 

@@ -31,22 +31,24 @@ public:
             this->pop();
     }
 
-    void push(const T& val) noexcept {
+    void
+    push(const T& val) noexcept {
         Node<T>* _new  = new Node<T>(val);
         _new->_next = this->_top;
         this->_top  = _new;
         ++this->_elems;
     }
 
-    void push(T&& val) noexcept {
+    void
+    push(T&& val) noexcept {
         Node<T>* _new  = new Node<T>(val);
         _new->_next = this->_top;
         this->_top  = _new;
         ++this->_elems;
     }
 
-
-    void pop() noexcept {
+    void
+    pop() noexcept {
         if(!this->is_empty()) {
             Node<T>* _temp = this->_top;
             this->_top  = _top->_next;
@@ -57,7 +59,8 @@ public:
         return;
     }
 
-    T& top() noexcept {
+    T&
+    top() noexcept {
         if(!this->is_empty()) {
             return this->_top->_data;
         }
@@ -66,17 +69,20 @@ public:
     }
 
     [[nodiscard]]
-    bool is_empty() const noexcept {
+    bool
+    is_empty() const noexcept {
         return this->_top == nullptr;
     }
 
     [[nodiscard]]
-    usize size() const noexcept {
+    usize
+    size() const noexcept {
         return this->_elems;
     }
 
     [[nodiscard]]
-    usize max_size() const noexcept {
+    usize
+    max_size() const noexcept {
         return this->size();
     }
 

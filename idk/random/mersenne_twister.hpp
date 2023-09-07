@@ -62,7 +62,8 @@ public:
         return (y % (this->_btw_end_pos - this->_btw_start_pos + 1) + this->_btw_start_pos);
     }
 
-    Type operator()() {
+    Type
+    operator()() {
         return this->take();
     }
     
@@ -80,7 +81,6 @@ public:
         this->_index = this->_n;
     }
 private:
-
     void
     _twist() noexcept {
         for(usize i = 0; i < this->_n; ++i) {

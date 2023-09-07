@@ -42,7 +42,8 @@ public:
         return (this->_seed % (this->_btw_end_pos - this->_btw_start_pos + 1) + this->_btw_start_pos);
     }
 
-    Type operator()() {
+    Type
+    operator()() {
         return this->take();
     }
     

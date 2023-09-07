@@ -85,12 +85,14 @@ public:
 };
 
 template<typename T, typename U>
-Pair<T, U> MakePair(T&& first, U&& second) noexcept {
+Pair<T, U> 
+MakePair(T&& first, U&& second) noexcept {
     return Pair<T, U>(first, second);
 }
 
 template<typename T, typename U>
-Pair<T, U> MakePair(const T& first, const U& second) noexcept {
+Pair<T, U> 
+MakePair(const T& first, const U& second) noexcept {
     return Pair<T, U>(first, second);
 }
 } // namespace idk

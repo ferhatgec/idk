@@ -34,12 +34,14 @@ public:
     Expected() = default;
 
     [[nodiscard]]
-    bool has_value() const noexcept {
+    bool 
+    has_value() const noexcept {
         return this->has_val;
     }
 
     [[nodiscard]]
-    _Type get_value() noexcept {
+    _Type 
+    get_value() noexcept {
         return this->val;
     }
 
@@ -63,16 +65,19 @@ public:
     Unexpected() = default;
 
     [[nodiscard]]
-    bool has_value() const noexcept {
+    bool 
+    has_value() const noexcept {
         return this->has_value_or;
     }
 
     [[nodiscard]]
-    _ValueOr get_value() noexcept {
+    _ValueOr 
+    get_value() noexcept {
         return this->val_or;
     }
 
-    void change_with(_ValueOr& value_or) noexcept {
+    void 
+    change_with(_ValueOr& value_or) noexcept {
         this->val_or = value_or;
         if(!has_val_or) this->has_val_or = true;
     }
@@ -92,7 +97,8 @@ public:
     ValueOr(Unexpected<_ValueOr>& unexpected) : _unexpected(unexpected) {}
 
     [[nodiscard]]
-    _Type value_or(_ValueOr&& unexpected) noexcept {
+    _Type 
+    value_or(_ValueOr&& unexpected) noexcept {
         if(this->_expected.has_value())
             return _expected.get_value();
         
@@ -103,7 +109,8 @@ public:
     }
 
     [[nodiscard]]
-    _Type try_get_value() noexcept {
+    _Type 
+    try_get_value() noexcept {
         if(this->_expected.has_value())
             return _expected.get_value();
         
@@ -114,7 +121,8 @@ public:
     }
 
     [[nodiscard]]
-    bool has_value() const noexcept {
+    bool 
+    has_value() const noexcept {
         return _expected.has_value();
     }
     

@@ -48,6 +48,7 @@ public:
     StringView(const CharType* val, usize len)
         : _p(const_cast<CharType*>(val)), _len(len) {}
 
+    // TODO: apply arithmetic value to idk::stringview 
     template<typename Num,
              typename = typename std::enable_if<std::is_arithmetic<Num>::value, Num>::type>
     StringView(Num const&& val) {

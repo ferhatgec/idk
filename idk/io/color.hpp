@@ -76,7 +76,8 @@ public:
     };
 
     template<typename Val>
-    static void out(std::ostream& ostr, 
+    static void 
+    out(std::ostream& ostr, 
                     Val&& data, 
                     StyleCodes code = StyleCodes::Standard,
                     ColorCodes fgcode = ColorCodes::FgDefault,
@@ -89,7 +90,8 @@ public:
     }
 
     template<typename Val>
-    static void out(std::ostream& ostr, 
+    static void 
+    out(std::ostream& ostr, 
                     const Val& data, 
                     StyleCodes code = StyleCodes::Standard,
                     ColorCodes fgcode = ColorCodes::FgDefault,
@@ -102,7 +104,8 @@ public:
     }
 
     template<typename Val>
-    static void cout(Val&& data, 
+    static void 
+    cout(Val&& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -110,7 +113,8 @@ public:
     }
 
     template<typename Val>
-    static void cout(const Val& data, 
+    static void 
+    cout(const Val& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -118,7 +122,8 @@ public:
     }
 
     template<typename Val>
-    static void cerr(Val&& data, 
+    static void 
+    cerr(Val&& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -126,7 +131,8 @@ public:
     }
 
     template<typename Val>
-    static void cerr(const Val& data, 
+    static void 
+    cerr(const Val& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -134,7 +140,8 @@ public:
     }
 
     template<typename Val>
-    static void clog(Val&& data, 
+    static void 
+    clog(Val&& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -142,7 +149,8 @@ public:
     }
 
     template<typename Val>
-    static void clog(const Val& data, 
+    static void 
+    clog(const Val& data, 
                       StyleCodes code = StyleCodes::Standard,
                       ColorCodes fgcode = ColorCodes::FgDefault,
                       ColorCodes bgcode = ColorCodes::BgDefault) noexcept {
@@ -150,16 +158,19 @@ public:
     }
     
     template<typename Val>
-    static void reset(Val&& data) noexcept {
+    static void 
+    reset(Val&& data) noexcept {
         out(std::cout, data, StyleCodes::Standard, ColorCodes::FgDefault, ColorCodes::BgDefault);
     }
 
     template<typename Val>
-    static void reset(const Val& data) noexcept {
+    static void 
+    reset(const Val& data) noexcept {
         out(std::cout, data, StyleCodes::Standard, ColorCodes::FgDefault, ColorCodes::BgDefault);
     }
 
-    static void reset() noexcept {
+    static void 
+    reset() noexcept {
         out(std::clog, "", StyleCodes::Standard, ColorCodes::FgDefault, ColorCodes::BgDefault);
     }
 };

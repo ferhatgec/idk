@@ -22,7 +22,8 @@ template<usize N>
 class [[nodiscard]] FibonacciGenerator {
 public:
     [[nodiscard]]
-    static constexpr usize generate() noexcept {
+    static constexpr usize 
+    generate() noexcept {
         if constexpr(N < 2)
             return N;
         
