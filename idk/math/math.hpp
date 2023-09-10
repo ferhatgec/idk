@@ -16,6 +16,7 @@
 
 #include "catalan.hpp"
 #include "combination.hpp"
+#include "derangement.hpp"
 #include "factorial.hpp"
 #include "fibonacci.hpp"
 #include "gcd.hpp"
