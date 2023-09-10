@@ -178,12 +178,12 @@ public:
     }
 
     PNIterator<Type>
-    begin() const noexcept {
-        return PNIterator(this->_head);
+    begin() noexcept {
+        return PNIterator<Type>(this->_head);
     }
 
     PNIterator<Type>
-    end() const noexcept {
+    end() noexcept {
         return PNIterator<Type>();
     }
 

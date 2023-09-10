@@ -17,20 +17,19 @@
 #include "node.hpp"
 
 namespace idk {
-template<typename Type>
-class PNIterator {
-private:
-    PNNode<Type>* _curr;
+template<typename Container, typename Type>
+class IteratorBase {
+    Container* _curr;
 public:
-    PNIterator() : _curr(nullptr) {}
-    PNIterator(PNNode<Type>* node) : _curr(node) {}
+    IteratorBase() : _curr(nullptr) {}
+    IteratorBase(Container* node) : _curr(node) {}
 
     Type&
     operator*() const {
         return this->_curr->_data;
     }
 
-    PNIterator&
+    IteratorBase&
     operator++() {
         if(this->_curr != nullptr)
             this->_curr = this->_curr->_next;
@@ -40,14 +39,20 @@ public:
 
     [[nodiscard]]
     bool 
-    operator==(const PNIterator& other) const noexcept {
+    operator==(const IteratorBase& other) const noexcept {
         return this->_curr == other._curr;
     }
 
     [[nodiscard]]
     bool 
-    operator!=(const PNIterator& other) const noexcept {
+    operator!=(const IteratorBase& other) const noexcept {
         return !(*this == other);
     }
 };
+    
+template<typename Type>
+using PNIterator = IteratorBase<PNNode<Type>, Type>;
+
+template<typename Type>
+using Iterator   = IteratorBase<Node<Type>, Type>;
 } // namespace idk
