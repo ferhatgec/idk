@@ -15,6 +15,7 @@
 #pragma once
 
 #include "random_base.hpp"
+#include "gech.hpp"
 #include "lehmer.hpp"
 #include "linear_congruential.hpp"
 #include "mersenne_twister.hpp"
