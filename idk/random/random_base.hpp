@@ -40,6 +40,5 @@ public:
          _btw_end_pos;
         
     usize _seed { 0 };
-private:
 };
 } // namespace idk

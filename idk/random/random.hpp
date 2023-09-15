@@ -15,6 +15,8 @@
 #pragma once
 
 #include "random_base.hpp"
+#include "lehmer.hpp"
 #include "linear_congruential.hpp"
 #include "mersenne_twister.hpp"
 #include "multiply_with_carry.hpp"
+#include "xorshift.hpp"

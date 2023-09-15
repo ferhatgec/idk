@@ -36,7 +36,8 @@ public:
         this->init();
     }
 
-    LinearCongruential() noexcept = default;
+    LinearCongruential () = default;
+    ~LinearCongruential() = default;
 
     Type
     take() noexcept {
@@ -53,8 +54,8 @@ public:
     init() noexcept {
         return;
     }
-private:
 };
 
-using LinearCongruentialClass = LinearCongruential<u32>;
+using LinearCongruentialClass     = LinearCongruential<u32>;
+using LinearCongruentialGenerator = LinearCongruential<u32>;
 } // namespace idk

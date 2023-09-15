@@ -35,8 +35,9 @@ public:
         this->init();
     }
 
-    Lehmer() noexcept = default;
-
+    Lehmer () = default;
+    ~Lehmer() = default;
+    
     Type
     take() noexcept {
         this->_seed = (this->_a * this->_seed) % this->_m;
@@ -54,5 +55,6 @@ public:
     }
 };
 
-using LehmerClass = Lehmer<u32>;
+using LehmerClass     = Lehmer<u32>;
+using LehmerGenerator = Lehmer<u32>;
 } // namespace idk

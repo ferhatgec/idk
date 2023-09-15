@@ -17,29 +17,32 @@
 #include "random_base.hpp"
 
 namespace idk {
+// this implementation implements xorshift32. as defined below; 
+// using XorshiftClass/XorshiftGenerator is much better practice than Xorshift<type>
 template<typename Type>
-class MultiplyWithCarry : public idk::RandomBase<Type> {
-    static constexpr u64 _c = 6364136223846793005ULL;
-    
-    u32 _index { 1 };
+class Xorshift : public idk::RandomBase<Type> {
+    u32 _index { 0 };
 public:
-    MultiplyWithCarry(Type&& start, Type&& end) noexcept {
+    Xorshift(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = std::move(start);
         this->_btw_end_pos   = std::move(end);
         this->init();
     }
     
-    MultiplyWithCarry(usize seed) noexcept {
+    Xorshift(usize seed) noexcept {
         this->_seed = seed;
         this->init();
     }
 
-    MultiplyWithCarry () = default;
-    ~MultiplyWithCarry() = default;
+    Xorshift () = default;
+    ~Xorshift() = default;
 
     Type
     take() noexcept {
-        this->_seed = this->_c * this->_seed + 1;
+        this->_seed ^= this->_seed << 13;
+        this->_seed ^= this->_seed >> 17;
+        this->_seed ^= this->_seed << 5;
+
         return (this->_seed % (this->_btw_end_pos - this->_btw_start_pos + 1) + this->_btw_start_pos);
     }
 
@@ -54,6 +57,6 @@ public:
     }
 };
 
-using MultiplyWithCarryClass     = MultiplyWithCarry<u32>;
-using MultiplyWithCarryGenerator = MultiplyWithCarry<u32>;
+using XorshiftClass     = Xorshift<u32>;
+using XorshiftGenerator = Xorshift<u32>;
 } // namespace idk

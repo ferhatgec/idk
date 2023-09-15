@@ -47,6 +47,8 @@ public:
         // you need to call init() when seed is applied.
     }
 
+    ~MersenneTwister() = default;
+
     Type
     take() noexcept {
         if(this->_index >= this->_n)
@@ -98,5 +100,6 @@ private:
     }
 };
 
-using MersenneTwisterClass = MersenneTwister<u32>;
+using MersenneTwisterClass     = MersenneTwister<u32>;
+using MersenneTwisterGenerator = MersenneTwister<u32>;
 } // namespace idk
