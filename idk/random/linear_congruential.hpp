@@ -22,8 +22,6 @@ class LinearCongruential : public idk::RandomBase<Type> {
     static constexpr u64 _a = 1664525   ;
     static constexpr u64 _c = 1013904223;
     static constexpr u64 _m = 1013904223;
-    
-    u32 _index { 0 };
 public:
     LinearCongruential(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = std::move(start);

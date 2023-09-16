@@ -21,7 +21,6 @@ namespace idk {
 // using XorshiftClass/XorshiftGenerator is much better practice than Xorshift<type>
 template<typename Type>
 class Xorshift : public idk::RandomBase<Type> {
-    u32 _index { 0 };
 public:
     Xorshift(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = std::move(start);

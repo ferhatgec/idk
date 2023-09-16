@@ -21,8 +21,6 @@ template<typename Type>
 class Lehmer : public idk::RandomBase<Type> {
     static constexpr u64 _a = 16807     ;
     static constexpr u64 _m = 2147483647; // using Park & Miller's suggested constants.
-    
-    u32 _index { 0 };
 public:
     Lehmer(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = std::move(start);
