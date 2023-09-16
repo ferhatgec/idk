@@ -283,6 +283,22 @@ public:
     data() const noexcept {
         return const_cast<Type*>(this->_p);
     }
+
+    [[nodiscard]]
+    bool
+    contains(Type& val) noexcept {
+        for(auto& elem: *this)
+            if(elem == val)
+                return true;
+
+        return false;
+    }
+
+    [[nodiscard]]
+    bool
+    contains(Type&& val) noexcept {
+        return this->contains(val);
+    }
 private:
     static constexpr u16 _capacity_constant = 128;
 

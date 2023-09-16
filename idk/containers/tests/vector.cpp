@@ -55,4 +55,9 @@ int main() {
         std::cerr << "[FAIL] numbers.back_no_reference().try_get_value() != 34\n";
     else
         std::cout << "[OK] numbers.back_no_reference().try_get_value() != 34\n";
+
+    if(!numbers.contains(3))
+        std::cerr << "[FAIL] !numbers.contains(3)\n";
+    else
+        std::cout << "[OK] !numbers.contains(3)\n";
 }

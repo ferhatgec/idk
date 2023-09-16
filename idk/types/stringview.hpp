@@ -36,6 +36,14 @@ public:
         this->length_string_view();
     }
 
+    StringView(CharType ch) {
+        CharType* val = new CharType[1];
+        val[0] = ch;
+        val[1] = '\0';
+        this->_p = val;
+        this->_len = 1;
+    }
+
     StringView(const CharType* val) : _p(const_cast<CharType*>(val)) {
         this->length_string_view();
     }
@@ -440,9 +448,6 @@ public:
 
     constexpr void 
     clear() noexcept {
-        if(!this->is_empty())
-            delete[] this->_p;
-
         this->_len = 0;
         this->_p   = nullptr;
     }

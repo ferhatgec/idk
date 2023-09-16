@@ -46,4 +46,18 @@ int main() {
         std::cerr << "[FAIL] !test.is_empty()\n";
     else
         std::cout << "[OK] !test.is_empty()\n";
+
+    test = "idk";
+
+    if(test != "idk")
+        std::cerr << "[FAIL] test != \"idk\"\n";
+    else
+        std::cout << "[OK] test != \"idk\"\n";
+
+    idk::StringViewChar one_character('f');
+
+    if(one_character != "f")
+        std::cerr << "[FAIL] one_character != \"f\"\n";
+    else
+        std::cout << "[OK] one_character != \"f\"\n";
 }
