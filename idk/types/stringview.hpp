@@ -29,8 +29,8 @@ public:
         StringViewEmpty
     };
     
-    StringView() = default;
-    ~StringView() {}
+    StringView () = default;
+    ~StringView() = default;
 
     StringView(CharType* val) : _p(val) {
         this->length_string_view();
@@ -91,14 +91,12 @@ public:
         if(this->is_empty())
             return;
 
-        CharType* copy = this->_p + this->_len;
-        
-        while(::isspace(*(--copy)))
-            ;
-
-        *(copy + 1) = '\0';
-        this->_p = copy;
-        this->length_string_view();
+        for(usize n = this->_len - 1; n > 0; --n) {
+            if(this->_p[n] == ' ')
+                this->pop_back();
+            else
+                break;
+        }
     }
 
     void
@@ -154,8 +152,9 @@ public:
         if(&other == this)
             return *this;
 
-        this->_p   = other._p;
-        this->_len = other._len;    
+        this->_p  = other._p;
+        this->_len = other._len;
+
         return *this;
     }
 
@@ -164,9 +163,9 @@ public:
         if(other == *this)
             return *this;
 
-        auto temp = std::move(other);
-        this->_p   = temp._p;
-        this->_len = temp._len;
+        this->_p   = std::move(other._p);
+        this->_len = std::move(other._len);
+        
         return *this;    
     }
 
@@ -209,13 +208,13 @@ public:
     template<typename _CharType, typename _CharType2>
     friend bool 
     operator!=(const StringView<_CharType>& left, const StringView<_CharType2>& right) noexcept {
-        return !this->operator==(left, right);
+        return !operator==(left, right);
     }
 
     template<typename _CharType, typename _CharType2>
     friend bool 
     operator!=(const StringView<_CharType>& left, const _CharType* right) noexcept {
-        return !this->operator==(left, right);
+        return !operator==(left, right);
     }
 
     friend 
@@ -243,23 +242,7 @@ public:
     friend 
     StringView<CharType>
     operator+(StringView<CharType> left, CharType* right) {
-        if(right.is_empty())
-            return left;
-        
-        const auto len = left.length() + this->length_char_p(right) + 1;
-        CharType* val = new CharType[len];
-    
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>) {
-            val[0] = L'\0';
-            ::wcscat_s(val, len, left.data());
-            ::wcscat_s(val, len, right.data());
-        } else {
-            val[0] = '\0';
-            ::strcat_s(val, len, left.data());
-            ::strcat_s(val, len, right.data());
-        }
-    
-        return StringView<CharType>(val);     
+        return operator+(left, StringView<CharType>(right));  
     }
 
     CharType*
@@ -286,13 +269,7 @@ public:
 
     ValueOr<CharType, Error>
     at(const usize&& n) noexcept {
-        if(n < this->length())
-            return Expected(this->_p[n]);
-        
-        if(this->is_empty())
-            return Unexpected(Error::StringViewEmpty);
-        
-        return Unexpected(Error::Out_Of_Range);
+        return this->at(n);
     }
 
     ValueOr<CharType, Error>
@@ -353,8 +330,8 @@ public:
         return const_cast<CharType*>(this->_p);
     }
 
-    constexpr
-    usize copy_n(CharType* dest, usize pos = 0, usize count = 0) {
+    constexpr usize
+    copy_n(CharType* dest, usize pos = 0, usize count = 0) {
         if(const auto val = this->_len;
             (pos + count) > val || this->is_empty())
             return 0;
@@ -451,8 +428,41 @@ public:
         this->_len = 0;
         this->_p   = nullptr;
     }
+
+    void
+    push_back(const CharType& ch) noexcept {
+        *this = *this + StringView<CharType>(ch);
+    }
+
+    void
+    push_back(CharType&& ch) noexcept {
+        this->push_back(ch);
+    }
+
+    void
+    push_front(const CharType& ch) noexcept {
+        *this = StringView<CharType>(ch) + *this;
+    }
+
+    void
+    push_front(CharType&& ch) noexcept {
+        this->push_front(ch);
+    }
+
+    void
+    pop_back() noexcept {
+        if(!this->is_empty()) {
+            CharType* val = new CharType[--this->_len];
+            
+            for(usize n = 0; n < this->_len; ++n)
+                val[n] = this->_p[n];
+                
+            val[this->_len] = '\0';
+            std::swap(val, this->_p);
+        }
+    }
 private:
-    void 
+    void
     length_string_view() noexcept {
         for(this->_len = 0; this->_p[this->_len]; ++this->_len)
             ;
@@ -460,7 +470,7 @@ private:
 
     [[nodiscard]]
     static usize 
-    length_char_p(CharType* p) noexcept {
+    length_char_p(CharType* p) noexcept { // same as strlen() with noexcept specifier.
         if(p == nullptr)
             return 0;
             

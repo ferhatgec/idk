@@ -78,6 +78,12 @@ public:
     operator==(const Any& right) const noexcept {
         return (this->_data == right._data) && (this->_type_info == right._type_info);
     }
+
+    [[nodiscard]]
+    bool 
+    operator!=(const Any& right) const noexcept {
+        return !operator==(right);
+    }
     
     [[nodiscard]]
     bool 

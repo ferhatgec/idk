@@ -166,7 +166,7 @@ public:
 
     [[nodiscard]]
     bool 
-    change_val_at_index(usize&& index, const Val& replace) noexcept {
+    change_val_at_index(const usize& index, const Val& replace) noexcept {
         if(this->is_empty() || index >= this->size())
             return false;
 
@@ -184,23 +184,6 @@ public:
     [[nodiscard]]
     bool 
     change_val_at_index(usize&& index, Val&& replace) noexcept {
-        if(this->is_empty() || index >= this->size())
-            return false;
-
-        usize i = 0;
-
-        while(i != index) {
-            ++i;
-        }
-
-        this->_arr[i] = std::move(replace);
-        
-        return true;
-    }
-
-    [[nodiscard]]
-    bool 
-    change_val_at_index(usize index, const Val& replace) noexcept {
         if(this->is_empty() || index >= this->size())
             return false;
 

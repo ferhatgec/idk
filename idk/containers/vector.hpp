@@ -124,7 +124,7 @@ public:
     Type&
     back() {
         if(!this->is_empty())
-            return this->_p[0];
+            return this->_p[this->_size - 1];
 
         return this->_nullp;
     }
@@ -298,6 +298,46 @@ public:
     bool
     contains(Type&& val) noexcept {
         return this->contains(val);
+    }
+
+    void
+    clear() noexcept {
+        while(!this->is_empty())
+            this->pop_back();
+    }
+
+    [[nodiscard]]
+    bool 
+    change_val_at_index(const usize& index, const Type& replace) noexcept {
+        if(this->is_empty() || index >= this->size())
+            return false;
+
+        usize i = 0;
+
+        while(i != index) {
+            ++i;
+        }
+
+        this->_p[i] = replace;
+        
+        return true;
+    }
+
+    [[nodiscard]]
+    bool 
+    change_val_at_index(usize&& index, Type&& replace) noexcept {
+        if(this->is_empty() || index >= this->size())
+            return false;
+
+        usize i = 0;
+
+        while(i != index) {
+            ++i;
+        }
+
+        this->_p[i] = std::move(replace);
+        
+        return true;
     }
 private:
     static constexpr u16 _capacity_constant = 128;

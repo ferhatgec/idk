@@ -23,7 +23,7 @@ class ValueOr;
 template<typename _Type>
 class Expected {
 public:
-    Expected(_Type&& value) : val(std::move(value)) {
+    Expected(_Type&& value) : val(value) {
         this->has_val = true;
     }
     
@@ -54,7 +54,7 @@ private:
 template<typename _ValueOr>
 class Unexpected {
 public:
-    Unexpected(_ValueOr&& value_or) : val_or(std::move(value_or)) {
+    Unexpected(_ValueOr&& value_or) : val_or(value_or) {
         this->has_val_or = true;
     }
 
@@ -91,9 +91,9 @@ private:
 template<typename _Type, typename _ValueOr>
 class ValueOr {
 public:
-    ValueOr(Expected<_Type>&& expected) : _expected(std::move(expected)) {}
+    ValueOr(Expected<_Type>&& expected) : _expected(expected) {}
     ValueOr(Expected<_Type>& expected) : _expected(expected) {}
-    ValueOr(Unexpected<_ValueOr>&& unexpected) : _unexpected(std::move(unexpected)) {}
+    ValueOr(Unexpected<_ValueOr>&& unexpected) : _unexpected(unexpected) {}
     ValueOr(Unexpected<_ValueOr>& unexpected) : _unexpected(unexpected) {}
 
     [[nodiscard]]

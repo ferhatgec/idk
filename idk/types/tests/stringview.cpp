@@ -3,10 +3,18 @@
 
 int main() {
     idk::StringViewChar x("      Test"),
-                        l(x);
-    
+                        l(x),
+                        y("Test   ");
+        
     x.trim_spaces_left();
     l.trim_spaces();
+
+    y.trim_spaces_right();
+
+    if(y != "Test")
+        std::cerr << "[FAIL] y != \"Test\"\n";
+    else
+        std::cout << "[OK] y != \"Test\"\n";
 
     char abc[] = "Hello";
     x.copy_n(abc, 1, 2);
