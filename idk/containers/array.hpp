@@ -197,6 +197,22 @@ public:
         
         return true;
     }
+
+    [[nodiscard]]
+    bool
+    contains(Val&& val) noexcept {
+        return this->contains(val);
+    }
+
+    [[nodiscard]]
+    bool
+    contains(const Val& val) noexcept {
+        for(auto& _val: *this)
+            if(_val == val)
+                return true;
+
+        return false;
+    }
 private:
     Val _arr[N];
     Val _emptyarr;

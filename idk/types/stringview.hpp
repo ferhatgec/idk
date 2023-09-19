@@ -29,7 +29,13 @@ public:
         StringViewEmpty
     };
     
-    StringView () = default;
+    StringView () : _len(0) {
+        if constexpr(idk::IsSameVal<CharType, wchar_t>) {
+            this->_p = (wchar_t*)L"";
+        } else 
+            this->_p = (char*)"";
+    }
+    
     ~StringView() = default;
 
     StringView(CharType* val) : _p(val) {
@@ -258,22 +264,22 @@ public:
     }
     
     ValueOr<CharType, Error>
-    operator[](const usize&& n) noexcept {
+    operator[](usize&& n) const noexcept {
         return this->at(std::move(n));
     }
 
     ValueOr<CharType, Error>
-    operator[](const usize& n) noexcept {
+    operator[](const usize& n) const noexcept {
         return this->at(n);
     }
 
     ValueOr<CharType, Error>
-    at(const usize&& n) noexcept {
+    at(usize&& n) const noexcept {
         return this->at(n);
     }
 
     ValueOr<CharType, Error>
-    at(const usize& n) noexcept {
+    at(const usize& n) const noexcept {
         if(n < this->length())
             return Expected(this->_p[n]);
         
@@ -331,7 +337,7 @@ public:
     }
 
     constexpr usize
-    copy_n(CharType* dest, usize pos = 0, usize count = 0) {
+    copy_n(CharType* dest, usize pos = 0, usize count = 0) const {
         if(const auto val = this->_len;
             (pos + count) > val || this->is_empty())
             return 0;
@@ -345,7 +351,7 @@ public:
     }
 
     StringView<CharType>
-    substr(usize pos = 0, usize count = 0) {
+    substr(usize pos = 0, usize count = 0) const {
         StringView<CharType> copy;
         if(this->is_empty())
             return copy;
@@ -425,8 +431,8 @@ public:
 
     constexpr void 
     clear() noexcept {
-        this->_len = 0;
-        this->_p   = nullptr;
+        if(!this->is_empty())
+            *this = StringView<CharType>();
     }
 
     void
