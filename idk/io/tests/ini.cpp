@@ -1,14 +1,14 @@
-#include "../wgsd.hpp"
+#include "../ini.hpp"
 #include "../path.hpp"
 
 int main() {
-    idk::WGSD x;
+    idk::INI x;
     
-    if(idk::Path(L"example.wgsd").exists())
-        x.parse_file("example.wgsd");
+    if(idk::Path(L"example.ini").exists())
+        x.parse_file("example.ini");
     else // test case
-        x.parse_file("idk\\io\\tests\\example.wgsd");
-    
+        x.parse_file("idk\\io\\tests\\example.ini");
+
     if(x.get_value("profile1", "use_music") != "true")
         std::cerr << "[FAIL] x.get_value(\"profile1\", \"use_music\") != \"true\"\n";
     else

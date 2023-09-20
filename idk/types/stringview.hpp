@@ -185,41 +185,41 @@ public:
         return *this;    
     }
 
-    template<typename _CharType, typename _CharType2>
+    template<typename _CharType2>
     friend bool 
-    operator==(const StringView<_CharType>& left, const StringView<_CharType2>& right) noexcept {
-        if(!idk::IsSameVal<_CharType, _CharType2> || left.length() != right.length())
+    operator==(const StringView<CharType>& left, const StringView<_CharType2>& right) noexcept {
+        if(!idk::IsSameVal<CharType, _CharType2> || left.length() != right.length())
             return false;
         
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType>>>, wchar_t> 
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t> 
                 && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
             return wcscmp(left._p, right._p) == 0; 
         else
             return std::strcmp(left._p, right._p) == 0;
     }
 
-    template<typename _CharType, typename _CharType2>
+    template<typename _CharType2>
     friend bool 
-    operator==(const StringView<_CharType>& left, const _CharType2* right) noexcept {
-        if(!idk::IsSameVal<_CharType, _CharType2> || left.length() != length_char_p(const_cast<_CharType2*>(right)))
+    operator==(const StringView<CharType>& left, const _CharType2* right) noexcept {
+        if(!idk::IsSameVal<CharType, _CharType2> || left.length() != length_char_p(const_cast<_CharType2*>(right)))
             return false;
         
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType>>>, wchar_t> 
+        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t> 
                 && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
             return wcscmp(left._p, right) == 0; 
         else
             return std::strcmp(left._p, right) == 0;
     }
 
-    template<typename _CharType, typename _CharType2>
+    template<typename _CharType2>
     friend bool 
-    operator!=(const StringView<_CharType>& left, const StringView<_CharType2>& right) noexcept {
+    operator!=(const StringView<CharType>& left, const StringView<_CharType2>& right) noexcept {
         return !operator==(left, right);
     }
 
-    template<typename _CharType, typename _CharType2>
+    template<typename _CharType2>
     friend bool 
-    operator!=(const StringView<_CharType>& left, const _CharType* right) noexcept {
+    operator!=(const StringView<CharType>& left, const _CharType2* right) noexcept {
         return !operator==(left, right);
     }
 

@@ -9,7 +9,7 @@ end; profile1;
 
 profile2 =
 	empty; true;
-    
+	character_name; gech;
 end; profile2;
 
 profile3 = 
