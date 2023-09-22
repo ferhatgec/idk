@@ -113,6 +113,48 @@ public:
         return *this;
     }
 
+    template<typename _Type2>
+    friend bool 
+    operator==(const Vec<Type>& left, const Vec<_Type2>& right) noexcept {
+        if(!idk::IsSameVal<Type, _Type2> || left.size() != right.size())
+            return false;
+        
+        for(usize n = 0; n < left.size(); ++n)
+            if(left._p[n] != right._p[n])
+                return false;
+
+        return true;
+    }
+
+    template<typename _Type2>
+    friend bool 
+    operator==(const Vec<Type>& left, const _Type2* right) noexcept {
+        if(!right)
+            return false;
+        
+        if(!idk::IsSameVal<Type, _Type2> || left.size() != (sizeof(right) / sizeof(right[0])))
+            return false;
+        
+        for(usize n = 0; n < left.size(); ++n)
+            if(left._p[n] != right._p[n])
+                return false;
+
+        return true;
+    }
+
+    template<typename _Type2>
+    friend bool 
+    operator!=(const Vec<Type>& left, const Vec<_Type2>& right) noexcept {
+        return !operator==(left, right);
+    }
+
+    template<typename _Type2>
+    friend bool 
+    operator!=(const Vec<Type>& left, const _Type2* right) noexcept {
+        return !operator==(left, right);
+    }
+
+
     Type&
     front() {
         if(!this->is_empty())

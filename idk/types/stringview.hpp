@@ -470,8 +470,8 @@ public:
 
     [[nodiscard]]
     isize
-    find(const CharType& ch) noexcept {
-        for(usize n = 0; n < this->_len; ++n)
+    find(const CharType& ch, usize from = 0) noexcept {
+        for(usize n = from; n < this->_len; ++n)
             if(this->_p[n] == ch)
                 return n;
 
@@ -480,17 +480,17 @@ public:
 
     [[nodiscard]]
     isize
-    find(CharType&& ch) noexcept {
-        return this->find(ch);
+    find(CharType&& ch, usize from = 0) noexcept {
+        return this->find(ch, from);
     }
 
     [[nodiscard]]
     isize
-    find(StringView<CharType>& str) noexcept {
+    find(StringView<CharType>& str, usize from = 0) noexcept {
         if(str._len < 10 && this->_len < 100) { 
             // constants may be changed later with more efficient ones(?).
             // naive algorithm used in there. 
-            for(usize i = 0; i <= this->_len - str._len; ++i) {
+            for(usize i = from; i <= this->_len - str._len; ++i) {
                 usize j;
 
                 for(j = 0; j < str._len; ++j)
@@ -501,7 +501,7 @@ public:
                     return i;
             }
         } else
-            return this->str_kmp(str);
+            return this->str_kmp(str, from);
 
         return -1;
     }
@@ -560,7 +560,7 @@ private:
     
     [[nodiscard]]
     isize
-    str_kmp(StringView<CharType>& pattern) noexcept {
+    str_kmp(StringView<CharType>& pattern, usize index = 0) noexcept {
         usize lps_arr[pattern._len];
 
         str_lps(pattern, lps_arr);
@@ -574,14 +574,21 @@ private:
                 ++j;
             }
 
-            if(j == pattern._len)
-                return i - j;
-            
-            if(i < this->_len && pattern._p[j] != this->_p[i])
-                if(j != 0)
+            if(j == pattern._len) {
+                if(index > (i - j)) {
                     j = lps_arr[j - 1];
-                else
+                } else {
+                    return i - j;
+                }
+            }
+
+            if(i < this->_len && pattern._p[j] != this->_p[i]) {
+                if(j != 0) {
+                    j = lps_arr[j - 1];
+                } else {
                     ++i;
+                }
+            }
         }
 
         return -1;
