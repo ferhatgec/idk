@@ -154,7 +154,6 @@ public:
         return !operator==(left, right);
     }
 
-
     Type&
     front() {
         if(!this->is_empty())
