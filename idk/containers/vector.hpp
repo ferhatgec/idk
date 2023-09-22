@@ -339,6 +339,22 @@ public:
         
         return true;
     }
+
+    [[nodiscard]]
+    isize
+    find(const Type& val) noexcept {
+        for(usize n = 0; n < this->_size; ++n)
+            if(this->_p[n] == val)
+                return n;
+
+        return -1;
+    }
+
+    [[nodiscard]]
+    isize
+    find(Type&& val) noexcept {
+        return this->find(val);
+    }
 private:
     static constexpr u16 _capacity_constant = 128;
 

@@ -29,7 +29,7 @@ int main() {
     val.push_back(5);
     val.push_back(5);
     val.push_back(5);
-    
+
     std::cout << str_view_vector << '\n';
 
     for(auto& asd: val) {
@@ -38,7 +38,17 @@ int main() {
 
     val.front() = 0;
 
-  
+    
+    if(val.find(0) != 0)
+        std::cerr << "[FAIL] val.find(0) != 0\n";
+    else
+        std::cout << "[OK] val.find(0) != 0\n";
+
+    if(val.find(333) != -1)
+        std::cerr << "[FAIL] val.find(333) != -1\n";
+    else
+        std::cout << "[OK] val.find(333) != -1\n";
+
     if(auto x = val.front_no_reference(); x.has_value()) {
         std::cout << static_cast<idk::u16>(x._expected.get_value()) << '\n';
     }

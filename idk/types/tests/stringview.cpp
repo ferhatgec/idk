@@ -4,9 +4,35 @@
 int main() {
     idk::StringViewChar x("      Test"),
                         l(x),
-                        y("Test   ");
+                        y("Test   "),
+                        z = "Lorem ipsum dolor sit amet, consectetur adipiscing elit,"
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna"
+                            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation"
+                            "ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                            "Duis aute irure dolor in reprehenderit in voluptate velit"
+                            "esse cillum dolore eu fugiat nulla pariatur. Excepteur"
+                            "sint occaecat cupidatat non proident, sunt in culpa qui"
+                            "officia deserunt mollit anim id est laborum.";
         
+
     x.trim_spaces_left();
+
+    
+    if(x.find('T') != 0)
+        std::cerr << "[FAIL] x.find('T') != 0\n";
+    else
+        std::cout << "[OK] x.find('T') != 0\n";
+    
+    if(z.find("anim id") != 418)
+        std::cerr << "[FAIL] z.find(\"anim id\") != 418\n";
+    else
+        std::cout << "[OK] z.find(\"anim id\") != 418\n";
+
+    if(x.find("es") != 1)
+        std::cerr << "[FAIL] x.find(\"es\") != 1\n";
+    else
+        std::cout << "[OK] x.find(\"es\") != 1\n";
+
     l.trim_spaces();
 
     y.trim_spaces_right();

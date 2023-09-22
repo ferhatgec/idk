@@ -213,6 +213,22 @@ public:
 
         return false;
     }
+
+    [[nodiscard]]
+    isize
+    find(const Val& val) noexcept {
+        for(usize n = 0; n < N; ++n)
+            if(this->_arr[n] == val)
+                return n;
+
+        return -1;
+    }
+
+    [[nodiscard]]
+    isize
+    find(Val&& val) noexcept {
+        return this->find(val);
+    }
 private:
     Val _arr[N];
     Val _emptyarr;

@@ -467,6 +467,50 @@ public:
             std::swap(val, this->_p);
         }
     }
+
+    [[nodiscard]]
+    isize
+    find(const CharType& ch) noexcept {
+        for(usize n = 0; n < this->_len; ++n)
+            if(this->_p[n] == ch)
+                return n;
+
+        return -1;
+    }
+
+    [[nodiscard]]
+    isize
+    find(CharType&& ch) noexcept {
+        return this->find(ch);
+    }
+
+    [[nodiscard]]
+    isize
+    find(StringView<CharType>& str) noexcept {
+        if(str._len < 10 && this->_len < 100) { 
+            // constants may be changed later with more efficient ones(?).
+            // naive algorithm used in there. 
+            for(usize i = 0; i <= this->_len - str._len; ++i) {
+                usize j;
+
+                for(j = 0; j < str._len; ++j)
+                    if(this->_p[i + j] != str[j].try_get_value())
+                        break;
+                
+                if(j == str._len)
+                    return i;
+            }
+        } else
+            return this->str_kmp(str);
+
+        return -1;
+    }
+
+    [[nodiscard]]
+    isize
+    find(StringView<CharType>&& str) noexcept {
+        return this->find(str);
+    }
 private:
     void
     length_string_view() noexcept {
@@ -487,7 +531,62 @@ private:
 
         return len;
     }
+
+    void
+    str_lps(StringView<CharType>& pattern, usize* lps_arr) noexcept {
+        usize len { 0 };
+
+        lps_arr[0] = 0;
+
+        usize i = 1;
+
+        while(i < pattern._len) {
+            if(pattern._p[i] == pattern._p[len]) {
+                ++len;
+                lps_arr[i] = len;
+                ++i;
+                
+                continue;
+            }
+
+            if(len != 0)
+                len = lps_arr[len - 1];
+            else {
+                lps_arr[i] = 0;
+                ++i;
+            }
+        }
+    } 
     
+    [[nodiscard]]
+    isize
+    str_kmp(StringView<CharType>& pattern) noexcept {
+        usize lps_arr[pattern._len];
+
+        str_lps(pattern, lps_arr);
+
+        usize i { 0 },
+              j { 0 };
+
+        while(i < this->_len) {
+            if(pattern._p[j] == this->_p[i]) {
+                ++i;
+                ++j;
+            }
+
+            if(j == pattern._len)
+                return i - j;
+            
+            if(i < this->_len && pattern._p[j] != this->_p[i])
+                if(j != 0)
+                    j = lps_arr[j - 1];
+                else
+                    ++i;
+        }
+
+        return -1;
+    }
+
     CharType* _p        ;
     usize    _len { 0 } ;
     CharType _empty_char;
