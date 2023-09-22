@@ -16,8 +16,13 @@
 
 #include "../types/predefined.hpp"
 #include "../types/valueor.hpp"
+#include "../utilities/type_traits.hpp"
 #include <utility>
 #include <iostream>
+
+// FIXME: do not allocate memory every assign, which is bad.
+// just overwrite if current capacity is enough to hold them.
+// if not, then allocate.
 
 namespace idk {
 template<typename Type>
@@ -27,7 +32,7 @@ public:
         Out_Of_Range,
     };
 
-    Vec(Type*& val) : p(val) {
+    Vec(Type*& val) : _p(val) {
         if(val != nullptr) {
             this->_capacity = val->capacity;
             this->_size = val->size;
@@ -35,15 +40,24 @@ public:
             this->_capacity = this->_size = 0;
     }
 
-    Vec(Vec<Type>& val) : _p(val._p), _size(val._size), _capacity(val._capacity) {}
+    Vec(Vec<Type>& val) : _size(val._size), _capacity(val._capacity) {
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_p        = new Type[val._capacity];
+
+        for(usize n = 0; n < val._size; ++n)
+            this->_p[n] = val._p[n];
+    }
     
-    Vec(Vec<Type>&& val) {
+    Vec(Vec<Type>&& val) : _size(std::move(val._size)), _capacity(std::move(val._capacity)) {
         if(!this->is_empty())
             delete[] this->_p;
         
-        this->_p        = std::move(val._p);
-        this->_size     = std::move(val._size);
-        this->_capacity = std::move(val._capacity);
+        this->_p        = new Type[val._capacity];
+
+        for(usize n = 0; n < val._size; ++n)
+            this->_p[n] = std::move(val._p[n]);
     }
     
     Vec(usize&& n, Type&& val) {
@@ -91,7 +105,11 @@ public:
         if(!this->is_empty())
             delete[] this->_p;
 
-        this->_p        = other._p;
+        this->_p        = new Type[other._capacity];
+        
+        for(usize n = 0; n < other._size; ++n)
+            this->_p[n] = other._p[n];
+
         this->_size     = other._size;
         this->_capacity = other._capacity;
 
@@ -106,7 +124,11 @@ public:
         if(!this->is_empty())
             delete[] this->_p;
         
-        this->_p        = std::move(other._p);
+        this->_p        = new Type[other._capacity];
+        
+        for(usize n = 0; n < other._size; ++n)
+            this->_p[n] = std::move(other._p[n]);
+
         this->_size     = std::move(other._size);
         this->_capacity = std::move(other._capacity);
 

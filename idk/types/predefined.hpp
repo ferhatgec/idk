@@ -14,6 +14,7 @@
 
 #pragma once
 
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 
 // maybe using stdint.h directly would be much better great idea,
 // there can be something implementation defined for older systems.

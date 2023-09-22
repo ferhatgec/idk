@@ -4,7 +4,7 @@
 
 int main() {
     const idk::u8 _num = 1;
-    idk::Vec<idk::u8> val(10, _num);
+    idk::Vec<idk::u16> val(10, _num);
     
     idk::Vec<idk::StringViewChar> str_view_vector;
     

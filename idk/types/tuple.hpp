@@ -16,6 +16,7 @@
 
 #include "predefined.hpp"
 #include "../utilities/type_traits.hpp"
+#include <utility>
 
 namespace idk {
 template<usize Index, typename T>
@@ -27,7 +28,7 @@ struct TupleElement {
     TupleElement(U&& val) : _value(std::forward<U>(val)) {}
 
     template<typename U>
-    TupleElement(const U& val) : _value(idk::RemoveReferenceType(const_cast<U&>(val))) {}
+    TupleElement(const U& val) : _value(idk::RemoveReferenceType<U&>(const_cast<U&>(val))) {}
 
     T _value;
 };
@@ -48,8 +49,8 @@ struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof.
 
     template<typename HeadArg, typename... TailArgs>
     Tuple(const HeadArg& head_arg, const TailArgs&... tail_args) 
-        : BaseType(idk::RemoveReferenceType(const_cast<HeadArg&>(tail_args))...), 
-          Element(idk::RemoveReferenceType(const_cast<HeadArg&>(head_arg))) {}
+        : BaseType(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(tail_args))...), 
+          Element(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(head_arg))) {}
 
     template<usize Index, usize Val = sizeof...(Tail) - Index>
     constexpr decltype(auto) 

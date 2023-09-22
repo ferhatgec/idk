@@ -94,9 +94,9 @@ public:
             return UCHAR_MAX;
         // char8_t
         else IS_SAME_WITH(char16_t, Type)
-            return UINT_LEAST16_MAX;
+            return 65535;
         else IS_SAME_WITH(char32_t, Type)
-            return UINT_LEAST32_MAX;
+            return 4294967295;
         else IS_SAME_WITH(short, Type)
             return SHRT_MAX;
         else IS_SAME_WITH(unsigned short, Type)

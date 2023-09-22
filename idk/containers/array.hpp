@@ -156,7 +156,7 @@ public:
             usize _N, usize _N2>
     friend bool 
     operator!=(const Arr<_Val, _N>& left, const Arr<_Val2, _N2>& right) noexcept {
-        return !this->operator==(left, right);
+        return !operator==(left, right);
     }
 
     constexpr Val*

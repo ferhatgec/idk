@@ -34,6 +34,8 @@
 #   define DirSepChar  '/'
 #   define EmptyStr    ""
 #   define QuoteStr    "\""
+#   include <unistd.h>
+#   include <sys/stat.h>
 #endif
 
 namespace idk {
@@ -73,6 +75,7 @@ public:
 #ifdef _windows
     return PathFileExistsW(this->_path.data());
 #else
+    return access(this->_path.data(), F_OK) == 0;
 #endif
     }
 
@@ -121,6 +124,18 @@ public:
 
     return Type::Directory;
 #else
+    struct stat _buffer;
+
+    if(stat(this->_path.data(), &_buffer) != 0)
+        return Type::NotFound;
+
+    if(S_ISDIR(_buffer.st_mode))
+        return Type::Directory;
+
+    if(S_ISLNK(_buffer.st_mode))
+        return Type::Symlink;
+
+    return Type::File;
 #endif
     }
 
@@ -309,8 +324,9 @@ public:
 #endif
         }
 #ifndef _windows
-        else if(str_path.starts_with('/')) // "x/y" + "/z" = "/z" 
+        else if(str_path.as_str().starts_with('/')) { // "x/y" + "/z" = "/z" 
             str = str_path.as_str();
+        }
 #endif
         else {
 #ifdef _windows

@@ -15,6 +15,7 @@
 #pragma once 
 
 #include "tuple.hpp"
+#include <utility>
 
 namespace idk {
 template<typename... Types> struct ReversedTuple;
@@ -33,8 +34,8 @@ struct ReversedTuple<Head, Tail...> : public ReversedTuple<Tail...>, public Tupl
 
     template<typename HeadArg, typename... TailArgs>
     ReversedTuple(const HeadArg& head_arg, const TailArgs&... tail_args) 
-        : BaseType(idk::RemoveReferenceType(const_cast<HeadArg&>(tail_args))...), 
-          Element(idk::RemoveReferenceType(const_cast<HeadArg&>(head_arg))) {}
+        : BaseType(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(tail_args))...), 
+          Element(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(head_arg))) {}
 
     template<usize Index>
     constexpr decltype(auto) 

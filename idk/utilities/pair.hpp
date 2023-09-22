@@ -77,7 +77,7 @@ public:
     template<typename Tn, typename Un>
     friend bool 
     operator!=(const Pair<T, U>& left, const Pair<Tn, Un>& right) noexcept {
-        return !this->operator==(left, right);
+        return !operator==(left, right);
     }
 
     T _first;

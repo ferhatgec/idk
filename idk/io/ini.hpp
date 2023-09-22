@@ -114,7 +114,7 @@ public:
             if(auto index = node.find(key); 
                 node.block_name == block
                 && index >= 0)
-                node.matched_datas.change_val_at_index(index, MakePair(key, replace));
+                (void)node.matched_datas.change_val_at_index(index, MakePair(key, replace));
     }
 
     [[nodiscard]]
@@ -215,12 +215,20 @@ private:
     split(const StringViewChar& str, char delim = ' ') noexcept {
         Vec<StringViewChar> vec;
         char* context = nullptr;
+#ifdef _windows
         char* token = strtok_s(str.data(), &delim, &context); // FIXME: strtok_s from c++ stl has 4 arguments,
                                                              // instead, microsoft's implementation contains 3 arguments.
+#else
+        char* token = strtok_r(str.data(), &delim, &context);
+#endif
 
         while(token != nullptr) {
             vec.push_back(StringViewChar(token));
+#ifdef _windows
             token = strtok_s(nullptr, &delim, &context);
+#else
+            token = strtok_r(nullptr, &delim, &context);
+#endif
         }
 
         if(token != nullptr)

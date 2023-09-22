@@ -17,6 +17,12 @@
 #include "predefined.hpp"
 #include "valueor.hpp"
 #include "../utilities/type_traits.hpp"
+
+#ifndef _windows
+#   include <cstring>
+#   include <cwchar>
+#endif
+
 #include <utility>
 #include <iostream>
 
@@ -234,12 +240,24 @@ public:
         
         if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>) {
             val[0] = L'\0';
-            ::wcscat_s(val, len, left.data());
-            ::wcscat_s(val, len, right.data());
+
+#ifdef _windows
+            wcscat_s(val, len, left.data());
+            wcscat_s(val, len, right.data());
+#else
+            wcscat(val, left.data());
+            wcscat(val, right.data());
+#endif
         } else {
             val[0] = '\0';
-            ::strcat_s(val, len, left.data());
-            ::strcat_s(val, len, right.data());
+
+#ifdef _windows
+            strcat_s(val, len, left.data());
+            strcat_s(val, len, right.data());
+#else
+            strcat(val, left.data());
+            strcat(val, right.data());
+#endif
         }
     
         return StringView<CharType>(val);     
@@ -343,9 +361,17 @@ public:
             return 0;
         else
             if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>)
-                ::wcsncpy_s(dest, count + 1, this->_p + pos, count);
+#ifdef _windows
+                wcsncpy_s(dest, count + 1, this->_p + pos, count);
+#else
+                wcsncpy(dest, this->_p + pos, count);
+#endif
             else
-                ::strncpy_s(dest, count + 1, this->_p + pos, count);
+#ifdef _windows
+                strncpy_s(dest, count + 1, this->_p + pos, count);
+#else
+                strncpy(dest, this->_p + pos, count);
+#endif
 
         return count;
     }

@@ -15,6 +15,7 @@
 #pragma once
 
 #include <utility>
+#include <iostream>
 
 namespace idk {
 template<typename _Type, typename _ValueOr>

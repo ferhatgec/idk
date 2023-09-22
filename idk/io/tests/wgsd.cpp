@@ -4,10 +4,18 @@
 int main() {
     idk::WGSD x;
     
+#ifdef _windows
     if(idk::Path(L"example.wgsd").exists())
         x.parse_file("example.wgsd");
     else // test case
         x.parse_file("idk\\io\\tests\\example.wgsd");
+#else
+    if(idk::Path("example.wgsd").exists())
+        x.parse_file("example.wgsd");
+    else // test case
+        x.parse_file("idk/io/tests/example.wgsd");
+#endif
+
     
     if(x.get_value("profile1", "use_music") != "true")
         std::cerr << "[FAIL] x.get_value(\"profile1\", \"use_music\") != \"true\"\n";

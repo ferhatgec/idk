@@ -19,6 +19,7 @@
 #include "../types/valueor.hpp"
 #include "../types/predefined.hpp"
 #include "../utilities/type_traits.hpp"
+#include <algorithm>
 
 namespace idk {
 template<typename Type> 
@@ -80,7 +81,7 @@ public:
 
     void
     clear() noexcept {
-        while(!this->is_empty())
+        for(usize n = 1; n < this->_size; ++n)
             this->pop_front();
     }
 
