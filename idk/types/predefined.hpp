@@ -16,6 +16,11 @@
 
 #pragma GCC diagnostic ignored "-Wwrite-strings"
 
+#define DEFLIT(type, name) \
+                    constexpr type operator""_##name(long double val) noexcept { return static_cast<type>(val); } \
+                    constexpr type operator""_##name(char val) noexcept { return static_cast<type>(val); } \
+                    constexpr type operator""_##name(idk::usize val) noexcept { return static_cast<type>(val); }
+
 // maybe using stdint.h directly would be much better great idea,
 // there can be something implementation defined for older systems.
 namespace idk {
@@ -163,3 +168,24 @@ is_cpp23_supported() noexcept {
     return __cplusplus >= cpp23;
 }
 } // namespace idk
+
+
+DEFLIT(idk::i8, i8)
+DEFLIT(idk::i16, i16)
+DEFLIT(idk::i32, i32)
+DEFLIT(idk::i64, i64)
+
+DEFLIT(idk::u8, u8)
+DEFLIT(idk::u16, u16)
+DEFLIT(idk::u32, u32)
+DEFLIT(idk::u64, u64)
+
+DEFLIT(idk::f80, f80)
+DEFLIT(idk::f64, f64)
+DEFLIT(idk::f32, f32)
+
+DEFLIT(idk::usize, usize)
+DEFLIT(idk::isize, isize)
+DEFLIT(idk::size, size)
+
+#undef DEFLIT
