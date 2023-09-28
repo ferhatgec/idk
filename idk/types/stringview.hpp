@@ -36,37 +36,79 @@ public:
     };
     
     StringView () : _len(0) {
+        this->_p = new CharType[1];
+
         if constexpr(idk::IsSameVal<CharType, wchar_t>) {
-            this->_p = (wchar_t*)L"";
+            this->_p[0] = L'\0';
         } else 
-            this->_p = (char*)"";
+            this->_p[0] = '\0';
     }
     
-    ~StringView() = default;
+    ~StringView() {
+        if(!this->is_empty())
+            delete[] this->_p;
+    }
 
-    StringView(CharType* val) : _p(val) {
-        this->length_string_view();
+    StringView(CharType* val) {
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p   = new CharType[this->length_char_p(val) + 1];
+        this->_len = this->length_char_p(val);
+
+        for(usize n = 0; n < this->_len; ++n)
+            this->_p[n] = val[n];
+
+        this->_p[this->_len] = '\0';
     }
 
     StringView(CharType ch) {
-        CharType* val = new CharType[1];
-        val[0] = ch;
-        val[1] = '\0';
-        this->_p = val;
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p = new CharType[2];
+        
+        this->_p[0] = ch;
+        this->_p[1] = '\0';
+
         this->_len = 1;
     }
 
-    StringView(const CharType* val) : _p(const_cast<CharType*>(val)) {
-        this->length_string_view();
+    StringView(const CharType* val) {
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p   = new CharType[this->length_char_p(const_cast<CharType*>(val)) + 1];
+        this->_len = this->length_char_p(const_cast<CharType*>(val));
+
+        for(usize n = 0; n < this->_len; ++n)
+            this->_p[n] = val[n];
+
+        this->_p[this->_len] = '\0';
     }
 
     StringView(StringView const& val) {
-        this->_p   = val._p;
-        this->_len = val._len;   
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        this->_p   = new CharType[val._len + 1];
+        this->_len = val._len;
+
+        for(usize n = 0; n < val._len; ++n)
+            this->_p[n] = val._p[n];
+
+        this->_p[this->_len] = '\0';
     }
 
-    StringView(const CharType* val, usize len)
-        : _p(const_cast<CharType*>(val)), _len(len) {}
+/*
+    StringView(const CharType* val, usize len) {
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_p   = const_cast<CharType*>(val);
+        this->_len = len;
+    }
+*/
 
     // TODO: apply arithmetic value to idk::stringview 
     template<typename Num,
@@ -92,10 +134,23 @@ public:
         if(this->is_empty())
             return;
 
-        while(!this->is_empty() && ::isspace(*this->_p)) {
-            ++this->_p;
-            --this->_len;
-        }
+        usize n = 0;
+
+        for(n = 0; n < this->_len; ++n)
+            if(!::isspace(this->_p[n]))
+                break;
+            
+        CharType* _val = new CharType[this->_len - n + 1];
+
+        for(usize j = 0; j < this->_len - n; ++j)
+            _val[j] = this->_p[n + j];
+        
+        _val[this->_len - n] = '\0';
+
+        delete[] this->_p;
+
+        this->_p   = _val;
+        this->_len = this->_len - n;
     }
 
     void
@@ -164,8 +219,17 @@ public:
         if(&other == this)
             return *this;
 
-        this->_p  = other._p;
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_p = new CharType[other._len + 1];
+
+        for(usize n = 0; n < other._len; ++n)
+            this->_p[n] = other._p[n];
+
         this->_len = other._len;
+
+        this->_p[this->_len] = '\0';
 
         return *this;
     }
@@ -175,9 +239,17 @@ public:
         if(other == *this)
             return *this;
 
-        this->_p   = std::move(other._p);
+        if(!this->is_empty())
+            delete[] this->_p;
+
+        this->_p = new CharType[other._len + 1];
+
+        for(usize n = 0; n < other._len; ++n)
+            this->_p[n] = std::move(other._p[n]);
+
         this->_len = std::move(other._len);
-        
+        this->_p[this->_len] = '\0';
+
         return *this;    
     }
 
@@ -185,9 +257,18 @@ public:
     operator=(CharType* other) noexcept {
         if(other == this->_p)
             return *this;
+        
+        if(!this->is_empty())
+            delete[] this->_p;
 
-        this->_p = other;
-        this->length_string_view();
+        this->_p = new CharType[this->length_char_p(other) + 1];
+
+        for(usize n = 0; n < this->length_char_p(other); ++n)
+            this->_p[n] = other[n];
+
+        this->_len = this->length_char_p(other);
+        this->_p[this->_len] = '\0';
+
         return *this;    
     }
 
@@ -197,11 +278,11 @@ public:
         if(!idk::IsSameVal<CharType, _CharType2> || left.length() != right.length())
             return false;
         
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t> 
-                && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
-            return wcscmp(left._p, right._p) == 0; 
-        else
-            return std::strcmp(left._p, right._p) == 0;
+        for(usize n = 0; n < left.length(); ++n)
+            if(left._p[n] != right._p[n])
+                return false;
+
+        return true;
     }
 
     template<typename _CharType2>
@@ -210,11 +291,11 @@ public:
         if(!idk::IsSameVal<CharType, _CharType2> || left.length() != length_char_p(const_cast<_CharType2*>(right)))
             return false;
         
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t> 
-                && idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<_CharType2>>>, wchar_t>) 
-            return wcscmp(left._p, right) == 0; 
-        else
-            return std::strcmp(left._p, right) == 0;
+        for(usize n = 0; n < left.length(); ++n)
+            if(left._p[n] != right[n])
+                return false;
+
+        return true;
     }
 
     template<typename _CharType2>
@@ -236,31 +317,26 @@ public:
             return left;
         
         const auto len = left.length() + right.length() + 1;
+    
         CharType* val = new CharType[len];
         
-        if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>) {
-            val[0] = L'\0';
+        usize n;
 
-#ifdef _windows
-            wcscat_s(val, len, left.data());
-            wcscat_s(val, len, right.data());
-#else
-            wcscat(val, left.data());
-            wcscat(val, right.data());
-#endif
-        } else {
-            val[0] = '\0';
+        for(n = 0; n < left.length(); ++n)
+            val[n] = left._p[n];
 
-#ifdef _windows
-            strcat_s(val, len, left.data());
-            strcat_s(val, len, right.data());
-#else
-            strcat(val, left.data());
-            strcat(val, right.data());
-#endif
-        }
-    
-        return StringView<CharType>(val);     
+
+        for(n = 0; n < right.length(); ++n)
+            val[left.length() + n] = right._p[n];
+
+        val[len - 1] = '\0';
+        
+        StringView<CharType> _val(val);
+
+
+        delete[] val;
+
+        return _val;
     }
 
     friend 
@@ -278,6 +354,7 @@ public:
     end() noexcept {
         if(this->is_empty())
             return this->_p;
+        
         return this->_p + (this->_len);
     }
     
@@ -354,41 +431,35 @@ public:
         return const_cast<CharType*>(this->_p);
     }
 
-    constexpr usize
+    constexpr isize
     copy_n(CharType* dest, usize pos = 0, usize count = 0) const {
         if(const auto val = this->_len;
             (pos + count) > val || this->is_empty())
-            return 0;
-        else
-            if constexpr(idk::IsSameVal<typename std::decay_t<typename std::remove_pointer_t<typename std::remove_const_t<CharType>>>, wchar_t>)
-#ifdef _windows
-                wcsncpy_s(dest, count + 1, this->_p + pos, count);
-#else
-                wcsncpy(dest, this->_p + pos, count);
-#endif
-            else
-#ifdef _windows
-                strncpy_s(dest, count + 1, this->_p + pos, count);
-#else
-                strncpy(dest, this->_p + pos, count);
-#endif
+            return -1;
+        else {
+            for(usize n = 0; n < count; ++n)
+                dest[n] = this->_p[pos + n];
+
+            dest[count] = '\0';
+        }
 
         return count;
     }
 
     StringView<CharType>
     substr(usize pos = 0, usize count = 0) const {
-        StringView<CharType> copy;
         if(this->is_empty())
-            return copy;
+            return StringView<CharType>();
 
-        CharType* temp = new CharType[count + 1]; // [count + 1];
+        CharType* temp = new CharType[count + 1];
         
         this->copy_n(temp, pos, count);
-        copy.operator=(temp);
-        copy._len = copy.length_char_p(copy._p);
         
-        return copy;
+        StringView<CharType> _val(temp);
+    
+        delete[] temp;
+
+        return _val;
     }
 
     constexpr bool
@@ -426,7 +497,7 @@ public:
         if(this->is_empty())
             return this->length_char_p(val) == 0;
 
-        const auto len = this->_len - this->length_char_p(val);
+        const auto len = this->_len - this->length_char_p(val) - 1;
         
         for(usize n = this->_len; n > len; --n)
             if(this->_p[n] != val[n])
@@ -480,17 +551,11 @@ public:
     push_front(CharType&& ch) noexcept {
         this->push_front(ch);
     }
-
+    
     void
     pop_back() noexcept {
         if(!this->is_empty()) {
-            CharType* val = new CharType[--this->_len];
-            
-            for(usize n = 0; n < this->_len; ++n)
-                val[n] = this->_p[n];
-                
-            val[this->_len] = '\0';
-            std::swap(val, this->_p);
+            this->_p[--this->_len] = '\0';
         }
     }
 

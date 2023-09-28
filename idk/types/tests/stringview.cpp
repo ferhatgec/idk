@@ -94,4 +94,19 @@ int main() {
         std::cerr << "[FAIL] one_character != \"f\"\n";
     else
         std::cout << "[OK] one_character != \"f\"\n";
+    
+    one_character.pop_back();
+    test.pop_back();
+
+    if(test != "id")
+        std::cerr << "[FAIL] test != \"id\"\n";
+    else
+        std::cout << "[OK] test != \"id\"\n";
+
+    idk::StringView<wchar_t> w(L"Hello world");
+
+    if(!w.starts_with(L'H'))
+        std::cerr << "[FAIL] !w.starts_with(L'H')\n";
+    else
+        std::cout << "[OK] !w.starts_with(L'H')\n";
 }

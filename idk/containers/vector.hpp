@@ -247,13 +247,13 @@ public:
 
     void 
     push_back(Type&& val) noexcept {
-        this->reserve_if_needed(this->_size + _capacity_constant);
+        this->reserve_if_needed(this->_size + _capacity_constant + 1);
         this->_p[this->_size++] = std::move(val);
     }
 
     void 
     push_back(Type const& val) noexcept {
-        this->reserve_if_needed(this->_size + _capacity_constant);
+        this->reserve_if_needed(this->_size + _capacity_constant + 1);
         this->_p[this->_size++] = val;
     }
 
@@ -298,7 +298,7 @@ public:
             delete[] this->_p;
 
         this->_capacity = val;
-        this->_p = temp;
+        this->_p        = temp;
     }
 
     void 
@@ -312,8 +312,8 @@ public:
             delete[] this->_p;
 
         this->_capacity = val;
-        this->_size = this->_capacity;
-        this->_p = temp;
+        this->_size    = this->_capacity;
+        this->_p       = temp;
     }
 
     [[nodiscard]]

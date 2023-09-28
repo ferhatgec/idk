@@ -17,7 +17,6 @@ int main() {
         x.parse_file("idk/io/tests/example.ini");
 #endif
 
-
     if(x.get_value("profile1", "use_music") != "true")
         std::cerr << "[FAIL] x.get_value(\"profile1\", \"use_music\") != \"true\"\n";
     else

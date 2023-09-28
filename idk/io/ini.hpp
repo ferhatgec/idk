@@ -50,9 +50,10 @@ public:
     [[nodiscard]]
     isize
     find(const StringViewChar& str) noexcept {
-        for(usize n = 0; n < this->matched_datas.size(); ++n)
+        for(usize n = 0; n < this->matched_datas.size(); ++n) {
             if(this->matched_datas[n].try_get_value().first() == str)
                 return n;
+        }
         
         return -1;
     }
@@ -87,11 +88,11 @@ public:
     [[nodiscard]]
     StringViewChar
     generate() noexcept {
-        StringViewChar generate = "";
+        StringViewChar generate;
 
         for(auto& node: this->nodes) {
             generate = generate + "[" + node.block_name + "]\n";
-
+            
             for(auto& node_key: node.matched_datas) {
                 auto val = node.get_value(node_key.first());
 
@@ -145,6 +146,7 @@ public:
 
             file_stream.close();
         }
+
 
         for(auto& line: this->split(this->raw_file_data, '\n')) {
             line.trim_spaces_left();
