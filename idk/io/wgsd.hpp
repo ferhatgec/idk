@@ -17,6 +17,7 @@
 #include "../types/stringview.hpp"
 #include "../containers/vector.hpp"
 #include "../utilities/pair.hpp"
+#include "../utilities/split.hpp"
 #include <fstream>
 
 namespace idk {
@@ -146,7 +147,7 @@ public:
             file_stream.close();
         }
 
-        for(auto& line: this->split(this->raw_file_data, '\n')) {
+        for(auto& line: idk::split(this->raw_file_data, '\n')) {
             line.trim_spaces();
 
             if(!line.is_empty()) {
@@ -158,7 +159,7 @@ public:
                         if(!is_block) {
                             is_block = true;
 
-                            auto x = this->split(line);
+                            auto x = idk::split(line);
                             
                             if(!x.is_empty() && x[1].try_get_value() == "=") {
                                 WGSDBlock y;
@@ -168,7 +169,7 @@ public:
                                 this->nodes.push_back(y);
                             }
                         } else {
-                            auto x = this->split(line, ';');
+                            auto x = idk::split(line, ';');
 
                             if(x.size() >= 2) {
                                 if(x[0].try_get_value() == "end")
@@ -195,32 +196,6 @@ public:
     void
     parse_file(StringViewChar&& file) noexcept {
         this->parse_file(file);
-    }
-private:
-    Vec<StringViewChar>
-    split(const StringViewChar& str, char delim = ' ') noexcept {
-        Vec<StringViewChar> vec;
-        char* context = nullptr;
-#ifdef _windows
-        char* token = strtok_s(str.data(), &delim, &context); // FIXME: strtok_s from c++ stl has 4 arguments,
-                                                             // instead, microsoft's implementation contains 3 arguments.
-#else
-        char* token = strtok_r(str.data(), &delim, &context);
-#endif
-
-        while(token != nullptr) {
-            vec.push_back(StringViewChar(token));
-#ifdef _windows
-            token = strtok_s(nullptr, &delim, &context);
-#else
-            token = strtok_r(nullptr, &delim, &context);
-#endif
-        }
-
-        if(token != nullptr)
-            vec.push_back(StringViewChar(token));
-
-        return vec;
     }
 };
 } // namespace idk

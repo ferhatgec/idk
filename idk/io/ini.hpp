@@ -17,6 +17,7 @@
 #include "../types/stringview.hpp"
 #include "../containers/vector.hpp"
 #include "../utilities/pair.hpp"
+#include "../utilities/split.hpp"
 #include <fstream>
 
 namespace idk {
@@ -148,7 +149,7 @@ public:
         }
 
 
-        for(auto& line: this->split(this->raw_file_data, '\n')) {
+        for(auto& line: idk::split(this->raw_file_data, '\n')) {
             line.trim_spaces_left();
 
             if(!line.is_empty()) {
@@ -212,31 +213,5 @@ public:
     }
 private:
     StringViewChar _temp, _value;
-
-    Vec<StringViewChar>
-    split(const StringViewChar& str, char delim = ' ') noexcept {
-        Vec<StringViewChar> vec;
-        char* context = nullptr;
-#ifdef _windows
-        char* token = strtok_s(str.data(), &delim, &context); // FIXME: strtok_s from c++ stl has 4 arguments,
-                                                             // instead, microsoft's implementation contains 3 arguments.
-#else
-        char* token = strtok_r(str.data(), &delim, &context);
-#endif
-
-        while(token != nullptr) {
-            vec.push_back(StringViewChar(token));
-#ifdef _windows
-            token = strtok_s(nullptr, &delim, &context);
-#else
-            token = strtok_r(nullptr, &delim, &context);
-#endif
-        }
-
-        if(token != nullptr)
-            vec.push_back(StringViewChar(token));
-
-        return vec;
-    }
 };
 } // namespace idk
