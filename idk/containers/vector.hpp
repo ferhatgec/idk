@@ -209,7 +209,12 @@ public:
     }
 
     Type
-    at_without_check(const usize&& n) {
+    at_without_check(usize&& n) {
+        return this->_p[n];
+    }
+    
+    Type
+    at_without_check(const usize& n) {
         return this->_p[n];
     }
 
