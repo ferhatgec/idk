@@ -20,41 +20,42 @@
 
 namespace idk {
 template<typename Type>
-class InsertionSort : public SortBase<Type> {
+class SelectionSort : public SortBase<Type> {
 public:
-    InsertionSort(const Vec<Type>& vec) noexcept {
+    SelectionSort(const Vec<Type>& vec) noexcept {
         this->_vec = vec;
     }
 
-    InsertionSort(Vec<Type>&& vec) noexcept {
+    SelectionSort(Vec<Type>&& vec) noexcept {
         this->_vec = std::move(vec);
     }
 
     template<typename Compare = decltype(idk::Less<Type>())>
     void
     sort(Compare comp = idk::Less<Type>()) noexcept {
-        this->_insertionsort(comp);
+        this->_selectionsort(comp);
     }
 private:
     template<typename Compare>
     void
-    _insertionsort(Compare comp) noexcept {
-        isize index = 1;
+    _selectionsort(Compare comp) noexcept {
+        isize index, j;
 
-        while(index < this->_vec.size()) {
-            isize j = index;
+        for(index = 0; index < this->_vec.size() - 1; ++index) {
+            isize min_j = index;
 
-            while(j > 0 && !comp(this->_vec.at_without_check(j - 1), this->_vec.at_without_check(j))) {
-                auto _temp = this->_vec.at_without_check(j),
-                     _temp2= this->_vec.at_without_check(j - 1);
+            for(j = index + 1; j < this->_vec.size(); ++j)
+                if(comp(this->_vec.at_without_check(j), this->_vec.at_without_check(min_j)))
+                    min_j = j;
+        
+            
+            if(min_j != index) {
+                auto _temp = this->_vec.at_without_check(index),
+                     _temp2= this->_vec.at_without_check(min_j);
 
-                (void)this->_vec.change_val_at_index(j, _temp2);
-                (void)this->_vec.change_val_at_index(j - 1, _temp);
-
-                --j;
+                (void)this->_vec.change_val_at_index(index, _temp2);
+                (void)this->_vec.change_val_at_index(min_j, _temp);
             }
-
-            ++index;
         }
     }
 };
