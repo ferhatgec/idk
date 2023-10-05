@@ -49,4 +49,4 @@ public:
 //    virtual void
 //    sort(Compare comp) noexcept {}
 };
-}
+} // namespace idk

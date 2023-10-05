@@ -15,4 +15,5 @@
 #pragma once
 
 #include "sort_base.hpp"
+#include "insertionsort.hpp"
 #include "quicksort.hpp"

@@ -21,11 +21,11 @@ namespace idk {
 template<typename Type>
 class QuickSort : public SortBase<Type> {
 public:
-    QuickSort(const Vec<Type>& vec) {
+    QuickSort(const Vec<Type>& vec) noexcept {
         this->_vec = vec;
     }
 
-    QuickSort(Vec<Type>&& vec) {
+    QuickSort(Vec<Type>&& vec) noexcept {
         this->_vec = std::move(vec);
     }
 
@@ -76,4 +76,4 @@ private:
         return _index;
     }
 };
-}
+} // namespace idk
