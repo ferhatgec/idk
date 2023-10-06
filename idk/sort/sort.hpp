@@ -15,5 +15,6 @@
 #pragma once
 
 #include "sort_base.hpp"
+#include "bubblesort.hpp"
 #include "insertionsort.hpp"
 #include "quicksort.hpp"
