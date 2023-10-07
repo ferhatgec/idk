@@ -39,10 +39,10 @@ private:
     void
     _quicksort(isize low, isize high, Compare comp) noexcept {
         if(low < high) {
-            isize _index = this->_partition(low, high, (comp));
+            isize i = this->_partition(low, high, (comp));
             
-            this->_quicksort(low, _index - 1, (comp));
-            this->_quicksort(_index + 1, high, (comp));   
+            this->_quicksort(low, i - 1, (comp));
+            this->_quicksort(i + 1, high, (comp));   
         }
     }
 
@@ -50,30 +50,30 @@ private:
     [[nodiscard]]
     isize
     _partition(isize low, isize high, Compare comp) noexcept {
-        Type _pivot = this->_vec.at_without_check(high);
-        isize _index = low - 1;
+        Type pivot = this->_vec.at_without_check(high);
+        isize i = low - 1;
 
         for(isize j = low; j <= (high - 1); ++j) {
-            if(comp(this->_vec.at_without_check(j), _pivot)) {
-                ++_index;
+            if(comp(this->_vec.at_without_check(j), pivot)) {
+                ++i;
 
                 const auto _temp = this->_vec.at_without_check(j),
-                           _temp2= this->_vec.at_without_check(_index);
+                           _temp2= this->_vec.at_without_check(i);
         
-                (void)this->_vec.change_val_at_index(_index, _temp);
+                (void)this->_vec.change_val_at_index(i, _temp);
                 (void)this->_vec.change_val_at_index(j, _temp2);
             }
         }
 
-        ++_index;
+        ++i;
         
-        const auto _temp = this->_vec[_index].try_get_value(),
+        const auto _temp = this->_vec[i].try_get_value(),
                    _temp2= this->_vec[high].try_get_value();
 
-        (void)this->_vec.change_val_at_index(_index, _temp2);
+        (void)this->_vec.change_val_at_index(i, _temp2);
         (void)this->_vec.change_val_at_index(high, _temp);
 
-        return _index;
+        return i;
     }
 };
 } // namespace idk

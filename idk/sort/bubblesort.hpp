@@ -44,15 +44,15 @@ private:
         do {
             isize new_n = 0;
 
-            for(isize index = 1; index <= (n - 1); ++index) {
-                if(!comp(this->_vec.at_without_check(index - 1), this->_vec.at_without_check(index))) {
-                    auto _temp = this->_vec.at_without_check(index - 1),
-                         _temp2= this->_vec.at_without_check(index);
+            for(isize i = 1; i <= (n - 1); ++i) {
+                if(!comp(this->_vec.at_without_check(i - 1), this->_vec.at_without_check(i))) {
+                    auto _temp = this->_vec.at_without_check(i - 1),
+                         _temp2= this->_vec.at_without_check(i);
 
-                    (void)this->_vec.change_val_at_index(index - 1, _temp2);
-                    (void)this->_vec.change_val_at_index(index, _temp);
+                    (void)this->_vec.change_val_at_index(i - 1, _temp2);
+                    (void)this->_vec.change_val_at_index(i, _temp);
                     
-                    new_n = index;
+                    new_n = i;
                 }
             }
 

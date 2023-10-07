@@ -39,21 +39,21 @@ private:
     template<typename Compare>
     void
     _selectionsort(Compare comp) noexcept {
-        isize index, j;
+        isize i, j;
 
-        for(index = 0; index < this->_vec.size() - 1; ++index) {
-            isize min_j = index;
+        for(i = 0; i < this->_vec.size() - 1; ++i) {
+            isize min_j = i;
 
-            for(j = index + 1; j < this->_vec.size(); ++j)
+            for(j = i + 1; j < this->_vec.size(); ++j)
                 if(comp(this->_vec.at_without_check(j), this->_vec.at_without_check(min_j)))
                     min_j = j;
         
             
-            if(min_j != index) {
-                auto _temp = this->_vec.at_without_check(index),
+            if(min_j != i) {
+                auto _temp = this->_vec.at_without_check(i),
                      _temp2= this->_vec.at_without_check(min_j);
 
-                (void)this->_vec.change_val_at_index(index, _temp2);
+                (void)this->_vec.change_val_at_index(i, _temp2);
                 (void)this->_vec.change_val_at_index(min_j, _temp);
             }
         }

@@ -39,10 +39,10 @@ private:
     template<typename Compare>
     void
     _insertionsort(Compare comp) noexcept {
-        isize index = 1;
+        isize i = 1;
 
-        while(index < this->_vec.size()) {
-            isize j = index;
+        while(i < this->_vec.size()) {
+            isize j = i;
 
             while(j > 0 && !comp(this->_vec.at_without_check(j - 1), this->_vec.at_without_check(j))) {
                 auto _temp = this->_vec.at_without_check(j),
@@ -54,7 +54,7 @@ private:
                 --j;
             }
 
-            ++index;
+            ++i;
         }
     }
 };

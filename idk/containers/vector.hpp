@@ -60,6 +60,20 @@ public:
             this->_p[n] = std::move(val._p[n]);
     }
     
+    Vec(const usize& n) {
+        if(!this->is_empty())
+            delete[] this->_p;
+        
+        if(n > this->_capacity) {
+            this->_capacity = n;
+            this->_size     = n;
+        } else {
+            this->_size     = n;
+        }
+
+        this->_p = new Type[this->_size];
+    }
+
     Vec(usize&& n, Type&& val) {
         this->reserve_if_needed_with_given_value(std::move(n), val);
     }
