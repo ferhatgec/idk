@@ -15,7 +15,7 @@
 #pragma once
 
 #include "random_base.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -23,8 +23,8 @@ class MultiplyWithCarry : public idk::RandomBase<Type> {
     static constexpr u64 _c = 6364136223846793005ULL;
 public:
     MultiplyWithCarry(Type&& start, Type&& end) noexcept {
-        this->_btw_start_pos = std::move(start);
-        this->_btw_end_pos   = std::move(end);
+        this->_btw_start_pos = idk::move(start);
+        this->_btw_end_pos   = idk::move(end);
         this->init();
     }
     

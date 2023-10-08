@@ -17,6 +17,7 @@
 
 #include "../types/stringview.hpp"
 #include "../types/predefined.hpp"
+#include "../utilities/semantics.hpp"
 
 #ifdef _windows
     using StandardType = wchar_t;
@@ -51,10 +52,10 @@ public:
     };
 
     Path(const Path& path) : _path(path._path) {}
-    Path(Path&& path) : _path(std::move(path._path)) {}
+    Path(Path&& path) : _path(idk::move(path._path)) {}
 
     Path(const _StringView& path) : _path(path) {}
-    Path(_StringView&& path) : _path(std::move(path)) {}
+    Path(_StringView&& path) : _path(idk::move(path)) {}
     
     Path(const StandardType* path) : _path(path) {}
 

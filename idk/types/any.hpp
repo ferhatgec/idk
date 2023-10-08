@@ -14,6 +14,7 @@
 #pragma once
 
 #include "valueor.hpp"
+#include "../utilities/semantics.hpp"
 #include <typeinfo>
 
 namespace idk {
@@ -35,7 +36,7 @@ public:
             this->_data = nullptr;
     }
 
-    Any(Any&& val) noexcept : _data(std::move(val._data)), _type_info(val._type_info) {
+    Any(Any&& val) noexcept : _data(idk::move(val._data)), _type_info(val._type_info) {
         val._data      = nullptr;
         val._type_info = nullptr;
     }
@@ -51,7 +52,7 @@ public:
         
         delete this->_data;
         
-        this->_data      = std::move(other._data);
+        this->_data      = idk::move(other._data);
         this->_type_info = other._type_info;
         other._data = nullptr;
         other._type_info = nullptr;

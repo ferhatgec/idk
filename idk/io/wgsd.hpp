@@ -18,6 +18,7 @@
 #include "../containers/vector.hpp"
 #include "../utilities/pair.hpp"
 #include "../utilities/split.hpp"
+#include "../utilities/semantics.hpp"
 #include <fstream>
 
 namespace idk {
@@ -82,7 +83,7 @@ public:
     void
     reparse_file(StringViewChar&& file) noexcept {
         this->clear();
-        this->parse_file(std::move(file));
+        this->parse_file(idk::move(file));
     }
 
     [[nodiscard]]

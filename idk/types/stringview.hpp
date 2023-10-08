@@ -17,13 +17,13 @@
 #include "predefined.hpp"
 #include "valueor.hpp"
 #include "../utilities/type_traits.hpp"
+#include "../utilities/semantics.hpp"
 
 #ifndef _windows
 #   include <cstring>
 #   include <cwchar>
 #endif
 
-#include <utility>
 #include <iostream>
 
 namespace idk {
@@ -189,7 +189,7 @@ public:
     friend std::ostream& 
     operator<<(std::ostream& ostr, StringView<CharType>&& val) noexcept {
         if(!val.is_empty())
-            ostr << std::move(val._p);
+            ostr << idk::move(val._p);
         return ostr;
     }
 
@@ -203,7 +203,7 @@ public:
     friend std::wostream& 
     operator<<(std::wostream& ostr, StringView<CharType>&& val) noexcept {
         if(!val.is_empty())
-            ostr << std::move(val._p);
+            ostr << idk::move(val._p);
         return ostr;
     }
 
@@ -245,9 +245,9 @@ public:
         this->_p = new CharType[other._len + 1];
 
         for(usize n = 0; n < other._len; ++n)
-            this->_p[n] = std::move(other._p[n]);
+            this->_p[n] = idk::move(other._p[n]);
 
-        this->_len = std::move(other._len);
+        this->_len = idk::move(other._len);
         this->_p[this->_len] = '\0';
 
         return *this;    
@@ -360,7 +360,7 @@ public:
     
     ValueOr<CharType, Error>
     operator[](usize&& n) const noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<CharType, Error>

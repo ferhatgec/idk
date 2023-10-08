@@ -15,6 +15,7 @@
 #pragma once
 
 #include "search_base.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -24,7 +25,7 @@ public:
         this->_arr = arr; 
     }
     FrontAndBackSearch(Vec<Type>&& arr) {
-        this->_arr = std::move(arr);
+        this->_arr = idk::move(arr);
     }
 
     FrontAndBackSearch () = default;

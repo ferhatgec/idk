@@ -16,7 +16,7 @@
 
 #include "../types/predefined.hpp"
 #include "../containers/vector.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -41,7 +41,7 @@ public:
     Vec<Type> _vec;
     
     explicit SortBase(const Vec<Type>& vec) noexcept : _vec(vec) {}
-    explicit SortBase(Vec<Type>&& vec) noexcept : _vec(std::move(vec)) {}
+    explicit SortBase(Vec<Type>&& vec) noexcept : _vec(idk::move(vec)) {}
 
     SortBase() = default;
     ~SortBase() = default;

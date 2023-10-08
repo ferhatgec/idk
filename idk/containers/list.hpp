@@ -16,6 +16,7 @@
 
 #include "../types/predefined.hpp"
 #include "../types/valueor.hpp"
+#include "../utilities/semantics.hpp"
 #include "iterator.hpp"
 #include "node.hpp"
 
@@ -50,7 +51,7 @@ public:
 
     void
     push_back(Type&& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(std::move(val));
+        PNNode<Type>* _node = new PNNode<Type>(idk::move(val));
 
         if(this->_head == nullptr) {
             this->_head = _node;
@@ -82,7 +83,7 @@ public:
 
     void
     push_front(Type&& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(std::move(val));
+        PNNode<Type>* _node = new PNNode<Type>(idk::move(val));
 
         if(this->_head == nullptr) {
             this->_head = _node;
@@ -151,12 +152,12 @@ public:
 
     ValueOr<Type, Error>
     operator[](const usize&& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Type, Error>
     at(const usize&& n) noexcept {
-        Type _val = this->at_without_check(std::move(n));
+        Type _val = this->at_without_check(idk::move(n));
         
         if(_val == this->_empty)
             return Unexpected<Error>(Error::Out_Of_Range);

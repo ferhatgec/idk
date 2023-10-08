@@ -17,7 +17,7 @@
 #include "../types/predefined.hpp"
 #include "../types/valueor.hpp"
 #include "../utilities/type_traits.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 #include <iostream>
 
 // FIXME: do not allocate memory every assign, which is bad.
@@ -50,14 +50,14 @@ public:
             this->_p[n] = val._p[n];
     }
     
-    Vec(Vec<Type>&& val) : _size(std::move(val._size)), _capacity(std::move(val._capacity)) {
+    Vec(Vec<Type>&& val) : _size(idk::move(val._size)), _capacity(idk::move(val._capacity)) {
         if(!this->is_empty())
             delete[] this->_p;
         
         this->_p        = new Type[val._capacity];
 
         for(usize n = 0; n < val._size; ++n)
-            this->_p[n] = std::move(val._p[n]);
+            this->_p[n] = idk::move(val._p[n]);
     }
     
     Vec(const usize& n) {
@@ -75,15 +75,15 @@ public:
     }
 
     Vec(usize&& n, Type&& val) {
-        this->reserve_if_needed_with_given_value(std::move(n), val);
+        this->reserve_if_needed_with_given_value(idk::move(n), val);
     }
 
     Vec(usize&& n, Type& val) {
-        this->reserve_if_needed_with_given_value(std::move(n), val);
+        this->reserve_if_needed_with_given_value(idk::move(n), val);
     }
 
     Vec(usize&& n, Type const& val) {
-        this->reserve_if_needed_with_given_value(std::move(n), const_cast<Type&>(val));
+        this->reserve_if_needed_with_given_value(idk::move(n), const_cast<Type&>(val));
     }
 
     Vec(std::initializer_list<Type> vals) {
@@ -103,7 +103,7 @@ public:
 
     ValueOr<Type, Error> 
     operator[](usize&& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Type, Error> 
@@ -141,10 +141,10 @@ public:
         this->_p        = new Type[other._capacity];
         
         for(usize n = 0; n < other._size; ++n)
-            this->_p[n] = std::move(other._p[n]);
+            this->_p[n] = idk::move(other._p[n]);
 
-        this->_size     = std::move(other._size);
-        this->_capacity = std::move(other._capacity);
+        this->_size     = idk::move(other._size);
+        this->_capacity = idk::move(other._capacity);
 
         return *this;
     }
@@ -253,7 +253,7 @@ public:
     ValueOr<Type, Error>
     at(usize& n) noexcept {
         if(n < this->_size)
-            return Expected<Type>(this->at_without_check(std::move(n)));
+            return Expected<Type>(this->at_without_check(idk::move(n)));
 
         return Unexpected<Error>(Error::Out_Of_Range);
     }
@@ -267,7 +267,7 @@ public:
     void 
     push_back(Type&& val) noexcept {
         this->reserve_if_needed(this->_size + _capacity_constant + 1);
-        this->_p[this->_size++] = std::move(val);
+        this->_p[this->_size++] = idk::move(val);
     }
 
     void 
@@ -295,14 +295,14 @@ public:
     void
     reserve_if_needed(usize&& val) noexcept {
         if(this->is_empty() || (this->_capacity == this->_size)) {
-            this->reserve(std::move(val));
+            this->reserve(idk::move(val));
         }
     }
 
     void 
     reserve_if_needed_with_given_value(usize&& val, Type& value) noexcept {
         if(this->is_empty() || (this->_capacity == this->_size)) {
-            this->reserve_with_given_value(std::move(val), value);
+            this->reserve_with_given_value(idk::move(val), value);
         }
     }
 
@@ -417,7 +417,7 @@ public:
             ++i;
         }
 
-        this->_p[i] = std::move(replace);
+        this->_p[i] = idk::move(replace);
         
         return true;
     }

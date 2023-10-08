@@ -15,6 +15,7 @@
 #pragma once
 
 #include "../types/predefined.hpp"
+#include "../utilities/semantics.hpp"
 #include <iostream>
 
 namespace idk {
@@ -86,7 +87,7 @@ public:
         
         ostr << "\x1b[" << _vals[code] << ";" << _vals[bgcode] << "m"
              << "\x1b[" << _vals[code] << ";" << _vals[fgcode] << "m" 
-             << std::move(data);
+             << idk::move(data);
     }
 
     template<typename Val>

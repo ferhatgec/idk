@@ -15,7 +15,7 @@
 #pragma once
 
 #include "random_base.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 // this implementation implements xorshift32. as defined below; 
@@ -24,8 +24,8 @@ template<typename Type>
 class Xorshift : public idk::RandomBase<Type> {
 public:
     Xorshift(Type&& start, Type&& end) noexcept {
-        this->_btw_start_pos = std::move(start);
-        this->_btw_end_pos   = std::move(end);
+        this->_btw_start_pos = idk::move(start);
+        this->_btw_end_pos   = idk::move(end);
         this->init();
     }
     

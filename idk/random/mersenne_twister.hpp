@@ -16,6 +16,7 @@
 
 #include "random_base.hpp"
 #include "../containers/array.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -31,8 +32,8 @@ class MersenneTwister : public idk::RandomBase<Type> {
 public:
     MersenneTwister(Type&& start, Type&& end) noexcept {
         _state.fill(0);
-        this->_btw_start_pos = std::move(start);
-        this->_btw_end_pos   = std::move(end);
+        this->_btw_start_pos = idk::move(start);
+        this->_btw_end_pos   = idk::move(end);
         this->init();
     }
     

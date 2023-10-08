@@ -15,6 +15,7 @@
 #pragma once
 
 #include "random_base.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -23,8 +24,8 @@ class Gech : public idk::RandomBase<Type> {
         _bits  { 1 };
 public:
     Gech(Type&& start, Type&& end) noexcept {
-        this->_btw_start_pos = std::move(start);
-        this->_btw_end_pos   = std::move(end);
+        this->_btw_start_pos = idk::move(start);
+        this->_btw_end_pos   = idk::move(end);
         this->init();
     }
     

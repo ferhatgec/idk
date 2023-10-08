@@ -18,7 +18,7 @@
 #include "../containers/vector.hpp"
 #include "../types/stringview.hpp"
 #include "../utilities/pair.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 // key value storage
@@ -126,14 +126,14 @@ public:
     static Argument
     parse(StringViewChar&& arg) noexcept {
         if(arg.is_empty())
-            return Argument(std::move(arg));
+            return Argument(idk::move(arg));
 
         for(usize i = 0; i < arg.length(); ++i)
             if((arg[i].try_get_value() == '=') 
                 || arg[i].try_get_value() == ':')
                 return Argument(arg.substr(0, i), arg.substr(i + 1, arg.length() - i - 1));
 
-        return Argument(std::move(arg));
+        return Argument(idk::move(arg));
     }
 
 
@@ -185,7 +185,7 @@ public:
 
     ValueOr<Argument, Error>
     operator[](usize&& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Argument, Error>
@@ -193,7 +193,7 @@ public:
         if(n >= this->_args.size())
             return Unexpected<Error>(Error::Out_Of_Range);
 
-        return Expected<Argument>(this->_args.at_without_check(std::move(n)));
+        return Expected<Argument>(this->_args.at_without_check(idk::move(n)));
     }
 };
 } // namespace idk

@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <utility>
 #include <iostream>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename _Type, typename _ValueOr>
@@ -105,7 +105,7 @@ public:
         
         std::cerr << "unexpected\n";
         std::exit(1); // noreturn
-        // this->_unexpected.change_with(std::move(unexpected));
+        // this->_unexpected.change_with(idk::move(unexpected));
         // return this->_unexpected;
     }
 
@@ -117,7 +117,7 @@ public:
         
         std::cerr << "unexpected\n";
         std::exit(1); // noreturn
-        // this->_unexpected.change_with(std::move(unexpected));
+        // this->_unexpected.change_with(idk::move(unexpected));
         // return this->_unexpected;
     }
 

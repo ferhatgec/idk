@@ -16,7 +16,7 @@
 
 #include "../types/predefined.hpp"
 #include "../types/valueor.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 #include <initializer_list>
 #include <iostream>
 
@@ -31,7 +31,7 @@ public:
 
     Arr(std::initializer_list<Val>&& val) {
         usize n = 0;
-        for(Val _val: std::move(val)) {
+        for(Val _val: idk::move(val)) {
             this->_arr[n++] = _val;
         }
     }
@@ -107,12 +107,12 @@ public:
 
     ValueOr<Val, Error>
     operator[](const usize&& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Val, Error>
     operator[](const usize& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Val, Error>
@@ -193,7 +193,7 @@ public:
             ++i;
         }
 
-        this->_arr[i] = std::move(replace);
+        this->_arr[i] = idk::move(replace);
         
         return true;
     }

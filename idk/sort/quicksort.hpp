@@ -16,6 +16,7 @@
 
 #include "sort_base.hpp"
 #include "sort.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -26,7 +27,7 @@ public:
     }
 
     QuickSort(Vec<Type>&& vec) noexcept {
-        this->_vec = std::move(vec);
+        this->_vec = idk::move(vec);
     }
 
     template<typename Compare = decltype(idk::Less<Type>())>

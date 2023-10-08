@@ -16,6 +16,7 @@
 
 #include "../utilities/type_traits.hpp"
 #include "node.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename T>
@@ -105,8 +106,8 @@ public:
             return *this;
 
         Node<T>* _temp = this->_top;
-        this->_elems= std::move(other._elems);
-        this->_top  = std::move(other._top);
+        this->_elems= idk::move(other._elems);
+        this->_top  = idk::move(other._top);
         delete _temp;
         
         return *this;

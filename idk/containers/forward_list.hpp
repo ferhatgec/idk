@@ -19,6 +19,7 @@
 #include "../types/valueor.hpp"
 #include "../types/predefined.hpp"
 #include "../utilities/type_traits.hpp"
+#include "../utilities/semantics.hpp"
 #include <algorithm>
 
 namespace idk {
@@ -57,7 +58,7 @@ public:
     void
     push_front(Type&& val) noexcept {
         ++this->_size;
-        Node<Type>* _temp = new Node<Type>(std::move(val));
+        Node<Type>* _temp = new Node<Type>(idk::move(val));
         _temp->_next = this->_head;
         this->_head = _temp; 
     }
@@ -87,12 +88,12 @@ public:
 
     ValueOr<Type, Error>
     operator[](const usize&& n) noexcept {
-        return this->at(std::move(n));
+        return this->at(idk::move(n));
     }
 
     ValueOr<Type, Error>
     at(usize&& n) noexcept {
-        Type _val = this->at_without_check(std::move(n));
+        Type _val = this->at_without_check(idk::move(n));
         
         if(_val == this->_empty)
             return Unexpected<Error>(Error::Out_Of_Range);

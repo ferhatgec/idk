@@ -16,7 +16,7 @@
 
 #include "predefined.hpp"
 #include "../utilities/type_traits.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<usize Index, typename T>
@@ -25,7 +25,7 @@ struct TupleElement {
     ~TupleElement()= default;
 
     template<typename U>
-    TupleElement(U&& val) : _value(std::forward<U>(val)) {}
+    TupleElement(U&& val) : _value(idk::forward<U>(val)) {}
 
     template<typename U>
     TupleElement(const U& val) : _value(idk::RemoveReferenceType<U&>(const_cast<U&>(val))) {}
@@ -44,8 +44,8 @@ struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof.
 
     template<typename HeadArg, typename... TailArgs>
     Tuple(HeadArg&& head_arg, TailArgs&&... tail_args) 
-        : BaseType(std::forward<TailArgs>(tail_args)...), 
-          Element(std::forward<HeadArg>(head_arg)) {}
+        : BaseType(idk::forward<TailArgs>(tail_args)...), 
+          Element(idk::forward<HeadArg>(head_arg)) {}
 
     template<typename HeadArg, typename... TailArgs>
     Tuple(const HeadArg& head_arg, const TailArgs&... tail_args) 

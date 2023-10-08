@@ -16,7 +16,7 @@
 
 #include "../types/predefined.hpp"
 #include "sort_base.hpp"
-#include <utility>
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -27,7 +27,7 @@ public:
     }
 
     BubbleSort(Vec<Type>&& vec) noexcept {
-        this->_vec = std::move(vec);
+        this->_vec = idk::move(vec);
     }
 
     template<typename Compare = decltype(idk::Less<Type>())>

@@ -16,6 +16,7 @@
 
 #include "../types/predefined.hpp"
 #include "../containers/vector.hpp"
+#include "../utilities/semantics.hpp"
 
 namespace idk {
 template<typename Type>
@@ -24,7 +25,7 @@ public:
     Vec<Type> _arr;
 
     explicit SearchBase(Vec<Type>&& vec) noexcept {
-        this->_arr = std::move(vec);
+        this->_arr = idk::move(vec);
     }
 
     explicit SearchBase(const Vec<Type>& vec) noexcept {
