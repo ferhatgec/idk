@@ -32,7 +32,7 @@ struct Less {
     bool
     operator()(const Type& lhs, const Type& rhs) noexcept {
         return lhs < rhs;
-    } 
+    }
 };
 
 template<typename Type>
