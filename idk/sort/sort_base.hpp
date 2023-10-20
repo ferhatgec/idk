@@ -28,10 +28,42 @@ struct Greater {
 };
 
 template<typename Type>
+struct GreaterOrEqual {
+    bool
+    operator()(const Type& lhs, const Type& rhs) noexcept {
+        return lhs >= rhs;
+    } 
+};
+
+template<typename Type>
 struct Less {
     bool
     operator()(const Type& lhs, const Type& rhs) noexcept {
         return lhs < rhs;
+    }
+};
+
+template<typename Type>
+struct LessOrEqual {
+    bool
+    operator()(const Type& lhs, const Type& rhs) noexcept {
+        return lhs <= rhs;
+    }
+};
+
+template<typename Type>
+struct Equal {
+    bool
+    operator()(const Type& lhs, const Type& rhs) noexcept {
+        return lhs == rhs;
+    }
+};
+
+template<typename Type>
+struct NotEqual {
+    bool
+    operator()(const Type& lhs, const Type& rhs) noexcept {
+        return lhs != rhs;
     }
 };
 
