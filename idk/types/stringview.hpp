@@ -385,12 +385,22 @@ public:
     }
 
     CharType
-    at_without_check(const usize&& n) {
-        return this->_p[n];
+    at_without_check(usize&& n) {
+        return this->at_without_check(n);
     }
 
     CharType
     at_without_check(const usize& n) {
+        return this->_p[n];
+    }
+
+    CharType&
+    at_without_check_reference(usize&& n) {
+        return this->at_without_check_reference(n);
+    }
+
+    CharType&
+    at_without_check_reference(const usize& n) {
         return this->_p[n];
     }
 

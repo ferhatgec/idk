@@ -23,3 +23,4 @@
 #include "mergesort.hpp"
 #include "quicksort.hpp"
 #include "selectionsort.hpp"
+#include "stoogesort.hpp"

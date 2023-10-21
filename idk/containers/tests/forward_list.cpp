@@ -34,4 +34,11 @@ int main() {
         std::cerr << "[FAIL] x == y\n";
     else
         std::cout << "[OK] x == y\n";
+
+    y.at_without_check_reference(0) = 13;
+
+    if(y.at_without_check_reference(0) != 13)
+        std::cerr << "[FAIL] y.at_without_check_reference(0) != 13\n";
+    else
+        std::cout << "[OK] y.at_without_check_reference(0) != 13\n";
 }

@@ -70,4 +70,11 @@ int main() {
         std::cerr << "[FAIL] !numbers.contains(3)\n";
     else
         std::cout << "[OK] !numbers.contains(3)\n";
+
+    numbers.at_without_check_reference(0) = 3;
+
+    if(numbers.front() != 3)
+        std::cerr << "[FAIL] numbers.front() != 3\n";
+    else
+        std::cout << "[OK] numbers.front() != 3\n";
 }

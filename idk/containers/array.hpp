@@ -106,21 +106,26 @@ public:
     }
 
     ValueOr<Val, Error>
-    operator[](const usize&& n) noexcept {
+    operator[](usize&& n) noexcept {
         return this->at(idk::move(n));
     }
 
     ValueOr<Val, Error>
     operator[](const usize& n) noexcept {
-        return this->at(idk::move(n));
+        return this->at(n);
     }
 
     ValueOr<Val, Error>
-    at(const usize&& n) noexcept {
+    at(const usize& n) noexcept {
         if(n < this->size())
             return Expected(this->_arr[n]);
 
         return Unexpected(Error::Out_Of_Range);
+    }
+
+    ValueOr<Val, Error>
+    at(usize&& n) noexcept {
+        return this->at(n);
     }
 
     template<typename _Val, usize _N>

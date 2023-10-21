@@ -93,12 +93,7 @@ public:
 
     ValueOr<Type, Error>
     at(usize&& n) noexcept {
-        Type _val = this->at_without_check(idk::move(n));
-        
-        if(_val == this->_empty)
-            return Unexpected<Error>(Error::Out_Of_Range);
-
-        return Expected<Type>(_val);
+        return this->at(n);
     }
 
     ValueOr<Type, Error>
@@ -113,6 +108,11 @@ public:
 
     Type
     at_without_check(usize&& n) {
+        return this->at_without_check(n);
+    }
+
+    Type
+    at_without_check(const usize& n) {
         if(n >= this->_size)
             return this->_empty;
             
@@ -124,8 +124,13 @@ public:
         return _curr->_data;
     }
 
-    Type
-    at_without_check(const usize& n) {
+    Type&
+    at_without_check_reference(usize&& n) {
+        return this->at_without_check_reference(n);
+    }
+
+    Type&
+    at_without_check_reference(const usize& n) {
         if(n >= this->_size)
             return this->_empty;
             

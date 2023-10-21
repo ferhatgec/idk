@@ -232,6 +232,16 @@ public:
         return this->_p[n];
     }
 
+    Type&
+    at_without_check_reference(usize&& n) {
+        return this->_p[n];
+    }
+
+    Type&
+    at_without_check_reference(const usize& n) {
+        return this->_p[n];
+    }
+
     Type*
     begin() {
         return this->_p;

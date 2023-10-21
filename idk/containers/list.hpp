@@ -151,12 +151,12 @@ public:
     }
 
     ValueOr<Type, Error>
-    operator[](const usize&& n) noexcept {
+    operator[](usize&& n) noexcept {
         return this->at(idk::move(n));
     }
 
     ValueOr<Type, Error>
-    at(const usize&& n) noexcept {
+    at(usize&& n) noexcept {
         Type _val = this->at_without_check(idk::move(n));
         
         if(_val == this->_empty)
@@ -166,7 +166,12 @@ public:
     }
 
     Type
-    at_without_check(const usize&& n) {
+    at_without_check(usize&& n) {
+        return this->at_without_check(n);
+    }
+
+    Type
+    at_without_check(const usize& n) {
         if(n >= this->_size)
             return this->_empty;
 
@@ -176,6 +181,24 @@ public:
             _curr = _curr->_next;
 
         return _curr->_data;
+    }
+
+    Type&
+    at_without_check_reference(const usize& n) {
+        if(n >= this->_size)
+            return this->_empty;
+
+        PNNode<Type>* _curr = this->_head;
+
+        for(usize i = 0; i < n; ++i)
+            _curr = _curr->_next;
+
+        return _curr->_data;
+    }
+
+    Type&
+    at_without_check_reference(usize&& n) {
+        return this->at_without_check_reference(n);
     }
 
     PNIterator<Type>

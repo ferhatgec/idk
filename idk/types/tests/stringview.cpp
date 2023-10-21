@@ -109,4 +109,11 @@ int main() {
         std::cerr << "[FAIL] !w.starts_with(L'H')\n";
     else
         std::cout << "[OK] !w.starts_with(L'H')\n";
+
+    w.at_without_check_reference(5) = L',';
+
+    if(w.at_without_check_reference(5) != L',')
+        std::cerr << "[FAIL] w.at_without_check_reference(5) != L','\n";
+    else
+        std::cout << "[OK] w.at_without_check_reference(5) != L','\n";
 }
