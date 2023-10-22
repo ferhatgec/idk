@@ -18,6 +18,7 @@
 #include "bubblesort.hpp"
 #include "cocktailsort.hpp"
 #include "cyclesort.hpp"
+#include "gnomesort.hpp"
 #include "heapsort.hpp"
 #include "insertionsort.hpp"
 #include "mergesort.hpp"
