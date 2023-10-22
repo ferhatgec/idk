@@ -27,4 +27,18 @@ public:
         return (N * R) / ((_val == 0) ? 1 : _val);
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_lcm(const usize& n, const usize& r) noexcept {
+    auto _val = generate_gcd(n, r);
+
+    return (n * r) / ((_val == 0) ? 1 : _val);
+}
+
+[[nodiscard]]
+constexpr usize
+generate_lcm(usize&& n, usize&& r) noexcept {
+    return generate_lcm(n, r);
+}
 } // namespace idk

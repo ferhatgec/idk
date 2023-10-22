@@ -41,4 +41,19 @@ public:
                                               // not implemented it yet(?).
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_fibonacci(const usize& nth) noexcept {
+    if(nth == 0 || nth == 1)
+        return nth;
+ 
+    return generate_fibonacci(nth - 2) + generate_fibonacci(nth - 1);
+}
+
+[[nodiscard]]
+constexpr usize
+generate_fibonacci(usize&& nth) noexcept {
+    return generate_fibonacci(nth);
+}
 } // namespace idk

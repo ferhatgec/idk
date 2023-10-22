@@ -27,4 +27,10 @@ int main() {
     CHECK(9)
     CHECK(10)
     CHECK(11)
+
+    for(idk::isize n = 0; n < 11; ++n)
+        if(idk::generate_catalan(n) != arr[n])
+            std::cerr << "[FAIL] idk::generate_catalan(" << n << ") != arr[" << n << "]\n";
+        else
+            std::cout << "[OK] idk::generate_catalan(" << n << ") != arr[" << n << "]\n"; 
 }

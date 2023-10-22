@@ -26,4 +26,19 @@ public:
         return (R == 0) ? N : GreatestCommonDivisorGenerator<R, N - (R * (N / ((R == 0) ? 1 : R)))>::generate();
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_gcd(const usize& n, const usize& r) noexcept {
+    if(r == 0)
+        return n;
+    
+    return generate_gcd(r, n - (r * (n / ((r == 0) ? 1 : r))));
+}
+
+[[nodiscard]]
+constexpr usize
+generate_gcd(usize&& n, usize&& r) noexcept {
+    return generate_gcd(n, r);
+}
 } // namespace idk

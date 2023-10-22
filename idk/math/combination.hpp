@@ -26,4 +26,16 @@ public:
         return FactorialGenerator<N>::generate() / (FactorialGenerator<R>::generate() * FactorialGenerator<N - R>::generate());
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_combination(const usize& n, const usize& r) noexcept {
+    return generate_factorial(n) / (generate_factorial(r) * generate_factorial(n - r));
+}
+
+[[nodiscard]]
+constexpr usize
+generate_combination(usize&& n, usize&& r) noexcept {
+    return generate_combination(n, r);
+}
 } // namespace idk

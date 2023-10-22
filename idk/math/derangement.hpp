@@ -39,4 +39,21 @@ public:
         return 1;
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_derangement(const usize& n) noexcept {
+    if(n == 0)
+        return 1;
+
+    auto _val = (generate_factorial(n) / idk::e) + 0.5;
+
+    return (_val >= 0) ? static_cast<usize>(_val) : (static_cast<usize>(_val) - 1);
+}
+
+[[nodiscard]]
+constexpr usize
+generate_derangement(usize&& n) noexcept {
+    return generate_derangement(n);
+}
 } // namespace idk

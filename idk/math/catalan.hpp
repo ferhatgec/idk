@@ -36,4 +36,19 @@ public:
         return 1;
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_catalan(const usize& nth) noexcept {
+    if(nth == 0)
+        return 1;
+    
+    return generate_catalan(nth - 1) * (4 * nth - 2) / (nth + 1);
+}
+
+[[nodiscard]]
+constexpr usize
+generate_catalan(usize&& nth) noexcept {
+    return generate_catalan(nth);
+}
 } // namespace idk

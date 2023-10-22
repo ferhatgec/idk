@@ -29,4 +29,10 @@ int main() {
     CHECK(11)
     CHECK(12)
     CHECK(13)
+
+     for(idk::isize n = 0; n < 13; ++n)
+        if(idk::generate_fibonacci(n) != arr[n])
+            std::cerr << "[FAIL] idk::generate_fibonacci(" << n << ") != arr[" << n << "]\n";
+        else
+            std::cout << "[OK] idk::generate_fibonacci(" << n << ") != arr[" << n << "]\n"; 
 }

@@ -23,4 +23,10 @@ int main() {
     CHECK(7)
     CHECK(8)
     CHECK(9)
+    
+    for(idk::isize n = 0; n < 9; ++n)
+        if(idk::generate_derangement(n) != arr[n])
+            std::cerr << "[FAIL] idk::generate_derangement(" << n << ") != arr[" << n << "]\n";
+        else
+            std::cout << "[OK] idk::generate_derangement(" << n << ") != arr[" << n << "]\n"; 
 }

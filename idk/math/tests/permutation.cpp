@@ -21,4 +21,34 @@ int main() {
     CHECK(5, 5, 3)
     CHECK(5, 3, 4)
     CHECK(5, 4, 5)
+
+    if(idk::generate_permutation(5, 1) != arr[0])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 1) != arr[0]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 1) != arr[0]\n";
+    
+    if(idk::generate_permutation(5, 2) != arr[1])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 2) != arr[1]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 2) != arr[1]\n";
+    
+    if(idk::generate_permutation(5, 0) != arr[2])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 0) != arr[2]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 0) != arr[2]\n";
+    
+    if(idk::generate_permutation(5, 5) != arr[3])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 5) != arr[3]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 5) != arr[3]\n";
+    
+    if(idk::generate_permutation(5, 3) != arr[4])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 3) != arr[4]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 3) != arr[4]\n";
+    
+    if(idk::generate_permutation(5, 4) != arr[5])
+        std::cerr << "[FAIL] idk::generate_permutation(5, 4) != arr[5]\n";
+    else
+        std::cout << "[OK] idk::generate_permutation(5, 4) != arr[5]\n";
 }

@@ -36,4 +36,19 @@ public:
         return 1;
     }
 };
+
+[[nodiscard]]
+constexpr usize
+generate_factorial(const usize& nth) noexcept {
+    if(nth == 0)
+        return 1;
+
+    return nth * generate_factorial(nth - 1);
+}
+
+[[nodiscard]]
+constexpr usize
+generate_factorial(usize&& nth) noexcept {
+    return generate_factorial(nth);
+}
 } // namespace idk
