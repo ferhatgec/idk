@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../permutation.hpp"
 
-constexpr idk::usize arr[6] = {
+__idk_constexpr idk::usize arr[6] = {
     5, 20, 1, 120, 60, 120
 };
 
@@ -11,7 +11,7 @@ constexpr idk::usize arr[6] = {
                     std::cout << "[OK] idk::PermutationGenerator<" #n "," #r ">::generate != arr[" #y "]\n";
 
 int main() {
-    constexpr auto val = idk::PermutationGenerator<5, 2>::generate();
+    __idk_constexpr auto val = idk::PermutationGenerator<5, 2>::generate();
     
     std::cout << val << '\n';
 

@@ -20,7 +20,7 @@
 
 namespace idk {
 template<typename Type>
-class [[nodiscard]] SearchBase {
+class __idk_nodiscard SearchBase {
 public:
     Vec<Type> _arr;
 
@@ -35,25 +35,25 @@ public:
     SearchBase () = default;
     ~SearchBase() = default;
 
-    [[nodiscard]]
+    __idk_nodiscard
     virtual isize
     find(Type& find_val) noexcept {
         return -1;
     }
     
-    [[nodiscard]]
+    __idk_nodiscard
     virtual isize
     find(Type&& find_val) noexcept {
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     virtual Vec<isize>
     find_recursively(Type& find_val) noexcept {
         return Vec<isize>();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     virtual Vec<isize>
     find_recursively(Type&& find_val) noexcept {
         return Vec<isize>();

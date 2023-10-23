@@ -21,11 +21,11 @@
 namespace idk {
 template<typename Type>
 class MersenneTwister : public idk::RandomBase<Type> {
-    static constexpr u32 _n         = 624       ;
-    static constexpr u32 _m         = 397       ;
-    static constexpr u32 _matrix_a  = 0x9908b0df;
-    static constexpr u32 _upper_mask= 0x80000000;
-    static constexpr u32 _lower_mask= 0x7fffffff;
+    static __idk_constexpr u32 _n         = 624       ;
+    static __idk_constexpr u32 _m         = 397       ;
+    static __idk_constexpr u32 _matrix_a  = 0x9908b0df;
+    static __idk_constexpr u32 _upper_mask= 0x80000000;
+    static __idk_constexpr u32 _lower_mask= 0x7fffffff;
 
     idk::Arr<u32, _n> _state {};
     u32 _index { 0 };

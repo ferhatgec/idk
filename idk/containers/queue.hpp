@@ -81,19 +81,19 @@ public:
         return this->_keep;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize
     size() const noexcept {
         return this->_elems;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize
     max_size() const noexcept {
         return this->size();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     is_empty() const noexcept {
         return this->_first == nullptr;

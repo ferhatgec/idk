@@ -20,9 +20,9 @@
 namespace idk {
 template<typename Type>
 class LinearCongruential : public idk::RandomBase<Type> {
-    static constexpr u64 _a = 1664525   ;
-    static constexpr u64 _c = 1013904223;
-    static constexpr u64 _m = 1013904223;
+    static __idk_constexpr u64 _a = 1664525   ;
+    static __idk_constexpr u64 _c = 1013904223;
+    static __idk_constexpr u64 _m = 1013904223;
 public:
     LinearCongruential(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = idk::move(start);

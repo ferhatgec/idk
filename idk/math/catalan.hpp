@@ -18,27 +18,27 @@
 
 namespace idk {
 template<usize N>
-class [[nodiscard]] CatalanGenerator {
+class __idk_nodiscard CatalanGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
         return CatalanGenerator<N - 1>::generate() * (4 * N - 2) / (N + 1);
     }
 };
 
 template<>
-class [[nodiscard]] CatalanGenerator<0> {
+class __idk_nodiscard CatalanGenerator<0> {
 public:
-    [[nodiscard]]
-    static constexpr usize
+    __idk_nodiscard
+    static __idk_constexpr usize
     generate() noexcept {
         return 1;
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_catalan(const usize& nth) noexcept {
     if(nth == 0)
         return 1;
@@ -46,8 +46,8 @@ generate_catalan(const usize& nth) noexcept {
     return generate_catalan(nth - 1) * (4 * nth - 2) / (nth + 1);
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_catalan(usize&& nth) noexcept {
     return generate_catalan(nth);
 }

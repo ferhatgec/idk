@@ -268,7 +268,7 @@ public:
         return Unexpected<Error>(Error::Out_Of_Range);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     is_empty() const noexcept {
         return this->_size == 0;
@@ -345,13 +345,13 @@ public:
         this->_p       = temp;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize 
     size() const noexcept {
         return this->_size;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize 
     capacity() const noexcept {
         return this->_capacity;
@@ -371,12 +371,12 @@ public:
         return ostr;
     }
 
-    constexpr Type*
+    __idk_constexpr Type*
     data() const noexcept {
         return const_cast<Type*>(this->_p);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     contains(Type& val) noexcept {
         for(auto& elem: *this)
@@ -386,7 +386,7 @@ public:
         return false;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     contains(Type&& val) noexcept {
         return this->contains(val);
@@ -398,7 +398,7 @@ public:
             this->pop_back();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     change_val_at_index(const usize& index, const Type& replace) noexcept {
         if(this->is_empty() || index >= this->size())
@@ -415,7 +415,7 @@ public:
         return true;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     change_val_at_index(usize&& index, Type&& replace) noexcept {
         if(this->is_empty() || index >= this->size())
@@ -432,7 +432,7 @@ public:
         return true;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(const Type& val) noexcept {
         for(usize n = 0; n < this->_size; ++n)
@@ -442,13 +442,13 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Type&& val) noexcept {
         return this->find(val);
     }
 private:
-    static constexpr u16 _capacity_constant = 128;
+    static __idk_constexpr u16 _capacity_constant = 128;
 
     Type* _p;
 

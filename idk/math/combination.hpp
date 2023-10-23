@@ -18,23 +18,23 @@
 
 namespace idk {
 template<usize N, usize R>
-class [[nodiscard]] CombinationGenerator {
+class __idk_nodiscard CombinationGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
         return FactorialGenerator<N>::generate() / (FactorialGenerator<R>::generate() * FactorialGenerator<N - R>::generate());
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_combination(const usize& n, const usize& r) noexcept {
     return generate_factorial(n) / (generate_factorial(r) * generate_factorial(n - r));
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_combination(usize&& n, usize&& r) noexcept {
     return generate_combination(n, r);
 }

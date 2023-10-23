@@ -20,7 +20,7 @@
 #include <climits>
 #include <cmath>
 
-#define IS_SAME_WITH(_Type, _NL_Type) if constexpr(std::is_same_v<_Type, _NL_Type>) 
+#define IS_SAME_WITH(_Type, _NL_Type) if __idk_constexpr(std::is_same_v<_Type, _NL_Type>) 
 
 namespace idk {
 enum FloatRoundStyle : const i8 {
@@ -41,8 +41,8 @@ template<typename Type>
 class NumericLimits {
 public:
 
-    [[nodiscard]]
-    static constexpr Type 
+    __idk_nodiscard
+    static __idk_constexpr Type 
     min_val() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -81,8 +81,8 @@ public:
         return LDBL_MIN;
     }
 
-    [[nodiscard]]
-    static constexpr Type 
+    __idk_nodiscard
+    static __idk_constexpr Type 
     max_val() noexcept {
         IS_SAME_WITH(bool, Type)
             return true;
@@ -123,8 +123,8 @@ public:
         return Type();
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     lowest_val() noexcept {
         IS_SAME_WITH(float, Type)
             return -FLT_MAX;
@@ -136,26 +136,26 @@ public:
         return min_val();
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     min() noexcept {
         return min_val();
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     max() noexcept {
         return max_val();
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     lowest() noexcept {
         return lowest_val();
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     epsilon() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -169,8 +169,8 @@ public:
         return 0; // Type() maybe for non specialized ones
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     round_error() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -184,8 +184,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     denorm_min_val() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -208,8 +208,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     infinity() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -223,8 +223,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     quiet_NaN() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -238,8 +238,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr Type
+    __idk_nodiscard
+    static __idk_constexpr Type
     signaling_NaN() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -253,8 +253,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _is_signed() noexcept {
         IS_SAME_WITH(bool, Type)
             return false;
@@ -295,8 +295,8 @@ public:
         return true;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _is_modulo() noexcept {
         IS_SAME_WITH(char, Type)
             return CHAR_MIN == 0;
@@ -315,8 +315,8 @@ public:
             return true;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _digits() noexcept {
         IS_SAME_WITH(bool, Type)
             return 1;
@@ -351,8 +351,8 @@ public:
         return CHAR_BIT * sizeof(Type) - 1;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _digits10() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_DIG;
@@ -364,8 +364,8 @@ public:
         return idk::NumericLimits<Type>::digits * std::log10(2);
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _max_digits10() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_DECIMAL_DIG;
@@ -377,8 +377,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _radix() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_RADIX;
@@ -390,8 +390,8 @@ public:
         return 2;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _min_exponent() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_MIN_EXP;
@@ -403,8 +403,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _min_exponent10() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_MIN_10_EXP;
@@ -416,8 +416,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _max_exponent() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_MAX_EXP;
@@ -429,8 +429,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _max_exponent10() noexcept {
         IS_SAME_WITH(float, Type)
             return FLT_MAX_10_EXP;
@@ -442,8 +442,8 @@ public:
         return 0;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _traps() noexcept {
         IS_SAME_WITH(float, Type)
             return false;
@@ -457,20 +457,20 @@ public:
         return true;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _tinyness_before() noexcept {
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _is_bounded() noexcept {
         return true;
     }
 
-    [[nodiscard]]
-    static constexpr i32
+    __idk_nodiscard
+    static __idk_constexpr i32
     _is_iec559() noexcept {
         IS_SAME_WITH(float, Type)
             return true;
@@ -482,8 +482,8 @@ public:
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr idk::FloatRoundStyle
+    __idk_nodiscard
+    static __idk_constexpr idk::FloatRoundStyle
     _round_style() noexcept {
         IS_SAME_WITH(float, Type)
             return idk::FloatRoundStyle::RoundToNearest;
@@ -495,14 +495,14 @@ public:
         return idk::FloatRoundStyle::RoundTowardZero;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _has_denorm_loss() noexcept {
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr idk::FloatDenormStyle
+    __idk_nodiscard
+    static __idk_constexpr idk::FloatDenormStyle
     _has_denorm() noexcept {
         IS_SAME_WITH(float, Type)
             return idk::FloatDenormStyle::DenormPresent;
@@ -514,8 +514,8 @@ public:
         return idk::FloatDenormStyle::DenormAbsent;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _has_signaling_NaN() noexcept {
         IS_SAME_WITH(float, Type)
             return true;
@@ -527,8 +527,8 @@ public:
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _has_quiet_NaN() noexcept {
         IS_SAME_WITH(float, Type)
             return true;
@@ -540,8 +540,8 @@ public:
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _has_infinity() noexcept {
         IS_SAME_WITH(float, Type)
             return true;
@@ -553,8 +553,8 @@ public:
         return false;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _is_exact() noexcept {
         IS_SAME_WITH(float, Type)
             return false;
@@ -566,8 +566,8 @@ public:
         return true;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _is_integer() noexcept {
         IS_SAME_WITH(float, Type)
             return false;
@@ -579,36 +579,36 @@ public:
         return true;
     }
 
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     _is_specialized() noexcept {
         return true;
     }
 
-    static constexpr Type is_specialized = idk::NumericLimits<Type>::_is_specialized();
-    static constexpr Type is_signed      = idk::NumericLimits<Type>::_is_signed();
-    static constexpr Type is_integer     = idk::NumericLimits<Type>::_is_integer();
-    static constexpr Type is_exact       = idk::NumericLimits<Type>::_is_exact();
-    static constexpr Type has_infinity   = idk::NumericLimits<Type>::_has_infinity();
-    static constexpr Type has_quiet_NaN  = idk::NumericLimits<Type>::_has_quiet_NaN();
-    static constexpr Type 
+    static __idk_constexpr Type is_specialized = idk::NumericLimits<Type>::_is_specialized();
+    static __idk_constexpr Type is_signed      = idk::NumericLimits<Type>::_is_signed();
+    static __idk_constexpr Type is_integer     = idk::NumericLimits<Type>::_is_integer();
+    static __idk_constexpr Type is_exact       = idk::NumericLimits<Type>::_is_exact();
+    static __idk_constexpr Type has_infinity   = idk::NumericLimits<Type>::_has_infinity();
+    static __idk_constexpr Type has_quiet_NaN  = idk::NumericLimits<Type>::_has_quiet_NaN();
+    static __idk_constexpr Type 
                        has_signaling_NaN = idk::NumericLimits<Type>::_has_signaling_NaN();
-    static constexpr Type has_denorm     = idk::NumericLimits<Type>::_has_denorm();
-    static constexpr Type has_denorm_loss= idk::NumericLimits<Type>::_has_denorm_loss();
-    static constexpr idk::FloatRoundStyle
+    static __idk_constexpr Type has_denorm     = idk::NumericLimits<Type>::_has_denorm();
+    static __idk_constexpr Type has_denorm_loss= idk::NumericLimits<Type>::_has_denorm_loss();
+    static __idk_constexpr idk::FloatRoundStyle
                           round_style    = idk::NumericLimits<Type>::_round_style();
-    static constexpr Type is_iec559      = idk::NumericLimits<Type>::_is_iec559();
-    static constexpr Type is_bounded     = idk::NumericLimits<Type>::_is_bounded();
-    static constexpr Type is_modulo      = idk::NumericLimits<Type>::_is_modulo();
-    static constexpr Type digits         = idk::NumericLimits<Type>::_digits();
-    static constexpr Type digits10       = idk::NumericLimits<Type>::_digits10();
-    static constexpr Type radix          = idk::NumericLimits<Type>::_radix();
-    static constexpr Type min_exponent   = idk::NumericLimits<Type>::_min_exponent();
-    static constexpr Type min_exponent10 = idk::NumericLimits<Type>::_min_exponent10();
-    static constexpr Type max_exponent   = idk::NumericLimits<Type>::_max_exponent();
-    static constexpr Type max_exponent10 = idk::NumericLimits<Type>::_max_exponent10();
-    static constexpr bool traps          = idk::NumericLimits<Type>::_traps();
-    static constexpr Type tinyness_before= idk::NumericLimits<Type>::_tinyness_before();
+    static __idk_constexpr Type is_iec559      = idk::NumericLimits<Type>::_is_iec559();
+    static __idk_constexpr Type is_bounded     = idk::NumericLimits<Type>::_is_bounded();
+    static __idk_constexpr Type is_modulo      = idk::NumericLimits<Type>::_is_modulo();
+    static __idk_constexpr Type digits         = idk::NumericLimits<Type>::_digits();
+    static __idk_constexpr Type digits10       = idk::NumericLimits<Type>::_digits10();
+    static __idk_constexpr Type radix          = idk::NumericLimits<Type>::_radix();
+    static __idk_constexpr Type min_exponent   = idk::NumericLimits<Type>::_min_exponent();
+    static __idk_constexpr Type min_exponent10 = idk::NumericLimits<Type>::_min_exponent10();
+    static __idk_constexpr Type max_exponent   = idk::NumericLimits<Type>::_max_exponent();
+    static __idk_constexpr Type max_exponent10 = idk::NumericLimits<Type>::_max_exponent10();
+    static __idk_constexpr bool traps          = idk::NumericLimits<Type>::_traps();
+    static __idk_constexpr Type tinyness_before= idk::NumericLimits<Type>::_tinyness_before();
 };
 } // namespace idk
 

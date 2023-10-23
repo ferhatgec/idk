@@ -21,7 +21,7 @@
 namespace idk {
 template<typename T, T val>
 struct IntegralConstant {
-    static constexpr T value = val;
+    static __idk_constexpr T value = val;
     using value_type         = T;
     using type               = IntegralConstant;
 };
@@ -117,21 +117,21 @@ template<typename T> struct EnableIf<true, T> {
     using type = T; 
 };
 
-template<typename T> inline constexpr bool IsVoidVal            = IsVoid<T>::value           ;
-template<typename T> inline constexpr bool IsNullPointerVal     = IsNullPointer<T>::value    ;
-template<typename T> inline constexpr bool IsIntegralVal        = IsIntegral<T>::value       ;
-template<typename T> inline constexpr bool IsFloatingPointVal   = IsFloatingPoint<T>::value  ;
-template<typename T> inline constexpr bool IsArrayVal           = IsArray<T>::value          ;
-template<typename T> inline constexpr bool IsPointerVal         = IsPointer<T>::value        ;
-template<typename T> inline constexpr bool IsLvalueReferenceVal = IsLvalueReference<T>::value;
-template<typename T> inline constexpr bool IsRvalueReferenceVal = IsRvalueReference<T>::value;
-template<typename T> inline constexpr bool IsConstVal           = IsConst<T>::value          ;
-template<typename T> inline constexpr bool IsVolatileVal        = IsVolatile<T>::value       ;
-template<typename T> inline constexpr bool IsBoundedArrayVal    = IsBoundedArray<T>::value   ;
-template<typename T, typename U> inline constexpr bool IsSameVal= IsSame<T, U>::value        ;
+template<typename T> inline __idk_constexpr bool IsVoidVal            = IsVoid<T>::value           ;
+template<typename T> inline __idk_constexpr bool IsNullPointerVal     = IsNullPointer<T>::value    ;
+template<typename T> inline __idk_constexpr bool IsIntegralVal        = IsIntegral<T>::value       ;
+template<typename T> inline __idk_constexpr bool IsFloatingPointVal   = IsFloatingPoint<T>::value  ;
+template<typename T> inline __idk_constexpr bool IsArrayVal           = IsArray<T>::value          ;
+template<typename T> inline __idk_constexpr bool IsPointerVal         = IsPointer<T>::value        ;
+template<typename T> inline __idk_constexpr bool IsLvalueReferenceVal = IsLvalueReference<T>::value;
+template<typename T> inline __idk_constexpr bool IsRvalueReferenceVal = IsRvalueReference<T>::value;
+template<typename T> inline __idk_constexpr bool IsConstVal           = IsConst<T>::value          ;
+template<typename T> inline __idk_constexpr bool IsVolatileVal        = IsVolatile<T>::value       ;
+template<typename T> inline __idk_constexpr bool IsBoundedArrayVal    = IsBoundedArray<T>::value   ;
+template<typename T, typename U> inline __idk_constexpr bool IsSameVal= IsSame<T, U>::value        ;
 
-template<typename T> inline constexpr bool ConjunctionType      = Conjunction<T>::type;
-template<typename T> inline constexpr bool DisjunctionType      = Disjunction<T>::type;
+template<typename T> inline __idk_constexpr bool ConjunctionType      = Conjunction<T>::type;
+template<typename T> inline __idk_constexpr bool DisjunctionType      = Disjunction<T>::type;
 
 template<typename T>                using RemoveReferenceType   = typename RemoveReference<T>::type;
 template<bool T, typename U = void> using EnableIfType          = typename EnableIf<T, U>::type    ;

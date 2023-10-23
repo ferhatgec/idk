@@ -17,12 +17,13 @@
 #include "../types/predefined.hpp"
 #include "../utilities/type_traits.hpp"
 #include "../utilities/loop.hpp"
+#include "mersenne.hpp"
 
 namespace idk {
 // maybe using sieve of atkin / sieve of eratosthenes 
 // much better idea for stability; but also bad for memory complexity.
-[[nodiscard]]
-constexpr bool
+__idk_nodiscard
+__idk_constexpr bool
 is_prime(const usize& n) noexcept {
     if(n == 2 || n == 3)
         return true;
@@ -31,7 +32,6 @@ is_prime(const usize& n) noexcept {
         return false;
 
     isize i = 5;
-    bool prime { true };
     
     for(; i * i <= n; i += 6)
         if(n % i == 0 || n % (i + 2) == 0)
@@ -40,14 +40,14 @@ is_prime(const usize& n) noexcept {
     return true;
 }
 
-[[nodiscard]]
-constexpr bool
+__idk_nodiscard
+__idk_constexpr bool
 is_prime(usize&& n) noexcept {
     return is_prime(n);
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_prime(const usize& nth) noexcept {
     isize n = 0,
           i = 3;
@@ -60,23 +60,51 @@ generate_prime(const usize& nth) noexcept {
     return i - 1;
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_prime(usize&& nth) noexcept {
     return generate_prime(nth);
 }
 
+__idk_nodiscard
+__idk_constexpr isize
+generate_mersenne_prime(const usize& nth) noexcept {
+    isize p     = 2,
+          count = 0;
+
+    while(count < (nth + 1)) {
+        if(is_prime(p)) {
+            if(isize mersenne_number = generate_mersenne(p); is_prime(mersenne_number)) {
+                ++count;
+                
+                if(count == (nth + 1))
+                    return mersenne_number;
+            }
+        }
+
+        ++p;
+    }
+
+    return 0;
+}
+
+__idk_nodiscard
+__idk_constexpr usize
+generate_mersenne_prime(usize&& nth) noexcept {
+    return generate_mersenne_prime(nth);
+}
+
 template<isize N>
-class [[nodiscard]] PrimeCheck {
+class __idk_nodiscard PrimeCheck {
 public:
     // commentlined code removed due to template recursion limitations
     // (it can be bypassed by compiler flags but it's probably compiler specific
     // and messing with the compiler is not useful in this case)
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     check() noexcept {
         return is_prime(N);
-        /*if constexpr(N % 2 == 0 || N % 3 == 0)
+        /*if __idk_constexpr(N % 2 == 0 || N % 3 == 0)
             return false;
 
         isize i = 5;
@@ -94,52 +122,62 @@ public:
 };
 
 template<>
-class [[nodiscard]] PrimeCheck<0> {
+class __idk_nodiscard PrimeCheck<0> {
 public:
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     check() noexcept {
         return false;
     }
 };
 
 template<>
-class [[nodiscard]] PrimeCheck<1> {
+class __idk_nodiscard PrimeCheck<1> {
 public:
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     check() noexcept {
         return false;
     }
 };
 
 template<>
-class [[nodiscard]] PrimeCheck<2> {
+class __idk_nodiscard PrimeCheck<2> {
 public:
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     check() noexcept {
         return true;
     }
 };
 
 template<>
-class [[nodiscard]] PrimeCheck<3> {
+class __idk_nodiscard PrimeCheck<3> {
 public:
-    [[nodiscard]]
-    static constexpr bool
+    __idk_nodiscard
+    static __idk_constexpr bool
     check() noexcept {
         return true;
     }
 };
 
 template<usize N>
-class [[nodiscard]] PrimeGenerator {
+class __idk_nodiscard PrimeGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize
+    __idk_nodiscard
+    static __idk_constexpr usize
     generate() noexcept {
         return generate_prime(N);
+    }
+};
+
+template<usize N>
+class __idk_nodiscard MersennePrimeGenerator {
+public:
+    __idk_nodiscard
+    static __idk_constexpr usize
+    generate() noexcept {
+        return generate_mersenne_prime(N);
     }
 };
 } // namespace idk

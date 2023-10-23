@@ -74,19 +74,19 @@ public:
         return *this;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     operator==(const Any& right) const noexcept {
         return (this->_data == right._data) && (this->_type_info == right._type_info);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     operator!=(const Any& right) const noexcept {
         return !operator==(right);
     }
     
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     is_empty() const noexcept {
         return this->_data == nullptr;
@@ -100,7 +100,7 @@ public:
         this->_type_info = nullptr;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     const std::type_info&
     get_type() const noexcept {
         return *this->_type_info;

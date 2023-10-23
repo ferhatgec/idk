@@ -14,31 +14,34 @@
 
 #pragma once
 
-#include "gcd.hpp"
+#include "../types/predefined.hpp"
 
 namespace idk {
-template<usize N, usize R>
-class __idk_nodiscard LeastCommonMultipleGenerator {
-    static __idk_constexpr auto _val = GreatestCommonDivisorGenerator<N, R>::generate();
+template<usize N>
+class MersenneGenerator {
 public:
     __idk_nodiscard
     static __idk_constexpr usize 
     generate() noexcept {
-        return (N * R) / ((_val == 0) ? 1 : _val);
-    }
+        return (1_usize << N) - 1_usize;
+    }  
 };
 
 __idk_nodiscard
 __idk_constexpr usize
-generate_lcm(const usize& n, const usize& r) noexcept {
-    auto _val = generate_gcd(n, r);
+generate_mersenne(const usize& nth) noexcept {
+    usize n { 1 };
 
-    return (n * r) / ((_val == 0) ? 1 : _val);
+    for(isize i = 0; i < nth; ++i) {
+        n *= 2;
+    }
+
+    return n - 1;
 }
 
 __idk_nodiscard
 __idk_constexpr usize
-generate_lcm(usize&& n, usize&& r) noexcept {
-    return generate_lcm(n, r);
+generate_mersenne(usize&& nth) noexcept {
+    return generate_mersenne(nth);
 }
 } // namespace idk

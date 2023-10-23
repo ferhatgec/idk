@@ -38,7 +38,7 @@ public:
     StringView () : _len(0) {
         this->_p = new CharType[1];
 
-        if constexpr(idk::IsSameVal<CharType, wchar_t>) {
+        if __idk_constexpr(idk::IsSameVal<CharType, wchar_t>) {
             this->_p[0] = L'\0';
         } else 
             this->_p[0] = '\0';
@@ -117,14 +117,14 @@ public:
         
     }
 
-    [[nodiscard]]
-    constexpr usize 
+    __idk_nodiscard
+    __idk_constexpr usize 
     length() const noexcept {
         return this->_len;
     }
 
-    [[nodiscard]]
-    constexpr usize
+    __idk_nodiscard
+    __idk_constexpr usize
     size() const noexcept {
         return this->_len;
     }
@@ -180,8 +180,8 @@ public:
         this->trim_spaces_right();
     }
 
-    [[nodiscard]]
-    constexpr bool 
+    __idk_nodiscard
+    __idk_constexpr bool 
     is_empty() const noexcept {
         return this->_len == 0;
     }
@@ -436,12 +436,12 @@ public:
         return Expected<CharType>(this->_p[this->_len - 1]);
     }
 
-    constexpr CharType*
+    __idk_constexpr CharType*
     data() const noexcept {
         return const_cast<CharType*>(this->_p);
     }
 
-    constexpr isize
+    __idk_constexpr isize
     copy_n(CharType* dest, usize pos = 0, usize count = 0) const {
         if(const auto val = this->_len;
             (pos + count) > val || this->is_empty())
@@ -472,7 +472,7 @@ public:
         return _val;
     }
 
-    constexpr bool
+    __idk_constexpr bool
     starts_with(CharType ch) noexcept {
         if(this->is_empty())
             return static_cast<u16>(ch) == 0;
@@ -480,7 +480,7 @@ public:
         return this->front() == ch; 
     }
 
-    constexpr bool
+    __idk_constexpr bool
     starts_with(CharType* val) noexcept {
         if(this->is_empty())
             return this->length_char_p(val) == 0;
@@ -494,7 +494,7 @@ public:
         return true;
     }
 
-    constexpr bool
+    __idk_constexpr bool
     ends_with(CharType ch) noexcept {
         if(this->is_empty())
             return static_cast<u16>(ch) == 0;
@@ -502,7 +502,7 @@ public:
         return this->back() == ch; 
     }
 
-    constexpr bool
+    __idk_constexpr bool
     ends_with(CharType* val) noexcept {
         if(this->is_empty())
             return this->length_char_p(val) == 0;
@@ -516,7 +516,7 @@ public:
         return true;
     }
 
-    constexpr bool
+    __idk_constexpr bool
     contains(CharType ch) noexcept {
         if(this->is_empty())
             return static_cast<u16>(ch) == 0;
@@ -528,7 +528,7 @@ public:
         return false;
     }
 
-    constexpr bool
+    __idk_constexpr bool
     contains(CharType* val) noexcept {
         if(this->is_empty())
             return this->length_char_p(val) == 0;
@@ -536,7 +536,7 @@ public:
         return strstr(this->_p, val) != NULL;
     }
 
-    constexpr void 
+    __idk_constexpr void 
     clear() noexcept {
         if(!this->is_empty())
             *this = StringView<CharType>();
@@ -569,7 +569,7 @@ public:
         }
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(const CharType& ch, usize from = 0) noexcept {
         for(usize n = from; n < this->_len; ++n)
@@ -579,13 +579,13 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(CharType&& ch, usize from = 0) noexcept {
         return this->find(ch, from);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(StringView<CharType>& str, usize from = 0) noexcept {
         if(str._len < 10 && this->_len < 100) { 
@@ -607,7 +607,7 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(StringView<CharType>&& str) noexcept {
         return this->find(str);
@@ -619,7 +619,7 @@ private:
             ;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     static usize 
     length_char_p(CharType* p) noexcept { // same as strlen() with noexcept specifier.
         if(p == nullptr)
@@ -632,7 +632,7 @@ private:
 
         return len;
     }
-
+    
     void
     str_lps(StringView<CharType>& pattern, usize* lps_arr) noexcept {
         usize len { 0 };
@@ -659,7 +659,7 @@ private:
         }
     } 
     
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     str_kmp(StringView<CharType>& pattern, usize index = 0) noexcept {
         usize lps_arr[pattern._len];

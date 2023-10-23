@@ -19,7 +19,7 @@
 
 namespace idk {
 template<typename Type>
-class [[nodiscard]] FrontAndBackSearch : public SearchBase<Type> {
+class __idk_nodiscard FrontAndBackSearch : public SearchBase<Type> {
 public:
     FrontAndBackSearch(const Vec<Type>& arr) {
         this->_arr = arr; 
@@ -31,7 +31,7 @@ public:
     FrontAndBackSearch () = default;
     ~FrontAndBackSearch() = default;
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Type& find_val) noexcept override {
         usize front_index = 0, 
@@ -50,13 +50,13 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Type&& find_val) noexcept override {
         return this->find(find_val);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Vec<isize> 
     find_recursively(Type& find_val) noexcept override {
         Vec<isize> index_arr;
@@ -77,7 +77,7 @@ public:
         return index_arr;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Vec<isize>
     find_recursively(Type&& find_val) noexcept override {
         return this->find_recursively(find_val);

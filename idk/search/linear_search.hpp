@@ -19,7 +19,7 @@
 
 namespace idk {
 template<typename Type>
-class [[nodiscard]] LinearSearch : public SearchBase<Type> {
+class __idk_nodiscard LinearSearch : public SearchBase<Type> {
 public:
     LinearSearch(const Vec<Type>& arr) {
         this->_arr = arr; 
@@ -31,7 +31,7 @@ public:
     LinearSearch () = default;
     ~LinearSearch() = default;
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Type& find_val) noexcept override {
         for(isize n = 0; n < this->_arr.size(); ++n) {
@@ -42,13 +42,13 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Type&& find_val) noexcept override {
         return this->find(find_val);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Vec<isize> 
     find_recursively(Type& find_val) noexcept override {
         Vec<isize> index_arr;
@@ -60,7 +60,7 @@ public:
         return index_arr;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Vec<isize>
     find_recursively(Type&& find_val) noexcept override {
         return this->find_recursively(find_val);

@@ -39,7 +39,7 @@ public:
         return StringViewChar();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     contains(const StringViewChar& str) noexcept {
         for(auto& node: this->matched_datas)
@@ -49,7 +49,7 @@ public:
         return false;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(const StringViewChar& str) noexcept {
         for(usize n = 0; n < this->matched_datas.size(); ++n)
@@ -86,7 +86,7 @@ public:
         this->parse_file(idk::move(file));
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     generate() noexcept {
         StringViewChar generate = "";
@@ -119,7 +119,7 @@ public:
                 (void)node.matched_datas.change_val_at_index(index, MakePair(key, replace));
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     get_value(const StringViewChar& block, const StringViewChar& key) noexcept {
         for(auto& node: this->nodes)

@@ -2,17 +2,21 @@
 #include <iomanip>
 #include <iostream>
 
-constexpr bool arr[32] = {
+__idk_constexpr bool arr[32] = {
     false, false, true, true, false, true, false, true, false, false, false, 
     true, false, true, false, false, false, true, false, true, false,
     false, false, true, false, false, false, false, false, true, false, 
     true
 };
 
-constexpr idk::isize arr_prime_gen[25] = {
+__idk_constexpr idk::isize arr_prime_gen[25] = {
     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 
     37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
     79, 83, 89, 97
+};
+
+__idk_constexpr idk::isize arr_mersenne_prime_gen[8] = {
+    3, 7, 31, 127, 8191, 131071, 524287, 2147483647
 };
 
 #define CHECK(x) if(idk::PrimeCheck<x>::check() != arr[x]) \
@@ -24,6 +28,13 @@ constexpr idk::isize arr_prime_gen[25] = {
                                     std::cerr << "[FAIL] idk::PrimeGenerator<" #x ">::generate() != arr_prime_gen[" #x "]\n"; \
                                 else \
                                     std::cerr << "[OK] idk::PrimeGenerator<" #x ">::generate() != arr_prime_gen[" #x "]\n";
+
+#define CHECK_MERSENNE_PRIME_GENERATOR(x) \
+                                if(idk::MersennePrimeGenerator<x>::generate() != arr_mersenne_prime_gen[x]) \
+                                    std::cerr << "[FAIL] idk::MersennePrimeGenerator<" #x ">::generate() != arr_mersenne_prime_gen[" #x "]\n"; \
+                                else \
+                                    std::cerr << "[OK] idk::MersennePrimeGenerator<" #x ">::generate() != arr_mersenne_prime_gen[" #x "]\n";
+
 
 int main() {
     CHECK(0)
@@ -90,6 +101,15 @@ int main() {
     else
         std::cout << "[OK] idk::is_prime(-5)\n";
 
+    CHECK_MERSENNE_PRIME_GENERATOR(0)
+    CHECK_MERSENNE_PRIME_GENERATOR(1)
+    CHECK_MERSENNE_PRIME_GENERATOR(2)
+    CHECK_MERSENNE_PRIME_GENERATOR(3)
+    CHECK_MERSENNE_PRIME_GENERATOR(4)
+    CHECK_MERSENNE_PRIME_GENERATOR(5)
+    CHECK_MERSENNE_PRIME_GENERATOR(6)
+    CHECK_MERSENNE_PRIME_GENERATOR(7)
+ 
     // idk::generate_prime starts from index 0.
     // so nth prime probably is idk::generate_prime(n - 1).
     if(idk::generate_prime(30) != 127)
@@ -109,4 +129,9 @@ int main() {
 
     //for(idk::isize n = 0; n < 100; ++n)
     //    std::cout << idk::generate_prime(n) << " " << n << " " << std::boolalpha << idk::is_prime(n) << '\n';
+
+    if(idk::generate_mersenne_prime(0) != 3)
+        std::cerr << "[FAIL] idk::generate_mersenne_prime(0) != 2\n";
+    else
+        std::cout << "[OK] idk::generate_mersenne_prime(0) != 2\n";
 }

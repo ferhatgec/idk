@@ -18,17 +18,17 @@
 
 namespace idk {
 template<usize N, usize R>
-class [[nodiscard]] GreatestCommonDivisorGenerator {
+class __idk_nodiscard GreatestCommonDivisorGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
         return (R == 0) ? N : GreatestCommonDivisorGenerator<R, N - (R * (N / ((R == 0) ? 1 : R)))>::generate();
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_gcd(const usize& n, const usize& r) noexcept {
     if(r == 0)
         return n;
@@ -36,8 +36,8 @@ generate_gcd(const usize& n, const usize& r) noexcept {
     return generate_gcd(r, n - (r * (n / ((r == 0) ? 1 : r))));
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_gcd(usize&& n, usize&& r) noexcept {
     return generate_gcd(n, r);
 }

@@ -20,30 +20,30 @@
 namespace idk {
 template<typename Type, 
          idk::EnableIfType<idk::IsSameVal<idk::RemoveReferenceType<Type>, Type>, bool> = false>
-[[nodiscard]]
-constexpr Type&&
+__idk_nodiscard
+__idk_constexpr Type&&
 forward(idk::RemoveReferenceType<Type>& val) noexcept {
     return static_cast<Type&&>(val);
 }
 
 template<typename Type, 
          idk::EnableIfType<idk::IsSameVal<idk::RemoveReferenceType<Type>, Type>, bool> = true>
-[[nodiscard]]
-constexpr Type&&
+__idk_nodiscard
+__idk_constexpr Type&&
 forward(idk::RemoveReferenceType<Type>&& val) noexcept {
     return static_cast<Type&&>(val);
 }
 
 template<typename Type>
-[[nodiscard]]
-constexpr idk::RemoveReferenceType<Type>&&
+__idk_nodiscard
+__idk_constexpr idk::RemoveReferenceType<Type>&&
 move(Type&& val) noexcept {
     return static_cast<idk::RemoveReferenceType<Type>&&>(val);
 }
 
 // TODO: overload idk::swap for default containers such as idk::Vec, idk::Arr etc.
 template<typename Type>
-constexpr void
+__idk_constexpr void
 swap(Type& left, Type& right) noexcept {
     auto _left = idk::move(left);
     

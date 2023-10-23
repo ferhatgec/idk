@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../derangement.hpp"
 
-constexpr idk::usize arr[10] = {
+__idk_constexpr idk::usize arr[10] = {
     1, 0, 1, 2, 9, 44, 265, 1854, 14833, 133496
 };
 
@@ -11,7 +11,7 @@ constexpr idk::usize arr[10] = {
                     std::cout << "[OK] idk::DerangementGenerator<" #n ">::generate != arr[" #n "]\n";
 
 int main() {
-    constexpr auto val = idk::DerangementGenerator<5>::generate();
+    __idk_constexpr auto val = idk::DerangementGenerator<5>::generate();
     
     CHECK(0)
     CHECK(1)

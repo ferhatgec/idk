@@ -19,12 +19,12 @@
 
 namespace idk {
 template<usize N>
-class [[nodiscard]] FibonacciGenerator {
+class __idk_nodiscard FibonacciGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
-        if constexpr(N < 2)
+        if __idk_constexpr(N < 2)
             return N;
         
         f80 val = 1;
@@ -36,14 +36,14 @@ public:
         val /= sqrt5;
 
         return static_cast<usize>(val + 0.5); // outside of usize range will produce ub, so using 
-                                              // c++23 constexpr ::round probably better idea.
+                                              // c++23 __idk_constexpr ::round probably better idea.
                                               // it's newer standard, so major stl implementations probably have
                                               // not implemented it yet(?).
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_fibonacci(const usize& nth) noexcept {
     if(nth == 0 || nth == 1)
         return nth;
@@ -51,8 +51,8 @@ generate_fibonacci(const usize& nth) noexcept {
     return generate_fibonacci(nth - 2) + generate_fibonacci(nth - 1);
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_fibonacci(usize&& nth) noexcept {
     return generate_fibonacci(nth);
 }

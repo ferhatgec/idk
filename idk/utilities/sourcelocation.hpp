@@ -40,7 +40,7 @@ public:
             _function_name(location.function_name()) {};
         
 
-    [[nodiscard]]
+    __idk_nodiscard
     static idk::SourceLocation 
     current(
         const idk::u64 line = __builtin_LINE(),
@@ -55,26 +55,26 @@ public:
         return idk::SourceLocation(line, column, file_name, function_name);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     idk::StringViewChar 
     file_name() const noexcept {
         return this->_file_name;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     idk::StringViewChar 
     function_name() const noexcept {
         return this->_function_name;
     }
 
-    [[nodiscard]]
-    constexpr idk::u64 
+    __idk_nodiscard
+    __idk_constexpr idk::u64 
     line() const noexcept {
         return this->_line;
     }
 
-    [[nodiscard]]
-    constexpr idk::u64 
+    __idk_nodiscard
+    __idk_constexpr idk::u64 
     column() const noexcept {
         return this->_column;
     }

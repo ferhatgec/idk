@@ -42,25 +42,25 @@ public:
 
     ~Argument() = default;
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     has_key() noexcept {
         return !this->arg.first().is_empty();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     has_value() noexcept {
         return !this->arg.second().is_empty();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar&
     key() noexcept {
         return this->arg.first();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar&
     value() noexcept {
         return this->arg.second();
@@ -122,7 +122,7 @@ public:
 
     ~Arguments() = default;
 
-    [[nodiscard]]
+    __idk_nodiscard
     static Argument
     parse(StringViewChar&& arg) noexcept {
         if(arg.is_empty())
@@ -138,7 +138,7 @@ public:
 
 
     // finds key
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     find(StringViewChar&& arg) noexcept {
         for(auto& val: this->_args)
@@ -149,7 +149,7 @@ public:
     }
 
     // finds key
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     find(Vec<StringViewChar>&& args) noexcept {
         for(auto& val: this->_args) {
@@ -171,13 +171,13 @@ public:
         return false;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Argument*
     begin() noexcept {
         return this->_args.begin();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Argument*
     end() noexcept {
         return this->_args.end();

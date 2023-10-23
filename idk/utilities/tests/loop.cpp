@@ -2,9 +2,9 @@
 #include "../loop.hpp"
 
 class Test {
-    static constexpr idk::usize n = 3;
+    static __idk_constexpr idk::usize n = 3;
 public:
-    static constexpr void test() {
+    static __idk_constexpr void test() {
         idk::Loop<n>([&](auto) {
             std::cout << n << '\n';
         });

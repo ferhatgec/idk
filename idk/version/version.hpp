@@ -71,55 +71,55 @@ public:
         this->_prerelease_patch = prerelease_patch;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     u16
     major() const noexcept {
         return this->_major;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     u16
     minor() const noexcept {
         return this->_minor;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     u16
     patch() const noexcept {
         return this->_patch;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Prerelease
     tag() const noexcept {
         return this->_tag;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     u16
     prerelease_patch() const noexcept {
         return this->_prerelease_patch;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     major_as_str() noexcept {
         return this->usize_to_str(this->_major);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     minor_as_str() noexcept {
         return this->usize_to_str(this->_minor);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     patch_as_str() noexcept {
         return this->usize_to_str(this->_patch);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     tag_as_str() noexcept {
         switch(this->_tag) {
@@ -130,13 +130,13 @@ public:
         }
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     prerelease_patch_as_str() noexcept {
         return this->usize_to_str(this->_prerelease_patch);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     as_str() const noexcept {
         StringViewChar str;
@@ -312,7 +312,7 @@ private:
     }
 
     
-    [[nodiscard]]
+    __idk_nodiscard
     StringViewChar
     usize_to_str(usize val) noexcept {
         _str.clear();

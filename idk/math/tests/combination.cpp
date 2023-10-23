@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../combination.hpp"
 
-constexpr idk::usize arr[6] = {
+__idk_constexpr idk::usize arr[6] = {
     5, 10, 1, 1, 10, 5
 };
 
@@ -11,7 +11,7 @@ constexpr idk::usize arr[6] = {
                     std::cout << "[OK] idk::CombinationGenerator<" #n "," #r ">::generate != arr[" #y "]\n";
 
 int main() {
-    constexpr auto val = idk::CombinationGenerator<5, 2>::generate();
+    __idk_constexpr auto val = idk::CombinationGenerator<5, 2>::generate();
     
     std::cout << val << '\n';
 

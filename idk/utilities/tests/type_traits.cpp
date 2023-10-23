@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    constexpr auto i = 12l;
+    __idk_constexpr auto i = 12l;
     idk::u8 j = 12;
     if(idk::IsIntegralVal<bool>)
         std::cout << "[OK] idk::IsIntegralVal<bool>\n";
@@ -13,7 +13,7 @@ int main() {
                                    idk::IsConstVal<decltype(i)> << ' ' << 
                                    idk::IsFloatingPointVal<decltype(j)> << '\n';
 
-    if constexpr(idk::is_cpp23_supported()) {
+    if __idk_constexpr(idk::is_cpp23_supported()) {
         std::cout << "cpp23 supported compiler\n";
     }
 }

@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    constexpr double _s = 3.1415926535;
+    __idk_constexpr double _s = 3.1415926535;
     idk::Pair<idk::i16, double> val(42, _s);
 
     val.first() = 12;

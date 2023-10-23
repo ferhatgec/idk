@@ -70,7 +70,7 @@ public:
         this->_path.clear();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     exists() const noexcept {
 #ifdef _windows
@@ -80,31 +80,31 @@ public:
 #endif
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     is_empty() const noexcept {
         return this->_path.is_empty();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     is_file() const noexcept {
         return this->as_type() == Type::File;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     is_symlink() const noexcept {
         return this->as_type() == Type::Symlink;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     is_directory() const noexcept {
         return this->as_type() == Type::Directory;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Type
     as_type() const noexcept {
         if(!this->exists())
@@ -140,7 +140,7 @@ public:
 #endif
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path 
     extension() noexcept {
         _StringView str;
@@ -157,7 +157,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path 
     file_name() noexcept {
         _StringView str;
@@ -182,7 +182,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize 
     file_size() noexcept {
         if(this->_path.is_empty())
@@ -199,7 +199,7 @@ public:
 #endif
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path 
     to_posix_path() noexcept {
         _StringView str = this->_path;
@@ -215,7 +215,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path 
     to_win_path() noexcept {
         _StringView str = this->_path;
@@ -231,7 +231,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path 
     to_inverse_path() noexcept {
 #ifdef _windows
@@ -241,7 +241,7 @@ public:
 #endif
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     remove_file_name() noexcept {
         _StringView str = this->_path;
@@ -263,7 +263,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     remove_extension() noexcept {
         _StringView str;
@@ -280,7 +280,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     replace_file_name(const Path& str_path) noexcept {
         if(this->_path.is_empty())
@@ -289,13 +289,13 @@ public:
         return Path(this->remove_file_name().as_str() + str_path.as_str());
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     replace_file_name(Path&& str_path) noexcept {
         return this->replace_file_name(str_path);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     replace_extension(const Path& str_ext) noexcept {
         if(this->_path.is_empty())
@@ -304,14 +304,14 @@ public:
         return Path(this->remove_extension().as_str() + str_ext.as_str());
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     replace_extension(Path&& str_ext) noexcept {
         return this->replace_extension(str_ext);
     }
 
     // TODO: fully windows support.
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     append(const Path& str_path) noexcept {
         _StringView str = this->_path;
@@ -345,7 +345,7 @@ public:
         return Path(str);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Path
     append(Path&& str_path) noexcept {
         return this->append(str_path);
@@ -397,7 +397,7 @@ public:
         return !operator==(left, right);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     _StringView
     as_str() const noexcept {
         return this->_path;

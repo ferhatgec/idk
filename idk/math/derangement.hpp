@@ -19,11 +19,11 @@
 
 namespace idk {
 template<usize N>
-class [[nodiscard]] DerangementGenerator {
-    static constexpr auto _val = (FactorialGenerator<N>::generate() / idk::e) + 0.5;
+class __idk_nodiscard DerangementGenerator {
+    static __idk_constexpr auto _val = (FactorialGenerator<N>::generate() / idk::e) + 0.5;
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
         // floor(_val)
         return (_val >= 0) ? static_cast<usize>(_val) : (static_cast<usize>(_val) - 1);
@@ -31,17 +31,17 @@ public:
 };
 
 template<>
-class [[nodiscard]] DerangementGenerator<0> {
+class __idk_nodiscard DerangementGenerator<0> {
 public:
-    [[nodiscard]]
-    static constexpr usize
+    __idk_nodiscard
+    static __idk_constexpr usize
     generate() noexcept {
         return 1;
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_derangement(const usize& n) noexcept {
     if(n == 0)
         return 1;
@@ -51,8 +51,8 @@ generate_derangement(const usize& n) noexcept {
     return (_val >= 0) ? static_cast<usize>(_val) : (static_cast<usize>(_val) - 1);
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_derangement(usize&& n) noexcept {
     return generate_derangement(n);
 }

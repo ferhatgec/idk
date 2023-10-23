@@ -68,7 +68,7 @@ public:
         BgDefault
     };
 
-    static constexpr char const* _vals[40] {
+    static __idk_constexpr char const* _vals[40] {
         /* Standard */ "0", /* Bold */ "1", /* Dim */ "2", /* Italic */ "3", /* Underline */ "4", /* Blink */ "5",
         /* FgBlack */ "40", /* FgRed */ "41", /* FgGreen */ "42", /* FgYellow */ "43", /* FgBlue */ "44", /* FgMagenta */ "45", /* FgCyan */ "46", /* FgWhite */ "47",
         /* FgBrightBlack */ "100", /* FgBrightRed */ "101", /* FgBrightGreen */ "102", /* FgBrightYellow */ "103", /* FgBrightBlue */ "104", /* FgBrightMagenta */ "105", /* FgBrightCyan */ "106", /* FgBrightWhite */ "107", /* FgDefault */ "49",

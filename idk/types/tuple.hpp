@@ -53,31 +53,31 @@ struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof.
           Element(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(head_arg))) {}
 
     template<usize Index, usize Val = sizeof...(Tail) - Index>
-    constexpr decltype(auto) 
+    __idk_constexpr decltype(auto) 
     Get() {
-        if constexpr(Val == sizeof...(Tail))
+        if __idk_constexpr(Val == sizeof...(Tail))
             return Element::_value;
         else
             return BaseType::template Get<Val>();
     }
 
     template<usize Index, usize Val = sizeof...(Tail) - Index>
-    constexpr decltype(auto) 
+    __idk_constexpr decltype(auto) 
     Get() const {
-        if constexpr(Val == sizeof...(Tail))
+        if __idk_constexpr(Val == sizeof...(Tail))
             return Element::_value;
         else
             return BaseType::template Get<Val>();
     }
 
     template<usize Val = sizeof...(Tail) + 1>
-    constexpr usize 
+    __idk_constexpr usize 
     length() const noexcept {
         return Val;
     }
 
     template<usize Val = sizeof...(Tail)>
-    constexpr usize 
+    __idk_constexpr usize 
     max_index() const noexcept {
         return Val;
     }

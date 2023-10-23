@@ -48,7 +48,7 @@ private:
     }
 
     template<typename Compare>
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     _partition(isize low, isize high, Compare comp) noexcept {
         Type pivot = this->_vec.at_without_check(high);

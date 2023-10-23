@@ -20,7 +20,7 @@
 namespace idk {
 template<typename Type>
 class MultiplyWithCarry : public idk::RandomBase<Type> {
-    static constexpr u64 _c = 6364136223846793005ULL;
+    static __idk_constexpr u64 _c = 6364136223846793005ULL;
 public:
     MultiplyWithCarry(Type&& start, Type&& end) noexcept {
         this->_btw_start_pos = idk::move(start);

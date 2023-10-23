@@ -38,31 +38,31 @@ struct ReversedTuple<Head, Tail...> : public ReversedTuple<Tail...>, public Tupl
           Element(idk::RemoveReferenceType<HeadArg&>(const_cast<HeadArg&>(head_arg))) {}
 
     template<usize Index>
-    constexpr decltype(auto) 
+    __idk_constexpr decltype(auto) 
     Get() {
-        if constexpr(Index == sizeof...(Tail))
+        if __idk_constexpr(Index == sizeof...(Tail))
             return Element::_value;
         else
             return BaseType::template Get<Index>();
     }
 
     template<usize Index>
-    constexpr decltype(auto) 
+    __idk_constexpr decltype(auto) 
     Get() const {
-        if constexpr(Index == sizeof...(Tail))
+        if __idk_constexpr(Index == sizeof...(Tail))
             return Element::_value;
         else
             return BaseType::template Get<Index>();
     }
 
     template<usize Val = sizeof...(Tail) + 1>
-    constexpr usize 
+    __idk_constexpr usize 
     length() const noexcept {
         return Val;
     }
 
     template<usize Val = sizeof...(Tail)>
-    constexpr usize 
+    __idk_constexpr usize 
     max_index() const noexcept {
         return Val;
     }

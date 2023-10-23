@@ -74,7 +74,7 @@ public:
         }
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     is_empty() const noexcept {
         return this->_head == nullptr;
@@ -152,19 +152,19 @@ public:
         return Iterator<Type>();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     usize
     size() const noexcept {
         return this->_size;
     }
     
-    [[nodiscard]]
+    __idk_nodiscard
     usize
     max_size() const noexcept {
         return this->size();
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     Type& 
     front() const noexcept {
         if(this->is_empty())

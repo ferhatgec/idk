@@ -23,7 +23,7 @@ template<idk::usize N,
 class Loop {
 public: 
     template<typename Fn, typename... Args>
-    constexpr explicit Loop(Fn&& fn, Args&&... args) noexcept {
+    __idk_constexpr explicit Loop(Fn&& fn, Args&&... args) noexcept {
         fn(N);
         Loop<N - 1>(fn, args...);
     }
@@ -33,6 +33,6 @@ template<>
 class Loop<0> {
 public:
     template<typename Fn, typename... Args>
-    constexpr explicit Loop(Fn&&, Args&&...) noexcept {}
+    __idk_constexpr explicit Loop(Fn&&, Args&&...) noexcept {}
 };
 } // namespace idk

@@ -21,4 +21,6 @@
 #include "fibonacci.hpp"
 #include "gcd.hpp"
 #include "lcm.hpp"
+#include "mersenne.hpp"
 #include "permutation.hpp"
+#include "prime.hpp"

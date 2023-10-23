@@ -37,13 +37,13 @@ public:
         return *this;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     operator==(const IteratorBase& other) const noexcept {
         return this->_curr == other._curr;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     operator!=(const IteratorBase& other) const noexcept {
         return !(*this == other);

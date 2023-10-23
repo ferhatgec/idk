@@ -68,7 +68,7 @@ struct NotEqual {
 };
 
 template<typename Type>
-class [[nodiscard]] SortBase {
+class __idk_nodiscard SortBase {
 public:
     Vec<Type> _vec;
     

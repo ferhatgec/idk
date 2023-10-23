@@ -18,27 +18,27 @@
 
 namespace idk {
 template<usize N>
-class [[nodiscard]] FactorialGenerator {
+class __idk_nodiscard FactorialGenerator {
 public:
-    [[nodiscard]]
-    static constexpr usize 
+    __idk_nodiscard
+    static __idk_constexpr usize 
     generate() noexcept {
         return N * FactorialGenerator<N - 1>::generate();
     }
 };
 
 template<>
-class [[nodiscard]] FactorialGenerator<0> {
+class __idk_nodiscard FactorialGenerator<0> {
 public:
-    [[nodiscard]]
-    static constexpr usize
+    __idk_nodiscard
+    static __idk_constexpr usize
     generate() noexcept {
         return 1;
     }
 };
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_factorial(const usize& nth) noexcept {
     if(nth == 0)
         return 1;
@@ -46,8 +46,8 @@ generate_factorial(const usize& nth) noexcept {
     return nth * generate_factorial(nth - 1);
 }
 
-[[nodiscard]]
-constexpr usize
+__idk_nodiscard
+__idk_constexpr usize
 generate_factorial(usize&& nth) noexcept {
     return generate_factorial(nth);
 }

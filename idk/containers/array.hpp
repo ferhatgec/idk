@@ -68,7 +68,7 @@ public:
         return Expected<typename std::remove_reference<Val&>::type>(this->back());
     }
 
-    constexpr Val*
+    __idk_constexpr Val*
     begin() noexcept {
         return _arr;
     }
@@ -87,20 +87,20 @@ public:
             _val = val;
     }
     
-    [[nodiscard]]
-    constexpr bool 
+    __idk_nodiscard
+    __idk_constexpr bool 
     is_empty() const noexcept {
         return N == 0;
     }
 
-    [[nodiscard]]
-    constexpr usize 
+    __idk_nodiscard
+    __idk_constexpr usize 
     size() const noexcept {
         return N;
     }
 
-    [[nodiscard]]
-    constexpr usize 
+    __idk_nodiscard
+    __idk_constexpr usize 
     max_size() const noexcept {
         return this->size();
     }
@@ -147,7 +147,7 @@ public:
             usize _N, usize _N2>
     friend bool 
     operator==(const Arr<_Val, _N>& left, const Arr<_Val2, _N2>& right) noexcept {
-        if constexpr(!std::is_same_v<_Val, _Val2> || (_N != _N2)) 
+        if __idk_constexpr(!std::is_same_v<_Val, _Val2> || (_N != _N2)) 
             return false;
 
         for(usize n = 0; n < left.size(); ++n)
@@ -164,12 +164,12 @@ public:
         return !operator==(left, right);
     }
 
-    constexpr Val*
+    __idk_constexpr Val*
     data() const noexcept {
         return const_cast<Val*>(this->_arr);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     change_val_at_index(const usize& index, const Val& replace) noexcept {
         if(this->is_empty() || index >= this->size())
@@ -186,7 +186,7 @@ public:
         return true;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool 
     change_val_at_index(usize&& index, Val&& replace) noexcept {
         if(this->is_empty() || index >= this->size())
@@ -203,13 +203,13 @@ public:
         return true;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     contains(Val&& val) noexcept {
         return this->contains(val);
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     bool
     contains(const Val& val) noexcept {
         for(auto& _val: *this)
@@ -219,7 +219,7 @@ public:
         return false;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(const Val& val) noexcept {
         for(usize n = 0; n < N; ++n)
@@ -229,7 +229,7 @@ public:
         return -1;
     }
 
-    [[nodiscard]]
+    __idk_nodiscard
     isize
     find(Val&& val) noexcept {
         return this->find(val);

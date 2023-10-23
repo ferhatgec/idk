@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../fibonacci.hpp"
 
-constexpr idk::usize arr[14] = {
+__idk_constexpr idk::usize arr[14] = {
     0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233
 };
 
@@ -11,7 +11,7 @@ constexpr idk::usize arr[14] = {
                     std::cout << "[OK] idk::FibonacciGenerator<" #x ">::generate != arr[" #x "]\n";
 
 int main() {
-    constexpr auto val = idk::FibonacciGenerator<20>::generate();
+    __idk_constexpr auto val = idk::FibonacciGenerator<20>::generate();
     
     std::cout << val << '\n';
 
