@@ -24,6 +24,16 @@ struct IntegralConstant {
     static __idk_constexpr T value = val;
     using value_type         = T;
     using type               = IntegralConstant;
+
+    __idk_nodiscard
+    constexpr operator value_type() const noexcept {
+        return value;
+    }
+    
+    __idk_nodiscard
+    constexpr value_type operator()() const noexcept { 
+        return value; 
+    } 
 };
 
 template<bool B, typename T, typename F>
