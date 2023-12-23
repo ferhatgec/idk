@@ -20,4 +20,10 @@ int main() {
         std::cerr << "[FAIL] floorl(idk::MedianAbsoluteDeviation::generate(idk::Vec<idk::f80> { 0, 2, 1 })) == 0\n";
     else
         std::cout << "[OK] floorl(idk::MedianAbsoluteDeviation::generate(idk::Vec<idk::f80> { 0, 2, 1 })) == 0\n";
+
+    if(floorl(idk::mean_squared_error(idk::Vec<idk::f80> { 3, 5, 2.5, 7 }, idk::Vec<idk::f80> { 2.5, 5, 4, 8 })) 
+        == 0.199)
+        std::cerr << "[FAIL] floorl(idk::mean_squared_error(idk::Vec<idk::f80> { 3, 5, 2.5, 7 }, idk::Vec<idk::f80> { 2.5, 5, 4, 8 })) == 0.199\n";
+    else
+        std::cout << "[OK] floorl(idk::mean_squared_error(idk::Vec<idk::f80> { 3, 5, 2.5, 7 }, idk::Vec<idk::f80> { 2.5, 5, 4, 8 })) == 0.199\n";
 }

@@ -108,6 +108,36 @@ public:
     }
 };
 
+class __idk_nodiscard RootMeanSquaredLogError {
+public:
+    __idk_nodiscard
+    static const f80
+    generate(idk::Vec<f80>& y, idk::Vec<f80>& y_predict) noexcept {
+        if(y.size() != y_predict.size())
+            return 0;
+
+        f80 sum { 0_f80 };
+
+        for(isize i = 0; i < y.size(); ++i) {
+            const f80 _temp_val = log10l(y.at_without_check_reference(i) + 1) - log10l(y_predict.at_without_check_reference(i) + 1);
+            sum += _temp_val * _temp_val;
+        }
+
+        sum /= static_cast<f80>(y.size());
+
+        if(sum < 0)
+            return 0;
+        
+        return sqrtl(sum);
+    }
+
+    __idk_nodiscard
+    static const f80
+    generate(idk::Vec<f80>&& y, idk::Vec<f80>&& y_predict) noexcept {
+        return RootMeanSquaredLogError::generate(y, y_predict);
+    }
+};
+
 __idk_nodiscard
 const f80
 mean_absolute_error(idk::Vec<f80>& x, idk::Vec<f80>& y) noexcept {
@@ -142,5 +172,17 @@ __idk_nodiscard
 const f80
 median_absolute_deviation(idk::Vec<f80>&& x) noexcept {
     return MedianAbsoluteDeviation::generate(idk::move(x));
+}
+
+__idk_nodiscard
+const f80
+root_mean_squared_log_error(idk::Vec<f80>& y, idk::Vec<f80>& y_predict) noexcept {
+    return RootMeanSquaredLogError::generate(y, y_predict);
+}
+
+__idk_nodiscard
+const f80
+root_mean_squared_log_error(idk::Vec<f80>&& y, idk::Vec<f80>&& y_predict) noexcept {
+    return RootMeanSquaredLogError::generate(idk::move(y), idk::move(y_predict));
 }
 } // namespace idk
