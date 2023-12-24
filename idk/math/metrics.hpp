@@ -24,7 +24,7 @@ public:
     __idk_nodiscard
     static const f80
     generate(idk::Vec<f80>& x, idk::Vec<f80>& y) noexcept {
-        if(x.size() != y.size())
+        if((x.size() != y.size()) || (x.is_empty()))
             return 0;
 
         f80 sum { 0_f80 };
@@ -48,7 +48,7 @@ public:
     __idk_nodiscard
     static const f80
     generate(idk::Vec<f80>& y, idk::Vec<f80>& y_predict) noexcept {
-        if(y.size() != y_predict.size())
+        if((y.size() != y_predict.size()) || (y.is_empty())) 
             return 0;
 
         f80 sum { 0_f80 };
@@ -113,13 +113,13 @@ public:
     __idk_nodiscard
     static const f80
     generate(idk::Vec<f80>& y, idk::Vec<f80>& y_predict) noexcept {
-        if(y.size() != y_predict.size())
+        if((y.size() != y_predict.size()) || (y.is_empty()))
             return 0;
 
         f80 sum { 0_f80 };
 
         for(isize i = 0; i < y.size(); ++i) {
-            const f80 _temp_val = log10l(y.at_without_check_reference(i) + 1) - log10l(y_predict.at_without_check_reference(i) + 1);
+            const f80 _temp_val = logl(y.at_without_check_reference(i) + 1) - logl(y_predict.at_without_check_reference(i) + 1);
             sum += _temp_val * _temp_val;
         }
 
@@ -135,6 +135,29 @@ public:
     static const f80
     generate(idk::Vec<f80>&& y, idk::Vec<f80>&& y_predict) noexcept {
         return RootMeanSquaredLogError::generate(y, y_predict);
+    }
+};
+
+class __idk_nodiscard MeanAbsolutePercentageError {
+public:
+    __idk_nodiscard
+    static const f80
+    generate(idk::Vec<f80>& actual, idk::Vec<f80>& forecast) noexcept {
+        if((actual.size() != forecast.size()) || (actual.is_empty()))
+            return 0;
+
+        f80 sum { 0_f80 };
+
+        for(isize i = 0; i < actual.size(); ++i)
+            sum += fabsl(1 - (forecast.at_without_check_reference(i) / actual.at_without_check_reference(i)));
+
+        return sum / static_cast<f80>(actual.size());
+    }
+
+    __idk_nodiscard
+    static const f80
+    generate(idk::Vec<f80>&& actual, idk::Vec<f80>&& forecast) noexcept {
+        return MeanAbsolutePercentageError::generate(actual, forecast);
     }
 };
 
@@ -185,4 +208,17 @@ const f80
 root_mean_squared_log_error(idk::Vec<f80>&& y, idk::Vec<f80>&& y_predict) noexcept {
     return RootMeanSquaredLogError::generate(idk::move(y), idk::move(y_predict));
 }
+
+__idk_nodiscard
+const f80
+mean_absolute_percentage_error(idk::Vec<f80>& actual, idk::Vec<f80>& forecast) noexcept {
+    return MeanAbsolutePercentageError::generate(actual, forecast);
+}
+
+__idk_nodiscard
+const f80
+mean_absolute_percentage_error(idk::Vec<f80>&& actual, idk::Vec<f80>&& forecast) noexcept {
+    return MeanAbsolutePercentageError::generate(idk::move(actual), idk::move(forecast));
+}
+
 } // namespace idk
