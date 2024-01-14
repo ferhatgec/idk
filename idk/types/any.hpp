@@ -46,7 +46,8 @@ public:
     }
     
     template<typename Type>
-    Any& operator=(Type&& other) noexcept {
+    Any&
+    operator=(Type&& other) noexcept {
         if(this == &other)
             return *this;
         

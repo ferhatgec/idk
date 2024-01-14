@@ -281,13 +281,29 @@ public:
     }
 
     void 
-    push_back(Type const& val) noexcept {
+    push_back(const Type& val) noexcept {
         this->reserve_if_needed(this->_size + _capacity_constant + 1);
         this->_p[this->_size++] = val;
     }
 
     void 
-    push_front(Type const& val) noexcept {
+    push_back(Vec<Type>&& val) noexcept {
+        this->reserve_if_needed(this->_size + val._size + 1);
+
+        for(Type& elem: idk::move(val))
+            this->_p[this->_size++] = idk::move(elem);
+    }
+
+    void 
+    push_back(const Vec<Type>& val) noexcept {
+        this->reserve_if_needed(this->_size + _capacity_constant + val._size + 1);
+
+        for(Type& elem: const_cast<Vec<Type>&>(val))
+            this->_p[this->_size++] = elem;
+    }
+
+    void 
+    push_front(const Type& val) noexcept {
         this->reserve_if_needed(this->_size + _capacity_constant);
         ++this->_size;
         this->_p[0] = val;        
@@ -343,6 +359,11 @@ public:
         this->_capacity = val;
         this->_size    = this->_capacity;
         this->_p       = temp;
+    }
+
+    void 
+    reserve_with_given_value(usize&& val, Type&& value) noexcept {
+        reserve_with_given_value(idk::move(val), value);
     }
 
     __idk_nodiscard
