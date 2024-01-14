@@ -48,9 +48,11 @@ int main() {
     idk::Matrix<long double> orthogonal_matrix = {{0, 1},
                                                   {1, 0}};
 
+    test_condition(!idk::Matrix<long double>({{1, 0}, {0, 1}}).is_identity())
+    test_condition(!idk::Matrix<long double>({{-5, -8, 0}, {3, 5, 0}, {1, 2, -1}}).is_involutory())
+    test_condition(!idk::Matrix<long double>({{2, -2, -4}, {-1, 3, 4}, {1, -2, -3}}).is_idempotent())
     test_condition((idk::Matrix<long double>({{1, 2}}) * idk::Matrix<long double>({{3}, {4}})) != idk::Matrix<long double>({{11}}))
     test_condition((orthogonal_matrix * idk::Matrix<long double>({{1, 0}, {0, 1}})) != orthogonal_matrix)
-
     test_condition(!orthogonal_matrix.is_orthogonal())
     test_condition(!upper_and_lower_triangular.is_symmetric())
     test_condition(upper_and_lower_triangular.is_scalar())

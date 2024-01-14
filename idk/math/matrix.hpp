@@ -73,7 +73,7 @@ public:
 };
 
     Vec<ElementWrapper> _matrix;
-    usize _row, _column; // _column, _row
+    usize _row, _column;
     ElementWrapper _nullp;
 public:
     Matrix(usize row, usize column, _Type value = static_cast<_Type>(0)) noexcept {
@@ -118,6 +118,18 @@ public:
             sum += this->at(i, i);
         
         return sum;
+    }
+
+    __idk_nodiscard
+    Matrix<_Type>
+    copy() noexcept {
+        Matrix<_Type> temp_matrix(this->_row, this->_column);
+
+        for(isize i = 0; i < this->_row; ++i)
+            for(isize j = 0; j < this->_column; ++j)
+                temp_matrix.at(i, j) = this->at(i, j);
+
+        return temp_matrix;
     }
 
     __idk_nodiscard
@@ -266,6 +278,21 @@ public:
 
     __idk_nodiscard
     const bool
+    is_identity() noexcept {
+        if(!this->is_square())
+            return false;
+
+        for(isize i = 0; i < this->_row; ++i)
+            for(isize j = 0; j < this->_column; ++j)
+                if(((i == j) && (this->at(i, j) != 1)) 
+                    || ((i != j) && (this->at(i, j) != 0)))
+                    return false;
+
+        return true;
+    }
+
+    __idk_nodiscard
+    const bool
     is_lower_triangular() noexcept {
         if(!this->is_square())
             return false;
@@ -332,6 +359,33 @@ public:
             return false;
 
         return this->transpose()._matrix == this->_matrix;
+    }
+
+    __idk_nodiscard
+    const bool
+    is_skew_symmetric() noexcept {
+        if(!this->is_square())
+            return false;
+
+        return this->transpose()._matrix == (-1 * this->_matrix);
+    }
+
+    __idk_nodiscard
+    const bool
+    is_idempotent() noexcept {
+        if(!this->is_square())
+            return false;
+
+        return (this->copy() * this->copy()) == *this;
+    }
+
+    __idk_nodiscard
+    const bool
+    is_involutory() noexcept {
+        if(!this->is_square())
+            return false;
+
+        return (this->copy() * this->copy()).is_identity();
     }
 
     __idk_nodiscard
