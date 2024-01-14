@@ -228,6 +228,15 @@ public:
         if(this->_column != this->_row)
             return 0; // pseudo determinant can be used there but later.
 
+        if(this->is_lower_triangular() || this->is_upper_triangular()) {
+            _Type sum { static_cast<_Type>(1) };
+
+            for(isize i = 0; i < this->_row; ++i)
+                sum *= this->at(i, i);
+
+            return sum;
+        }
+
         switch(this->_column) {
             case 0: {
                 return 0;
@@ -267,7 +276,7 @@ public:
     __idk_nodiscard
     const bool
     is_empty() noexcept {
-        return (this->_column == 0) && (this->_row == 0);
+        return (this->_column == this->_row == 0);
     }
 
     __idk_nodiscard
@@ -396,7 +405,178 @@ public:
 
         return this->inverse()._matrix == this->transpose()._matrix;
     }
+
+    __idk_nodiscard
+    const bool
+    is_singular() noexcept {
+        return this->determinant() == 0;
+    }
+
+    __idk_nodiscard
+    const bool
+    is_nonsingular() noexcept {
+        return this->determinant() != 0;
+    }
+
+    __idk_nodiscard
+    const bool
+    is_vector() noexcept {
+        return (this->is_empty())
+                    || ((this->_row == 1) && (this->_column > 0))
+                    || ((this->_column == 1) && (this->_row > 0));
+    }
     
+    __idk_nodiscard
+    _Type
+    distance(Matrix<_Type>& w) noexcept {
+        if(!this->is_vector() || !w.is_vector() || (this->dimension() != w.dimension()))
+            return 0;
+
+        _Type sum { static_cast<_Type>(0) };
+
+        for(isize i = 0; i < this->_matrix.size(); ++i)
+            sum += powl(this->_matrix.at_without_check_reference(i).data - w._matrix.at_without_check_reference(i).data, 2);
+
+        if(sum < 0)
+            return 0;
+
+        return static_cast<_Type>(sqrtl(sum));
+    }
+
+    __idk_nodiscard
+    _Type
+    distance(Matrix<_Type>&& w) noexcept {
+        return this->distance(w);
+    }
+
+    __idk_nodiscard
+    _Type
+    magnitude() noexcept {
+        if(!this->is_vector())
+            return 0;
+        
+        return this->distance(Matrix<_Type>(this->_row, this->_column));
+    }
+
+    __idk_nodiscard
+    _Type
+    length() noexcept {
+        return this->magnitude();
+    } 
+
+    __idk_nodiscard
+    usize
+    dimension() noexcept {
+        return this->_row * this->_column;
+    }
+
+    __idk_nodiscard
+    _Type
+    dot(Matrix<_Type>& w) noexcept {
+        if(!this->is_vector() || !w.is_vector() || (this->dimension() != w.dimension()))
+            return 0;
+        
+        _Type sum { static_cast<_Type>(0) };
+
+        for(isize i = 0; i < this->_matrix.size(); ++i)
+            sum += this->_matrix.at_without_check_reference(i).data * w._matrix.at_without_check_reference(i).data;
+
+        return sum;
+    }
+
+    __idk_nodiscard
+    Matrix<_Type>
+    cross(Matrix<_Type>& w) noexcept {
+        if(!this->is_vector() 
+            || !w.is_vector() 
+            || (this->dimension() != w.dimension()) 
+            || (this->dimension() != 3) 
+            || (w.dimension() != 3))
+            return {};
+
+        const _Type ax = this->_matrix.at_without_check_reference(0).data,
+                    ay = this->_matrix.at_without_check_reference(1).data,
+                    az = this->_matrix.at_without_check_reference(2).data,
+
+                    bx = w._matrix.at_without_check_reference(0).data,
+                    by = w._matrix.at_without_check_reference(1).data,
+                    bz = w._matrix.at_without_check_reference(2).data;
+
+        // one column, 3 rows
+        if(this->_row > 1)
+            return {{ (ay * bz) - (az * by) }, 
+                    { (az * bx) - (ax * bz) },
+                    { (ax * by) - (ay * bx) }};
+
+        // one row, 3 columns
+        return {{ (ay * bz) - (az * by), (az * bx) - (ax * bz), (ax * by) - (ay * bx) }};
+    }
+
+    __idk_nodiscard
+    _Type
+    dot(Matrix<_Type>&& w) noexcept {
+        return this->dot(w);
+    }
+
+    __idk_nodiscard
+    Matrix<_Type>
+    cross(Matrix<_Type>&& w) noexcept {
+        return this->cross(w);
+    }
+
+    __idk_nodiscard
+    Matrix<_Type>
+    unit() noexcept {
+        if(!this->is_vector())
+            return this->copy();
+
+        const _Type length_of_vector = this->length();
+
+        if(length_of_vector == 0)
+            return this->copy();
+
+        Matrix<_Type> temp_vector = this->copy();
+        
+        for(auto& element: temp_vector._matrix)
+            element.data /= length_of_vector;
+
+        return temp_vector;
+    }
+
+    // gives angle between two vectors in radians
+    __idk_nodiscard
+    _Type
+    angle(Matrix<_Type>& w) noexcept {
+        if(!this->is_vector() || !w.is_vector() || (this->dimension() != w.dimension()))
+            return 0;
+
+        const _Type length_mul = (this->length() * w.length());
+
+        if(length_mul == 0)
+            return 0;
+        
+        return acosl(this->dot(w) / length_mul);
+    }
+
+    // gives angle between two vectors in terms of degrees
+    __idk_nodiscard
+    _Type
+    angle_degrees(Matrix<_Type>& w) noexcept {
+        return angle(w) * (180 / pi);
+    }
+
+    __idk_nodiscard
+    _Type
+    angle(Matrix<_Type>&& w) noexcept {
+        return this->angle(w);
+    }
+
+    __idk_nodiscard
+    _Type
+    angle_degrees(Matrix<_Type>&& w) noexcept {
+        return angle(idk::move(w)) * (180 / pi);
+    }
+
     friend std::ostream& 
     operator<<(std::ostream& ostr, Matrix<_Type>& val) noexcept {
         if(!val.is_empty()) {
@@ -578,6 +758,12 @@ public:
     operator*(Matrix<_Type>& left, Matrix<_Type>& right) {
         if(left._column != right._row)
             return {};
+
+        if(left.is_identity())
+            return right.copy();
+
+        if(right.is_identity())
+            return left.copy();
 
         // left._row * right._column
         if((ceill(log2l(left._row)) == floorl(log2l(left._row))) && 

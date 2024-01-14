@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "../matrix.hpp"
 
 #define test_condition(condition) if(condition) \
@@ -48,6 +49,13 @@ int main() {
     idk::Matrix<long double> orthogonal_matrix = {{0, 1},
                                                   {1, 0}};
 
+    idk::Matrix<long double> _vector = {{3, 4}};
+    test_condition(idk::Matrix<long double>({{3, -3, 1}}).cross(idk::Matrix<long double>({{4, 9, 2}})) != idk::Matrix<long double>({{-15, -2, 39}}));
+    test_condition(idk::Matrix<long double>({{2, -4}}).angle(idk::Matrix<long double>({{4, 2}})) != (M_PI / 2))
+    test_condition(idk::Matrix<long double>({{2, -4}}).angle_degrees(idk::Matrix<long double>({{4, 2}})) != 90)
+    test_condition(_vector.length() != 5)
+    test_condition(!_vector.is_vector())
+    test_condition(!idk::Matrix<long double>({{}}).is_vector())
     test_condition(!idk::Matrix<long double>({{1, 0}, {0, 1}}).is_identity())
     test_condition(!idk::Matrix<long double>({{-5, -8, 0}, {3, 5, 0}, {1, 2, -1}}).is_involutory())
     test_condition(!idk::Matrix<long double>({{2, -2, -4}, {-1, 3, 4}, {1, -2, -3}}).is_idempotent())
