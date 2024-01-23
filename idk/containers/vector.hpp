@@ -8,7 +8,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2024 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
@@ -26,13 +26,13 @@
 
 namespace idk {
 template<typename Type>
-class Vec {
+class Vector {
 public:
     enum class Error {
         Out_Of_Range,
     };
 
-    Vec(Type*& val) : _p(val) {
+    Vector(Type*& val) : _p(val) {
         if(val != nullptr) {
             this->_capacity = val->capacity;
             this->_size = val->size;
@@ -40,7 +40,7 @@ public:
             this->_capacity = this->_size = 0;
     }
 
-    Vec(Vec<Type>& val) : _size(val._size), _capacity(val._capacity) {
+    Vector(Vector<Type>& val) : _size(val._size), _capacity(val._capacity) {
         if(!this->is_empty())
             delete[] this->_p;
 
@@ -50,7 +50,7 @@ public:
             this->_p[n] = val._p[n];
     }
     
-    Vec(Vec<Type>&& val) : _size(idk::move(val._size)), _capacity(idk::move(val._capacity)) {
+    Vector(Vector<Type>&& val) : _size(idk::move(val._size)), _capacity(idk::move(val._capacity)) {
         if(!this->is_empty())
             delete[] this->_p;
         
@@ -60,7 +60,7 @@ public:
             this->_p[n] = idk::move(val._p[n]);
     }
     
-    Vec(const usize& n) {
+    Vector(const usize& n) {
         if(!this->is_empty())
             delete[] this->_p;
         
@@ -74,29 +74,29 @@ public:
         this->_p = new Type[this->_size];
     }
 
-    Vec(usize&& n, Type&& val) {
+    Vector(usize&& n, Type&& val) {
         this->reserve_if_needed_with_given_value(idk::move(n), val);
     }
 
-    Vec(usize&& n, Type& val) {
+    Vector(usize&& n, Type& val) {
         this->reserve_if_needed_with_given_value(idk::move(n), val);
     }
 
-    Vec(usize&& n, Type const& val) {
+    Vector(usize&& n, Type const& val) {
         this->reserve_if_needed_with_given_value(idk::move(n), const_cast<Type&>(val));
     }
 
-    Vec(std::initializer_list<Type> vals) {
+    Vector(std::initializer_list<Type> vals) {
         for(const Type& val: vals)
             this->push_back(val);
     }
 
-    Vec() {
+    Vector() {
         this->_p        = nullptr;
         this->_capacity = this->_size = 0;
     }
 
-    ~Vec() {
+    ~Vector() {
         if(!this->is_empty())
             delete[] this->_p;
     }
@@ -111,8 +111,8 @@ public:
         return this->at(n);
     }
 
-    Vec<Type>&
-    operator=(const Vec<Type>& other) noexcept {
+    Vector<Type>&
+    operator=(const Vector<Type>& other) noexcept {
         if(&other == this)
             return *this;
 
@@ -130,8 +130,8 @@ public:
         return *this;
     }
 
-    Vec<Type>&
-    operator=(Vec<Type>&& other) noexcept {
+    Vector<Type>&
+    operator=(Vector<Type>&& other) noexcept {
         if(&other == this)
             return *this;
 
@@ -151,7 +151,7 @@ public:
 
     template<typename _Type2>
     friend bool 
-    operator==(const Vec<Type>& left, const Vec<_Type2>& right) noexcept {
+    operator==(const Vector<Type>& left, const Vector<_Type2>& right) noexcept {
         if(!idk::IsSameVal<Type, _Type2> || left.size() != right.size())
             return false;
         
@@ -164,7 +164,7 @@ public:
 
     template<typename _Type2>
     friend bool 
-    operator==(const Vec<Type>& left, const _Type2* right) noexcept {
+    operator==(const Vector<Type>& left, const _Type2* right) noexcept {
         if(!right)
             return false;
         
@@ -180,13 +180,13 @@ public:
 
     template<typename _Type2>
     friend bool 
-    operator!=(const Vec<Type>& left, const Vec<_Type2>& right) noexcept {
+    operator!=(const Vector<Type>& left, const Vector<_Type2>& right) noexcept {
         return !operator==(left, right);
     }
 
     template<typename _Type2>
     friend bool 
-    operator!=(const Vec<Type>& left, const _Type2* right) noexcept {
+    operator!=(const Vector<Type>& left, const _Type2* right) noexcept {
         return !operator==(left, right);
     }
 
@@ -287,7 +287,7 @@ public:
     }
 
     void 
-    push_back(Vec<Type>&& val) noexcept {
+    push_back(Vector<Type>&& val) noexcept {
         this->reserve_if_needed(this->_size + val._size + 1);
 
         for(Type& elem: idk::move(val))
@@ -295,10 +295,10 @@ public:
     }
 
     void 
-    push_back(const Vec<Type>& val) noexcept {
+    push_back(const Vector<Type>& val) noexcept {
         this->reserve_if_needed(this->_size + _capacity_constant + val._size + 1);
 
-        for(Type& elem: const_cast<Vec<Type>&>(val))
+        for(Type& elem: const_cast<Vector<Type>&>(val))
             this->_p[this->_size++] = elem;
     }
 
@@ -379,7 +379,7 @@ public:
     }
 
     friend std::ostream& 
-    operator<<(std::ostream& ostr, const Vec<Type>& arr) {
+    operator<<(std::ostream& ostr, const Vector<Type>& arr) {
         ostr << '[';
         
         for(usize n = 0; n < arr.size(); ++n)
@@ -478,4 +478,7 @@ private:
 
     Type  _nullp;
 };
+
+template<typename Type>
+using Vec = Vector<Type>;
 } // namespace idk

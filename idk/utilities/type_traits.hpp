@@ -8,7 +8,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2024 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 // contains some works from https://en.cppreference.com/w/cpp/meta reference implementations section.
@@ -44,13 +44,46 @@ struct Conditional {
 template<typename T> struct RemoveReference     { 
     using type = T; 
 };
+
 template<typename T> struct RemoveReference<T&> { 
     using type = T; 
 };
+
 template<typename T> struct RemoveReference<T&&>{ 
     using type = T;
 };
 
+template<typename T> struct RemoveConst {
+    using type = T;
+};
+
+template<typename T> struct RemoveConst<const T> { 
+    using type = T;
+};
+
+template<typename T> struct RemoveVolatile {
+    using type = T;
+};
+
+template<typename T> struct RemoveVolatile<volatile T> { 
+    using type = T;
+};
+
+template<typename T> struct RemoveConstAndVolatile {
+    using type = T;
+};
+
+template<typename T> struct RemoveConstAndVolatile<volatile T> { 
+    using type = T;
+};
+
+template<typename T> struct RemoveConstAndVolatile<const T> { 
+    using type = T;
+};
+
+template<typename T> struct RemoveConstAndVolatile<const volatile T> { 
+    using type = T;
+};
 
 using true_type  = IntegralConstant<bool, true>;
 using false_type = IntegralConstant<bool, false>;
@@ -60,7 +93,6 @@ template<> struct IsVoid<void>               : true_type {};
 template<> struct IsVoid<const void>         : true_type {};
 template<> struct IsVoid<volatile void>      : true_type {};
 template<> struct IsVoid<const volatile void>: true_type {};
-
 
 template<typename> struct IsNullPointer                       : false_type{};
 template<> struct IsNullPointer<std::nullptr_t>               : true_type {};
@@ -146,4 +178,7 @@ template<typename T> inline __idk_constexpr bool DisjunctionType      = Disjunct
 template<typename T>                using RemoveReferenceType   = typename RemoveReference<T>::type;
 template<bool T, typename U = void> using EnableIfType          = typename EnableIf<T, U>::type    ;
 
+template<typename T>                using RemoveConstType            = typename RemoveConst<T>::type;
+template<typename T>                using RemoveVolatileType         = typename RemoveVolatile<T>::type;
+template<typename T>                using RemoveConstAndVolatileType = typename RemoveConstAndVolatile<T>::type;
 } // namespace idk
