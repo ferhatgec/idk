@@ -12,6 +12,7 @@ using namespace std::complex_literals;
 int main() {
     // i^2
     test_condition(idk::ComplexFloat80(0, 1) * idk::ComplexFloat80(0, 1) != -1)
+    test_condition(idk::ComplexFloat80(idk::ComplexFloat80(0, 1)) * idk::ComplexFloat80(0, 1) != -1)
     test_condition(idk::ComplexFloat80(3, 1).conjugate() != idk::ComplexFloat80(3, -1))
     test_condition(idk::ComplexFloat80(3, 1).conjugate().abs() != idk::ComplexFloat80(3, -1).abs())
     test_condition(idk::ComplexFloat80(2, 0) * idk::ComplexFloat80(2, 0) != 4)

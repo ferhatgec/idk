@@ -31,10 +31,15 @@ class Complex {
          _imaginary_part { static_cast<Type>(0) };
 public:
     Complex() = default;
+    Complex(const Complex<Type>& num) : _real_part(num._real_part),
+                                        _imaginary_part(num._imaginary_part)
+                                        {}
+    Complex(Complex<Type>&& num) : _real_part(idk::move(num._real_part)),
+                                   _imaginary_part(idk::move(num._imaginary_part))
+                                   {}
     Complex(const Type& real_part, const Type& imaginary_part) : _real_part(real_part), 
                                                                  _imaginary_part(imaginary_part) 
                                                                  {}
-    
     Complex(Type&& real_part, Type&& imaginary_part) : _real_part(idk::move(real_part)), 
                                                        _imaginary_part(idk::move(imaginary_part)) 
                                                        {}
