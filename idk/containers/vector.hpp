@@ -469,7 +469,7 @@ public:
         return this->find(val);
     }
 private:
-    static __idk_constexpr u16 _capacity_constant = 128;
+    static inline __idk_constexpr u16 _capacity_constant = 128;
 
     Type* _p;
 

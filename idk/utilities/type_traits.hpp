@@ -18,10 +18,15 @@
 #include "../types/predefined.hpp"
 #include <cstddef>
 
+#ifdef __idk_experimental
+#   include <iostream>
+#endif
+
 namespace idk {
 template<typename T, T val>
 struct IntegralConstant {
-    static __idk_constexpr T value = val;
+    static inline __idk_constexpr T value = val;
+
     using value_type         = T;
     using type               = IntegralConstant;
 
@@ -35,6 +40,9 @@ struct IntegralConstant {
         return value; 
     } 
 };
+
+template<typename... Ts>
+using void_type = void;
 
 template<bool B, typename T, typename F>
 struct Conditional {
@@ -53,6 +61,10 @@ template<typename T> struct RemoveReference<T&&>{
     using type = T;
 };
 
+template<typename T> struct AddConst {
+    using type = const T;
+};
+
 template<typename T> struct RemoveConst {
     using type = T;
 };
@@ -61,12 +73,20 @@ template<typename T> struct RemoveConst<const T> {
     using type = T;
 };
 
+template<typename T> struct AddVolatile {
+    using type = volatile T;
+};
+
 template<typename T> struct RemoveVolatile {
     using type = T;
 };
 
 template<typename T> struct RemoveVolatile<volatile T> { 
     using type = T;
+};
+
+template<typename T> struct AddConstAndVolatile {
+    using type = const volatile T;
 };
 
 template<typename T> struct RemoveConstAndVolatile {
@@ -85,6 +105,35 @@ template<typename T> struct RemoveConstAndVolatile<const volatile T> {
     using type = T;
 };
 
+template<typename T> struct Identity {
+    using type = T;
+};
+
+template<typename T, typename = void>
+struct AddReference {
+    using lvalue = T;
+    using rvalue = T;
+};
+
+template<typename T>
+struct AddReference<T, void_type<T&>> {
+    using lvalue = T&;
+    using rvalue = T&&;
+};
+
+template<typename T> struct AddLvalueReference {
+    using type = typename AddReference<T>::lvalue;
+};
+
+template<typename T> struct AddRvalueReference {
+    using type = typename AddReference<T>::rvalue;
+};
+
+template<typename T>
+typename idk::AddLvalueReference<T>::type declval() {
+    static_assert(false, "");
+}
+
 using true_type  = IntegralConstant<bool, true>;
 using false_type = IntegralConstant<bool, false>;
 
@@ -93,6 +142,14 @@ template<> struct IsVoid<void>               : true_type {};
 template<> struct IsVoid<const void>         : true_type {};
 template<> struct IsVoid<volatile void>      : true_type {};
 template<> struct IsVoid<const volatile void>: true_type {};
+
+#ifdef __idk_experimental
+template<typename T, typename = void>
+struct IsPrintable : false_type {};
+
+template<typename T>
+struct IsPrintable<T, void_type<decltype(std::cout << idk::declval<T&>())>> : true_type {};
+#endif // __idk_experimental
 
 template<typename> struct IsNullPointer                       : false_type{};
 template<> struct IsNullPointer<std::nullptr_t>               : true_type {};
@@ -155,6 +212,7 @@ template<typename B1, typename... Bn> struct Disjunction<B1, Bn...>: Conditional
 template<bool, typename T = void> struct EnableIf { 
     using type = T; 
 }; 
+
 template<typename T> struct EnableIf<true, T> { 
     using type = T; 
 };
@@ -178,7 +236,14 @@ template<typename T> inline __idk_constexpr bool DisjunctionType      = Disjunct
 template<typename T>                using RemoveReferenceType   = typename RemoveReference<T>::type;
 template<bool T, typename U = void> using EnableIfType          = typename EnableIf<T, U>::type    ;
 
+template<typename T>                using AddConstType               = typename AddConst<T>::type;
+template<typename T>                using AddVolatileType            = typename AddVolatile<T>::type;
+template<typename T>                using AddConstAndVolatileType    = typename AddConstAndVolatile<T>::type;
 template<typename T>                using RemoveConstType            = typename RemoveConst<T>::type;
 template<typename T>                using RemoveVolatileType         = typename RemoveVolatile<T>::type;
 template<typename T>                using RemoveConstAndVolatileType = typename RemoveConstAndVolatile<T>::type;
+template<typename T>                using IdentityType               = typename Identity<T>::type;
+
+template<typename T>                using AddLvalueReferenceType     = typename AddReference<T>::lvalue;
+template<typename T>                using AddRvalueReferenceType     = typename AddReference<T>::rvalue;
 } // namespace idk

@@ -1,6 +1,8 @@
 #include "../pair.hpp"
 #include <iostream>
 
+class test {}; // not printable, no overloads to std::ostream.
+
 int main() {
     __idk_constexpr double _s = 3.1415926535;
     idk::Pair<idk::i16, double> val(42, _s);
@@ -20,4 +22,10 @@ int main() {
         std::cout << "[FAIL] val == val1\n";
     else
         std::cout << "[OK] val == val1\n";
+
+    std::cout << val1 << '\n';
+
+    idk::Pair<test, idk::i16> val2(test(), 42);
+
+    std::cout << val2 << '\n';
 }

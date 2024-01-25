@@ -8,18 +8,20 @@
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2024 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
 #pragma once
 
-#pragma GCC diagnostic ignored "-Wwrite-strings"
+#if defined(__GNUC__) || defined(__GNUG__)
+#   pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
 
 #define DEFLIT(type, name) \
-                    __idk_constexpr type operator""_##name(long double val) noexcept { return static_cast<type>(val); } \
-                    __idk_constexpr type operator""_##name(char val) noexcept { return static_cast<type>(val); } \
-                    __idk_constexpr type operator""_##name(idk::usize val) noexcept { return static_cast<type>(val); }
+                    __idk_constexpr inline type operator""_##name(long double val) noexcept { return static_cast<type>(val); } \
+                    __idk_constexpr inline type operator""_##name(char val) noexcept { return static_cast<type>(val); } \
+                    __idk_constexpr inline type operator""_##name(idk::usize val) noexcept { return static_cast<type>(val); }
 
 #define __idk_cpp98 199711
 #define __idk_cpp11 201103
@@ -86,14 +88,14 @@ using f80   = long double       ;
 using f64   = double            ;
 using f32   = float             ;
 
-__idk_constexpr usize cpp98 { __idk_cpp98 },
+__idk_constexpr inline usize cpp98 { __idk_cpp98 },
                 cpp11 { __idk_cpp11 },
                 cpp14 { __idk_cpp14 },
                 cpp17 { __idk_cpp17 },
                 cpp20 { __idk_cpp20 },
                 cpp23 { __idk_cpp23 };
 
-__idk_constexpr auto  e          { __idk_e },
+__idk_constexpr inline auto  e          { __idk_e },
                 log2e      { __idk_log2e },
                 log10e     { __idk_log10e},
                 ln2        { __idk_ln2},
@@ -115,99 +117,99 @@ __idk_constexpr auto  e          { __idk_e },
     || defined(__WIN32__) \
     || defined(__TOS_WIN__) \
     || defined(__WINDOWS__)
-    __idk_constexpr const char* os_platform { "windows" };
+    __idk_constexpr inline const char* os_platform { "windows" };
 #   define               _windows
 #elif defined(macintosh) \
     || defined(Macintosh) \
     || (defined(__APPLE__) && defined(__MACH__))
-    __idk_constexpr const char* os_platform { "macos" };
+    __idk_constexpr inline const char* os_platform { "macos" };
 #   define               _macos
 #elif defined(__linux__) \
     || defined(linux) \
     || defined(__linux) \
     || defined(__gnu_linux__)
-    __idk_constexpr const char* os_platform { "linux" };
+    __idk_constexpr inline const char* os_platform { "linux" };
 #   define               _linux
 #elif defined(__ANDROID__)
-    __idk_constexpr const char* os_platform { "android" };
+    __idk_constexpr inline const char* os_platform { "android" };
 #   define               _android
 #elif (defined(__FreeBSD_kernel__) && defined(__GLIBC__)) \
     || defined(__FreeBSD__) \
     || defined(__FreeBSD_kernel__)
-    __idk_constexpr const char* os_platform { "freebsd" };
+    __idk_constexpr inline const char* os_platform { "freebsd" };
 #   define               _freebsd
 #elif defined(__DragonFly__)
-    __idk_constexpr const char* os_platform { "dragonfly" };
+    __idk_constexpr inline const char* os_platform { "dragonfly" };
 #   define               _dragonfly
 #elif defined(__OpenBSD__)
-    __idk_constexpr const char* os_platform { "openbsd" };
+    __idk_constexpr inline const char* os_platform { "openbsd" };
 #   define               _openbsd
 #elif defined(__NetBSD__)
-    __idk_constexpr const char* os_platform { "netbsd" };
+    __idk_constexpr inline const char* os_platform { "netbsd" };
 #   define               _netbsd
 #else
-    __idk_constexpr const char* os_platform { "" };
+    __idk_constexpr inline const char* os_platform { "" };
 #endif
 
 #if defined(__x86_64__) \
     || defined(_M_X64)
-    __idk_constexpr const char* cpu_arch { "x86_64" };
+    __idk_constexpr inline const char* cpu_arch { "x86_64" };
 #   define               _x86_64
 #elif defined(i386) \
     || defined(__i386__) \
     || defined(__i386) \
     || defined(_M_IX86)
-    __idk_constexpr const char* cpu_arch { "x86_32" };
+    __idk_constexpr inline const char* cpu_arch { "x86_32" };
 #   define               _x86_32
 #elif defined(__aarch64__) \
     || defined(_M_ARM64)
-    __idk_constexpr const char* cpu_arch { "arm64" };
+    __idk_constexpr inline const char* cpu_arch { "arm64" };
 #   define               _arm64
 #elif defined(mips) \
     || defined(__mips__) \
     || defined(__mips)
-    __idk_constexpr const char* cpu_arch { "mips" };
+    __idk_constexpr inline const char* cpu_arch { "mips" };
 #   define               _mips
 #elif defined(__sparc__) \
     || defined(__sparc)
-    __idk_constexpr const char* cpu_arch { "sparc" };
+    __idk_constexpr inline const char* cpu_arch { "sparc" };
 #   define               _sparc
 #else
-    __idk_constexpr const char* cpu_arch { "" };
+    __idk_constexpr inline const char* cpu_arch { "" };
 #endif
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp98_supported() noexcept {
     return __idk_is_cpp98_supported;
 }
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp11_supported() noexcept {
     return __idk_is_cpp11_supported;
 }
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp14_supported() noexcept {
     return __idk_is_cpp14_supported;
 }
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp17_supported() noexcept {
     return __idk_is_cpp17_supported;
 }
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp20_supported() noexcept {
     return __idk_is_cpp20_supported;
 }
 
 __idk_nodiscard
-__idk_constexpr bool
+inline __idk_constexpr bool
 is_cpp23_supported() noexcept {
     return __idk_is_cpp23_supported;
 }
