@@ -1,3 +1,4 @@
+#define __idk_experimental
 #include "../pair.hpp"
 #include <iostream>
 
@@ -6,6 +7,11 @@ class test {}; // not printable, no overloads to std::ostream.
 int main() {
     __idk_constexpr double _s = 3.1415926535;
     idk::Pair<idk::i16, double> val(42, _s);
+    idk::Pair<idk::i16, double> _val {
+        42, _s
+    };
+
+    std::cout << _val << '\n';
 
     val.first() = 12;
     

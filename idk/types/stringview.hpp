@@ -35,7 +35,7 @@ public:
         StringViewEmpty
     };
     
-    StringView () : _len(0) {
+    StringView() : _len(0) {
         this->_p = new CharType[1];
 
         if __idk_constexpr(idk::IsSameVal<CharType, wchar_t>) {
@@ -310,6 +310,22 @@ public:
         return !operator==(left, right);
     }
 
+    friend
+    StringView<CharType>
+    operator*(StringView<CharType> left, idk::isize repeat) {
+      if(repeat <= 0)
+          return "";
+      else if(repeat == 1)
+          return left;
+
+      StringView<CharType> str;
+
+      for(isize i = 0; i < repeat; ++i)
+        str.push_back(left);
+
+      return str;
+    }
+
     friend 
     StringView<CharType>
     operator+(StringView<CharType> left, const StringView<CharType>& right) {
@@ -456,6 +472,29 @@ public:
         return count;
     }
 
+    void
+    resize(usize n) noexcept {
+        if(n > this->_len)
+            for(usize i = 0; i < (n - this->_len); ++i)
+              if __idk_constexpr (idk::IsSameVal<CharType, wchar_t>)
+                  this->push_back(L'\0');
+              else
+                  this->push_back('\0');
+        else
+            for(usize i = 0; i < (this->_len - n); ++i)
+                this->pop_back();
+    }
+
+    void
+    resize(usize n, CharType ch) noexcept {
+        if(n > this->_len)
+          for(usize i = 0; i < (n - this->_len); ++i)
+            this->push_back(ch);
+        else
+            for(usize i = 0; i < (this->_len - n); ++i)
+                this->pop_back();
+    }
+
     StringView<CharType>
     substr(usize pos = 0, usize count = 0) const {
         if(this->is_empty())
@@ -540,6 +579,25 @@ public:
     clear() noexcept {
         if(!this->is_empty())
             *this = StringView<CharType>();
+    }
+
+    void
+    push_back(CharType*& str) noexcept {
+      if(!str)
+        return;
+
+      for(usize len = 0; str[len]; ++len)
+        this->push_back(str[len]);
+    }
+
+    void
+    push_back(const idk::StringView<CharType>& str) noexcept {
+      *this = *this + str;
+    }
+
+    void
+    push_back(idk::StringView<CharType>&& str) noexcept {
+      *this = *this + idk::move(str);
     }
 
     void

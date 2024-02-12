@@ -14,12 +14,9 @@
 
 #pragma once
 
-#ifndef __idk_experimental
-#   define __idk_experimental
-#endif
-
 #include "type_traits.hpp"
 #include "semantics.hpp"
+#include "../types/any.hpp"
 
 namespace idk {
 template<typename T, typename U>
@@ -29,6 +26,13 @@ public:
     
     Pair(T&& first, U&& second) 
         : _first(idk::move(first)), _second(idk::move(second)) {}
+
+    Pair(std::initializer_list<idk::Any>&& list) {
+      if(list.size() >= 2) {
+        this->_first = (list.begin())->cast_to_directly<T>();
+        this->_second = (list.begin() + 1)->cast_to_directly<U>();
+      }
+    }
 
     Pair(const T& first, const U& second) 
         : _first(const_cast<T&>(first)), _second(const_cast<U&>(second)) {}
@@ -84,6 +88,7 @@ public:
         return !operator==(left, right);
     }
 
+#ifdef __idk_experimental
     friend std::ostream&
     operator<<(std::ostream& ostr, const idk::Pair<T, U>& right) {
         ostr << "( ";
@@ -139,6 +144,7 @@ public:
     operator<<(std::wostream& ostr, idk::Pair<T, U>&& right) {
         return operator<<(ostr, right);
     }
+#endif // __idk_experimental
 
     T _first;
     U _second;

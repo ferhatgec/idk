@@ -28,7 +28,10 @@ public:
     
     template<typename Type>
     Any(const Type& val) noexcept : _data(new holder<Type>(val)), _type_info(&typeid(Type)) {}
-    
+
+    template<typename Type>
+    Any(Type&& val) noexcept : _data(new holder<Type>(idk::move(val))), _type_info(&typeid(Type)) {}
+
     Any(const Any& val) noexcept : _type_info(val._type_info) {
         if(val._data)
             this->_data = val._data->clone();
@@ -47,12 +50,12 @@ public:
     
     template<typename Type>
     Any&
-    operator=(Type&& other) noexcept {
+    operator=(Any&& other) noexcept {
         if(this == &other)
             return *this;
-        
+
         delete this->_data;
-        
+
         this->_data      = idk::move(other._data);
         this->_type_info = other._type_info;
         other._data = nullptr;
@@ -63,12 +66,12 @@ public:
 
     template<typename Type>
     Any& 
-    operator=(const Type& other) noexcept {
+    operator=(const Any& other) noexcept {
         if(this == &other)
             return *this;
-        
+
         delete this->_data;
-        
+
         this->_data      = new holder<Type>(other);
         this->_type_info = &typeid(Type);
         
@@ -115,6 +118,12 @@ public:
 
         return Expected<Type>(static_cast<holder<Type>*>(this->_data)->_val);
     }
+
+    template<typename Type>
+    Type
+    cast_to_directly() const {
+        return static_cast<holder<Type>*>(this->_data)->_val;
+    }
 private:
     class holder_base {
 public:
@@ -129,7 +138,9 @@ public:
     class holder : public holder_base {
 public:
         holder(const Type& val) : _val(val) {}
-        
+        holder(Type&& val) : _val(idk::move(val)) {}
+
+        __idk_nodiscard
         holder_base* 
         clone() const noexcept override {
             return new holder<Type>(this->_val);

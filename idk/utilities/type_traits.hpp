@@ -105,6 +105,26 @@ template<typename T> struct RemoveConstAndVolatile<const volatile T> {
     using type = T;
 };
 
+template<typename T> struct RemovePointer {
+    using type = T;
+};
+
+template<typename T> struct RemovePointer<T*> {
+    using type = T;
+};
+
+template<typename T> struct RemovePointer<T* const> {
+    using type = T;
+};
+
+template<typename T> struct RemovePointer<T* volatile> {
+    using type = T;
+};
+
+template<typename T> struct RemovePointer<T* const volatile> {
+    using type = T;
+};
+
 template<typename T> struct Identity {
     using type = T;
 };
@@ -130,9 +150,7 @@ template<typename T> struct AddRvalueReference {
 };
 
 template<typename T>
-typename idk::AddLvalueReference<T>::type declval() {
-    static_assert(false, "");
-}
+typename idk::AddRvalueReference<T>::type declval() noexcept {}
 
 using true_type  = IntegralConstant<bool, true>;
 using false_type = IntegralConstant<bool, false>;
@@ -234,6 +252,7 @@ template<typename T> inline __idk_constexpr bool ConjunctionType      = Conjunct
 template<typename T> inline __idk_constexpr bool DisjunctionType      = Disjunction<T>::type;
 
 template<typename T>                using RemoveReferenceType   = typename RemoveReference<T>::type;
+template<typename T>                using RemovePointerType     = typename RemovePointer<T>::type;
 template<bool T, typename U = void> using EnableIfType          = typename EnableIf<T, U>::type    ;
 
 template<typename T>                using AddConstType               = typename AddConst<T>::type;
