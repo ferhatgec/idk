@@ -45,6 +45,7 @@
 #define __idk_sqrt5 2.23606797749978980505
 #define __idk_phi 1.61803398874989490252
 #define __idk_invsqrt2 0.707106781186547524401
+#define __idk_tau 6.283185307179586476925
 
 #define __idk_is_cpp98_supported (__cplusplus >= __idk_cpp98)
 #define __idk_is_cpp11_supported (__cplusplus >= __idk_cpp11)
@@ -109,7 +110,8 @@ __idk_constexpr inline auto  e          { __idk_e },
                 sqrt2      { __idk_sqrt2 },
                 sqrt5      { __idk_sqrt5 },
                 phi        { __idk_phi },
-                invsqrt2   { __idk_invsqrt2};
+                invsqrt2   { __idk_invsqrt2},
+                tau        { __idk_tau };
 
 #if defined(_WIN16) \
     || defined(_WIN32) \

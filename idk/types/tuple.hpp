@@ -62,7 +62,7 @@ struct Tuple<Head, Tail...> : public Tuple<Tail...>, public TupleElement<sizeof.
     }
 
     template<usize Index, usize Val = sizeof...(Tail) - Index>
-    __idk_constexpr decltype(auto) 
+    __idk_constexpr decltype(auto)
     Get() const {
         if __idk_constexpr(Val == sizeof...(Tail))
             return Element::_value;

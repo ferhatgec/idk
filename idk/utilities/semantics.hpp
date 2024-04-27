@@ -18,19 +18,18 @@
 #include "type_traits.hpp"
 
 namespace idk {
-template<typename Type, 
-         idk::EnableIfType<idk::IsSameVal<idk::RemoveReferenceType<Type>, Type>, bool> = false>
+template<typename Type>
 __idk_nodiscard
 __idk_constexpr Type&&
 forward(idk::RemoveReferenceType<Type>& val) noexcept {
     return static_cast<Type&&>(val);
 }
 
-template<typename Type, 
-         idk::EnableIfType<idk::IsSameVal<idk::RemoveReferenceType<Type>, Type>, bool> = true>
+template<typename Type>
 __idk_nodiscard
 __idk_constexpr Type&&
 forward(idk::RemoveReferenceType<Type>&& val) noexcept {
+    static_assert(!idk::IsLvalueReferenceVal<Type>, "idk::forward(&&): cannot forward rvalue as lvalue.");
     return static_cast<Type&&>(val);
 }
 

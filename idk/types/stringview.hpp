@@ -8,7 +8,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2024 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
@@ -312,7 +312,7 @@ public:
 
     friend
     StringView<CharType>
-    operator*(StringView<CharType> left, idk::isize repeat) {
+    operator*(StringView<CharType> left, isize repeat) {
       if(repeat <= 0)
           return "";
       else if(repeat == 1)
@@ -474,15 +474,41 @@ public:
 
     void
     resize(usize n) noexcept {
-        if(n > this->_len)
-            for(usize i = 0; i < (n - this->_len); ++i)
-              if __idk_constexpr (idk::IsSameVal<CharType, wchar_t>)
-                  this->push_back(L'\0');
-              else
-                  this->push_back('\0');
-        else
+      if(n > this->_len) {
+          CharType* ptr = new CharType[n + 1];
+
+          for(isize i = 0; i < this->_len; ++i) {
+            ptr[i] = this->_p[i];
+          }
+
+          if(this->_p)
+            delete[] this->_p;
+
+          this->_p   = ptr;
+          this->_len = n;
+
+          if __idk_constexpr(idk::IsSameVal<CharType, wchar_t>)
+            this->_p[n] = L'\0';
+          else
+            this->_p[n] = '\0';
+      } else
             for(usize i = 0; i < (this->_len - n); ++i)
                 this->pop_back();
+    }
+
+    void
+    reserve(isize size) noexcept {
+        if(this->_p) {
+          delete[] this->_p;
+        }
+
+        this->_p   = new CharType[size + 1];
+        this->_len = size;
+
+        if __idk_constexpr(idk::IsSameVal<CharType, wchar_t>)
+          this->_p[size] = L'\0';
+        else
+          this->_p[size] = '\0';
     }
 
     void

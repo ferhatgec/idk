@@ -60,6 +60,13 @@ public:
         return;
     }
 
+    void
+    clear() noexcept {
+      while(!this->is_empty()) {
+        this->pop();
+      }
+    }
+
     T&
     top() noexcept {
         if(!this->is_empty()) {
