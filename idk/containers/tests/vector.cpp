@@ -1,80 +1,85 @@
 #include "../vector.hpp"
-#include <iostream>
 #include "../../types/stringview.hpp"
+#include <iostream>
 
 int main() {
-    const idk::u8 _num = 1;
-    idk::Vec<idk::u16> val(10, _num);
-    
-    idk::Vec<idk::StringViewChar> str_view_vector;
-    
-    str_view_vector.push_back(idk::StringViewChar("Hello world!"));
-    str_view_vector.push_back(idk::StringViewChar("Hello world!"));
+  const idk::u8 _num = 1;
+  idk::Vec<idk::u16> val(10, _num);
 
-    
-    if(str_view_vector.back_no_reference().try_get_value() != "Hello world!")
-        std::cerr << "[FAIL] str_view_vector.back_no_reference().try_get_value() != \"Hello world!\"\n";
-    else
-        std::cout << "[OK] str_view_vector.back_no_reference().try_get_value() != \"Hello world!\"\n";
-        
-    
-    // std::cout << val << '\n';
-    
-    for(auto& asd : val) {
-        asd = 12;
-    }
-    
-    val.push_back(5);
-    val.push_back(5);
-    val.push_back(5);
-    val.push_back(5);
-    val.push_back(5);
+  idk::Vec<idk::StringViewChar> str_view_vector;
 
-    std::cout << str_view_vector << '\n';
+  str_view_vector.push_back(idk::StringViewChar("Hallo Welt!"));
+  str_view_vector.push_back(idk::StringViewChar("Hello world!"));
+  str_view_vector.push_front(idk::StringViewChar("Merhaba dunya!"));
 
-    for(auto& asd: val) {
-        std::cout << static_cast<idk::u16>(asd) << '\n';
-    }
+  if (str_view_vector.back_no_reference().try_get_value() != "Hello world!")
+    std::cerr << "[FAIL] str_view_vector.back_no_reference().try_get_value() "
+                 "!= \"Hello world!\"\n";
+  else
+    std::cout << "[OK] str_view_vector.back_no_reference().try_get_value() != "
+                 "\"Hello world!\"\n";
 
-    val.front() = 0;
+  if (str_view_vector.front_no_reference().try_get_value() != "Merhaba dunya!")
+    std::cerr << "[FAIL] str_view_vector.front_no_reference().try_get_value() "
+                 "!= \"Merhaba dunya!\"\n";
+  else
+    std::cout << "[OK] str_view_vector.front_no_reference().try_get_value() != "
+                 "\"Merhaba dunya!\"\n";
 
-    
-    if(val.find(0) != 0)
-        std::cerr << "[FAIL] val.find(0) != 0\n";
-    else
-        std::cout << "[OK] val.find(0) != 0\n";
+  // std::cout << val << '\n';
 
-    if(val.find(333) != -1)
-        std::cerr << "[FAIL] val.find(333) != -1\n";
-    else
-        std::cout << "[OK] val.find(333) != -1\n";
+  for (auto &asd : val) {
+    asd = 12;
+  }
 
-    if(auto x = val.front_no_reference(); x.has_value()) {
-        std::cout << static_cast<idk::u16>(x._expected.get_value()) << '\n';
-    }
+  val.push_back(5);
+  val.push_back(5);
+  val.push_back(5);
+  val.push_back(5);
+  val.push_back(5);
 
-    idk::Vec<std::string> test(10, std::string("test"));
+  std::cout << str_view_vector << '\n';
 
-    std::cout << test.at_without_check(9) << '\n';
+  for (auto &asd : val) {
+    std::cout << static_cast<idk::u16>(asd) << '\n';
+  }
 
-    idk::Vec<unsigned> numbers = {
-        1, 2, 3, 5, 8, 13, 21, 34
-    };
+  val.front() = 0;
 
-    if(numbers.back_no_reference().try_get_value() != 34)
-        std::cerr << "[FAIL] numbers.back_no_reference().try_get_value() != 34\n";
-    else
-        std::cout << "[OK] numbers.back_no_reference().try_get_value() != 34\n";
+  if (val.find(0) != 0)
+    std::cerr << "[FAIL] val.find(0) != 0\n";
+  else
+    std::cout << "[OK] val.find(0) != 0\n";
 
-    if(!numbers.contains(3))
-        std::cerr << "[FAIL] !numbers.contains(3)\n";
-    else
-        std::cout << "[OK] !numbers.contains(3)\n";
+  if (val.find(333) != -1)
+    std::cerr << "[FAIL] val.find(333) != -1\n";
+  else
+    std::cout << "[OK] val.find(333) != -1\n";
 
-    numbers.at_without_check_reference(0) = 3;
+  if (auto x = val.front_no_reference(); x.has_value()) {
+    std::cout << static_cast<idk::u16>(x._expected.get_value()) << '\n';
+  }
 
-    if(numbers.front() != 3)
-        std::cerr << "[FAIL] numbers.front() != 3\n";
-    else
-        std::cout << "[OK] numbers.front() != 3\n";
+  idk::Vec<std::string> test(10, std::string("test"));
+
+  std::cout << test.at_without_check(9) << '\n';
+
+  idk::Vec<unsigned> numbers = {1, 2, 3, 5, 8, 13, 21, 34};
+
+  if (numbers.back_no_reference().try_get_value() != 34)
+    std::cerr << "[FAIL] numbers.back_no_reference().try_get_value() != 34\n";
+  else
+    std::cout << "[OK] numbers.back_no_reference().try_get_value() != 34\n";
+
+  if (!numbers.contains(3))
+    std::cerr << "[FAIL] !numbers.contains(3)\n";
+  else
+    std::cout << "[OK] !numbers.contains(3)\n";
+
+  numbers.at_without_check_reference(0) = 3;
+
+  if (numbers.front() != 3)
+    std::cerr << "[FAIL] numbers.front() != 3\n";
+  else
+    std::cout << "[OK] numbers.front() != 3\n";
 }

@@ -1,14 +1,14 @@
 // idk libraries
 // -------------
-// disclaimer: don't forget that, idk libraries are not focused on replacing 
-// standard library. (for some standard classes are directly being replaced by compiler, 
-//                    like initializer_list will need compiler dependent codes)
-// so, this is not *directly* an alternative to stl, some class- and functions may have different naming
-// different outputs or attributes etc.
+// disclaimer: don't forget that, idk libraries are not focused on replacing
+// standard library. (for some standard classes are directly being replaced by
+// compiler, like initializer_list will need compiler dependent codes)
+// so, this is not *directly* an alternative to stl, some class- and functions
+// may have different naming different outputs or attributes etc.
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2025 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
@@ -21,212 +21,180 @@
 #include "node.hpp"
 
 namespace idk {
-template<typename Type>
-class List {
-    PNNode<Type>* _head,
-                * _tail;
+template <typename Type> class List {
+  PNNode<Type> *_head, *_tail;
 
-    usize         _size { 0 };
+  usize _size{0};
 
-    Type          _empty;
+  Type _empty;
+
 public:
-    enum class Error {
-        Out_Of_Range,
-    };
+  enum class Error {
+    Out_Of_Range,
+  };
 
-    List() : _head(nullptr), _tail(nullptr) {}
+  List() : _head(nullptr), _tail(nullptr) {}
 
-    List(std::initializer_list<Type> vals) : _head(nullptr), _tail(nullptr) {
-        for(const Type& val: vals)
-            this->push_back(val);
+  List(std::initializer_list<Type> vals) : _head(nullptr), _tail(nullptr) {
+    for (const Type &val : vals)
+      this->push_back(val);
+  }
+
+  ~List() {
+    while (this->_head != nullptr) {
+      PNNode<Type> *_temp = this->_head;
+      this->_head = this->_head->_next;
+      delete _temp;
+    }
+  }
+
+  void push_back(Type &&val) noexcept {
+    PNNode<Type> *_node = new PNNode<Type>(idk::move(val));
+
+    if (this->_head == nullptr) {
+      this->_head = _node;
+      this->_tail = _node;
+    } else {
+      _node->_prev = this->_tail;
+      this->_tail->_next = _node;
+      this->_tail = _node;
     }
 
-    ~List() {
-        while(this->_head != nullptr) {
-            PNNode<Type>* _temp = this->_head;
-            this->_head = this->_head->_next;
-            delete _temp;
-        }
+    ++this->_size;
+  }
+
+  void push_back(const Type &val) noexcept {
+    PNNode<Type> *_node = new PNNode<Type>(val);
+
+    if (this->_head == nullptr) {
+      this->_head = _node;
+      this->_tail = _node;
+    } else {
+      _node->_prev = this->_tail;
+      this->_tail->_next = _node;
+      this->_tail = _node;
     }
 
-    void
-    push_back(Type&& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(idk::move(val));
+    ++this->_size;
+  }
 
-        if(this->_head == nullptr) {
-            this->_head = _node;
-            this->_tail = _node;
-        } else {
-            _node->_prev       = this->_tail;
-            this->_tail->_next = _node;
-            this->_tail        = _node;
-        }
+  void push_front(Type &&val) noexcept {
+    PNNode<Type> *_node = new PNNode<Type>(idk::move(val));
 
-        ++this->_size;
+    if (this->_head == nullptr) {
+      this->_head = _node;
+      this->_tail = _node;
+    } else {
+      _node->_next = this->_head;
+      this->_head->_prev = _node;
+      this->_head = _node;
     }
 
-    void
-    push_back(const Type& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(val);
+    ++this->_size;
+  }
 
-        if(this->_head == nullptr) {
-            this->_head = _node;
-            this->_tail = _node;
-        } else {
-            _node->_prev        = this->_tail;
-            this->_tail->_next = _node;
-            this->_tail        = _node;
-        }
+  void push_front(const Type &val) noexcept {
+    PNNode<Type> *_node = new PNNode<Type>(val);
 
-        ++this->_size;
+    if (this->_head == nullptr) {
+      this->_head = _node;
+      this->_tail = _node;
+    } else {
+      _node->_next = this->_head;
+      this->_head->_prev = _node;
+      this->_head = _node;
     }
 
-    void
-    push_front(Type&& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(idk::move(val));
+    ++this->_size;
+  }
 
-        if(this->_head == nullptr) {
-            this->_head = _node;
-            this->_tail = _node;
-        } else {
-            _node->_next       = this->_head;
-            this->_head->_prev = _node;
-            this->_head        = _node;
-        }
+  void pop_back() noexcept {
+    if (this->_tail == nullptr)
+      return;
 
-        ++this->_size;
+    if (this->_tail == this->_head) {
+      delete this->_tail;
+      this->_head = nullptr;
+      this->_tail = nullptr;
+    } else {
+      PNNode<Type> *_temp = this->_tail;
+      this->_tail = this->_tail->_prev;
+      this->_tail->_next = nullptr;
+      delete _temp;
     }
 
-    void
-    push_front(const Type& val) noexcept {
-        PNNode<Type>* _node = new PNNode<Type>(val);
+    --this->_size;
+  }
 
-        if(this->_head == nullptr) {
-            this->_head = _node;
-            this->_tail = _node;
-        } else {
-            _node->_next       = this->_head;
-            this->_head->_prev = _node;
-            this->_head        = _node;
-        }
+  void pop_front() noexcept {
+    if (this->_head == nullptr)
+      return;
 
-        ++this->_size;
+    if (this->_tail == this->_head) {
+      delete this->_head;
+      this->_head = nullptr;
+      this->_tail = nullptr;
+    } else {
+      PNNode<Type> *_temp = this->_head;
+      this->_head = this->_head->_next;
+      this->_head->_prev = nullptr;
     }
 
-    void
-    pop_back() noexcept {
-        if(this->_tail == nullptr) 
-            return;
+    --this->size;
+  }
 
-        if(this->_tail == this->_head) {
-            delete this->_tail;
-            this->_head = nullptr;
-            this->_tail = nullptr;
-        } else {
-            PNNode<Type>* _temp = this->_tail;
-            this->_tail         = this->_tail->_prev;
-            this->_tail->_next  = nullptr;
-            delete _temp;
-        }
+  ValueOr<Type, Error> operator[](usize n) noexcept { return this->at(n); }
 
-        --this->_size;
-    }
+  ValueOr<Type, Error> at(usize n) noexcept {
+    Type _val = this->at_without_check(n);
 
-    void
-    pop_front() noexcept {
-        if(this->_head == nullptr)
-            return;
+    if (_val == this->_empty)
+      return Unexpected<Error>(Error::Out_Of_Range);
 
-        if(this->_tail == this->_head) {
-            delete this->_head;
-            this->_head = nullptr;
-            this->_tail = nullptr;
-        } else {
-            PNNode<Type>* _temp = this->_head;
-            this->_head         = this->_head->_next;
-            this->_head->_prev  = nullptr;
-        }
+    return Expected<Type>(_val);
+  }
 
-        --this->size;
-    }
+  Type at_without_check(usize n) {
+    if (n >= this->_size)
+      return this->_empty;
 
-    ValueOr<Type, Error>
-    operator[](usize&& n) noexcept {
-        return this->at(idk::move(n));
-    }
+    PNNode<Type> *_curr = this->_head;
 
-    ValueOr<Type, Error>
-    at(usize&& n) noexcept {
-        Type _val = this->at_without_check(idk::move(n));
-        
-        if(_val == this->_empty)
-            return Unexpected<Error>(Error::Out_Of_Range);
+    for (usize i = 0; i < n; ++i)
+      _curr = _curr->_next;
 
-        return Expected<Type>(_val);
-    }
+    return _curr->_data;
+  }
 
-    Type
-    at_without_check(usize&& n) {
-        return this->at_without_check(n);
-    }
+  Type &at_without_check_reference(usize n) {
+    if (n >= this->_size)
+      return this->_empty;
 
-    Type
-    at_without_check(const usize& n) {
-        if(n >= this->_size)
-            return this->_empty;
+    PNNode<Type> *_curr = this->_head;
 
-        PNNode<Type>* _curr = this->_head;
+    for (usize i = 0; i < n; ++i)
+      _curr = _curr->_next;
 
-        for(usize i = 0; i < n; ++i)
-            _curr = _curr->_next;
+    return _curr->_data;
+  }
 
-        return _curr->_data;
-    }
+  PNIterator<Type> begin() noexcept { return PNIterator<Type>(this->_head); }
 
-    Type&
-    at_without_check_reference(const usize& n) {
-        if(n >= this->_size)
-            return this->_empty;
+  PNIterator<Type> end() noexcept { return PNIterator<Type>(); }
 
-        PNNode<Type>* _curr = this->_head;
+  [[nodiscard]]
+  usize size() const noexcept {
+    return this->_size;
+  }
 
-        for(usize i = 0; i < n; ++i)
-            _curr = _curr->_next;
+  [[nodiscard]]
+  usize max_size() const noexcept {
+    return this->size();
+  }
 
-        return _curr->_data;
-    }
-
-    Type&
-    at_without_check_reference(usize&& n) {
-        return this->at_without_check_reference(n);
-    }
-
-    PNIterator<Type>
-    begin() noexcept {
-        return PNIterator<Type>(this->_head);
-    }
-
-    PNIterator<Type>
-    end() noexcept {
-        return PNIterator<Type>();
-    }
-
-    __idk_nodiscard
-    usize
-    size() const noexcept {
-        return this->_size;
-    } 
-
-    __idk_nodiscard
-    usize
-    max_size() const noexcept {
-        return this->size();
-    }
-
-    __idk_nodiscard
-    bool
-    is_empty() const noexcept {
-        return this->_size == 0;
-    }
+  [[nodiscard]]
+  bool is_empty() const noexcept {
+    return this->_size == 0;
+  }
 };
 } // namespace idk

@@ -1,138 +1,128 @@
 // idk libraries
 // -------------
-// disclaimer: don't forget that, idk libraries are not focused on replacing 
-// standard library. (for some standard classes are directly being replaced by compiler, 
-//                    like initializer_list will need compiler dependent codes)
-// so, this is not *directly* an alternative to stl, some class- and functions may have different naming
-// different outputs or attributes etc.
+// disclaimer: don't forget that, idk libraries are not focused on replacing
+// standard library. (for some standard classes are directly being replaced by
+// compiler, like initializer_list will need compiler dependent codes)
+// so, this is not *directly* an alternative to stl, some class- and functions
+// may have different naming different outputs or attributes etc.
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2025 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
 #pragma once
 
+#include "../utilities/semantics.hpp"
 #include "../utilities/type_traits.hpp"
 #include "node.hpp"
-#include "../utilities/semantics.hpp"
 
 namespace idk {
-template<typename T>
-class Stack {
-    T        _keep;
-    usize    _elems { 0 };
-    Node<T>* _top;
+template <typename T> class Stack {
+  T _keep;
+  usize _elems{0};
+  Node<T> *_top;
+
 public:
-    Stack() : _top(nullptr) {}
-    
-    ~Stack() {
-        while(!this->is_empty())
-            this->pop();
+  Stack() : _top(nullptr) {}
+
+  ~Stack() {
+    while (!this->is_empty())
+      this->pop();
+  }
+
+  void push(const T &val) noexcept {
+    Node<T> *_new = new Node<T>(val);
+    _new->_next = this->_top;
+    this->_top = _new;
+    ++this->_elems;
+  }
+
+  void push(T &&val) noexcept {
+    Node<T> *_new = new Node<T>(val);
+    _new->_next = this->_top;
+    this->_top = _new;
+    ++this->_elems;
+  }
+
+  void pop() noexcept {
+    if (!this->is_empty()) {
+      Node<T> *_temp = this->_top;
+      this->_top = _top->_next;
+      delete _temp;
+      --this->_elems;
     }
 
-    void
-    push(const T& val) noexcept {
-        Node<T>* _new  = new Node<T>(val);
-        _new->_next = this->_top;
-        this->_top  = _new;
-        ++this->_elems;
+    return;
+  }
+
+  void clear() noexcept {
+    while (!this->is_empty()) {
+      this->pop();
+    }
+  }
+
+  T &top() noexcept {
+    if (!this->is_empty()) {
+      return this->_top->_data;
     }
 
-    void
-    push(T&& val) noexcept {
-        Node<T>* _new  = new Node<T>(val);
-        _new->_next = this->_top;
-        this->_top  = _new;
-        ++this->_elems;
-    }
+    return this->_keep;
+  }
 
-    void
-    pop() noexcept {
-        if(!this->is_empty()) {
-            Node<T>* _temp = this->_top;
-            this->_top  = _top->_next;
-            delete _temp;
-            --this->_elems;
-        }
-        
-        return;
-    }
+  [[nodiscard]]
+  bool is_empty() const noexcept {
+    return this->_top == nullptr;
+  }
 
-    void
-    clear() noexcept {
-      while(!this->is_empty()) {
-        this->pop();
-      }
-    }
+  [[nodiscard]]
+  usize size() const noexcept {
+    return this->_elems;
+  }
 
-    T&
-    top() noexcept {
-        if(!this->is_empty()) {
-            return this->_top->_data;
-        }
+  [[nodiscard]]
+  usize max_size() const noexcept {
+    return this->size();
+  }
 
-        return this->_keep;
-    }
+  Stack<T> &operator=(const Stack<T> &other) noexcept {
+    if (&other == this)
+      return *this;
 
-    __idk_nodiscard
-    bool
-    is_empty() const noexcept {
-        return this->_top == nullptr;
-    }
+    Node<T> *_temp = this->_top;
+    this->_elems = other._elems;
+    this->_top = other._top;
+    delete _temp;
 
-    __idk_nodiscard
-    usize
-    size() const noexcept {
-        return this->_elems;
-    }
+    return *this;
+  }
 
-    __idk_nodiscard
-    usize
-    max_size() const noexcept {
-        return this->size();
-    }
+  Stack<T> &operator=(Stack<T> &&other) noexcept {
+    if (other == this)
+      return *this;
 
-    Stack<T>&
-    operator=(const Stack<T>& other) noexcept {
-        if(&other == this)
-            return *this;
+    Node<T> *_temp = this->_top;
+    this->_elems = idk::move(other._elems);
+    this->_top = idk::move(other._top);
+    delete _temp;
 
-        Node<T>* _temp = this->_top;
-        this->_elems= other._elems;
-        this->_top  = other._top;
-        delete _temp;
+    return *this;
+  }
 
-        return *this;
-    }
+  template <typename _T, typename _U>
+  friend bool operator==(const Stack<_T> &left,
+                         const Stack<_U> &right) noexcept {
+    if (!idk::IsSameVal<_T, _U> || left._elems != right._elems)
+      return false;
 
-    Stack<T>&
-    operator=(Stack<T>&& other) noexcept {
-        if(other == this)
-            return *this;
+    return left._top == right._top;
+  }
 
-        Node<T>* _temp = this->_top;
-        this->_elems= idk::move(other._elems);
-        this->_top  = idk::move(other._top);
-        delete _temp;
-        
-        return *this;
-    }
-
-    template<typename _T, typename _U>
-    friend bool
-    operator==(const Stack<_T>& left, const Stack<_U>& right) noexcept {
-        if(!idk::IsSameVal<_T, _U> || left._elems != right._elems)
-            return false;
-
-        return left._top == right._top;
-    }
-
-    template<typename _T, typename _U>
-    friend bool
-    operator!=(const Stack<_T>& left, const Stack<_U>& right) noexcept {
-        return !operator==(left, right);
-    }
+  template <typename _T, typename _U>
+  friend bool operator!=(const Stack<_T> &left,
+                         const Stack<_U> &right) noexcept {
+    return !operator==(left, right);
+  }
 };
 } // namespace idk

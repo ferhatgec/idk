@@ -1,14 +1,14 @@
 // idk libraries
 // -------------
-// disclaimer: don't forget that, idk libraries are not focused on replacing 
-// standard library. (for some standard classes are directly being replaced by compiler, 
-//                    like initializer_list will need compiler dependent codes)
-// so, this is not *directly* an alternative to stl, some class- and functions may have different naming
-// different outputs or attributes etc.
+// disclaimer: don't forget that, idk libraries are not focused on replacing
+// standard library. (for some standard classes are directly being replaced by
+// compiler, like initializer_list will need compiler dependent codes)
+// so, this is not *directly* an alternative to stl, some class- and functions
+// may have different naming different outputs or attributes etc.
 //
 // MIT License
 //
-// Copyright (c) 2023 Ferhat Geçdoğan All Rights Reserved.
+// Copyright (c) 2023-2025 Ferhat Geçdoğan All Rights Reserved.
 // Distributed under the terms of the MIT License.
 //
 
@@ -21,221 +21,181 @@
 #include <iostream>
 
 namespace idk {
-template<typename Val, usize N>
-class Arr {
+template <typename Val, usize N> class Arr {
 public:
-    enum class Error {
-        Out_Of_Range,
-        ArrayEmpty
-    };
+  enum class Error { Out_Of_Range, ArrayEmpty };
 
-    Arr(std::initializer_list<Val>&& val) {
-        usize n = 0;
-        for(Val _val: idk::move(val)) {
-            this->_arr[n++] = _val;
-        }
+  Arr(std::initializer_list<Val> &&val) {
+    usize n = 0;
+    for (Val _val : idk::move(val)) {
+      this->_arr[n++] = _val;
     }
+  }
 
-    Val&
-    front() noexcept {
-        if(this->is_empty())
-            return this->_emptyarr;
-        
-        return this->_arr[0];
-    }
+  Val &front() noexcept {
+    if (this->is_empty())
+      return this->_emptyarr;
 
-    Val&
-    back() noexcept {
-        if(this->is_empty())
-            return this->_emptyarr;
-        
-        return this->_arr[N - 1];
-    }
+    return this->_arr[0];
+  }
 
-    ValueOr<Val, Error>
-    front_no_reference() noexcept {
-        if(this->is_empty())
-            return Unexpected<Error>(Error::ArrayEmpty);
+  Val &back() noexcept {
+    if (this->is_empty())
+      return this->_emptyarr;
 
-        return Expected<typename std::remove_reference<Val&>::type>(this->front());
-    }
+    return this->_arr[N - 1];
+  }
 
-    ValueOr<Val, Error>
-    back_no_reference() noexcept {
-        if(this->is_empty())
-            return Unexpected<Error>(Error::ArrayEmpty);
+  ValueOr<Val, Error> front_no_reference() noexcept {
+    if (this->is_empty())
+      return Unexpected<Error>(Error::ArrayEmpty);
 
-        return Expected<typename std::remove_reference<Val&>::type>(this->back());
-    }
+    return Expected<typename std::remove_reference<Val &>::type>(this->front());
+  }
 
-    __idk_constexpr Val*
-    begin() noexcept {
-        return _arr;
-    }
+  ValueOr<Val, Error> back_no_reference() noexcept {
+    if (this->is_empty())
+      return Unexpected<Error>(Error::ArrayEmpty);
 
-    Val*
-    end() noexcept {
-        if(this->is_empty())
-            return _arr;
+    return Expected<typename std::remove_reference<Val &>::type>(this->back());
+  }
 
-        return _arr + N;
-    }
+  constexpr Val *begin() noexcept { return _arr; }
 
-    void
-    fill(const Val& val) {
-        for(Val& _val: this->_arr)
-            _val = val;
-    }
-    
-    __idk_nodiscard
-    __idk_constexpr bool 
-    is_empty() const noexcept {
-        return N == 0;
-    }
+  Val *end() noexcept {
+    if (this->is_empty())
+      return _arr;
 
-    __idk_nodiscard
-    __idk_constexpr usize 
-    size() const noexcept {
-        return N;
-    }
+    return _arr + N;
+  }
 
-    __idk_nodiscard
-    __idk_constexpr usize 
-    max_size() const noexcept {
-        return this->size();
-    }
+  void fill(const Val &val) {
+    for (Val &_val : this->_arr)
+      _val = val;
+  }
 
-    ValueOr<Val, Error>
-    operator[](usize&& n) noexcept {
-        return this->at(idk::move(n));
-    }
+  [[nodiscard]]
+  constexpr bool is_empty() const noexcept {
+    return N == 0;
+  }
 
-    ValueOr<Val, Error>
-    operator[](const usize& n) noexcept {
-        return this->at(n);
-    }
+  [[nodiscard]]
+  constexpr usize size() const noexcept {
+    return N;
+  }
 
-    ValueOr<Val, Error>
-    at(const usize& n) noexcept {
-        if(n < this->size())
-            return Expected(this->_arr[n]);
+  [[nodiscard]]
+  constexpr usize max_size() const noexcept {
+    return this->size();
+  }
 
-        return Unexpected(Error::Out_Of_Range);
-    }
+  ValueOr<Val, Error> operator[](usize n) noexcept { return this->at(n); }
 
-    ValueOr<Val, Error>
-    at(usize&& n) noexcept {
-        return this->at(n);
-    }
+  ValueOr<Val, Error> at(usize n) noexcept {
+    if (n < this->size())
+      return Expected(this->_arr[n]);
 
-    template<typename _Val, usize _N>
-    friend std::ostream&
-    operator<<(std::ostream& ostr, const Arr<_Val, _N>& arr) {
-        ostr << '[';
-        
-        for(usize n = 0; n < arr.size(); ++n)
-            if(n + 1 == arr.size())
-                ostr << arr.data()[n]; // Val must overload operator<< if not known type
-            else
-                ostr << arr.data()[n] << ", ";
+    return Unexpected(Error::Out_Of_Range);
+  }
 
-        ostr << ']';
-        return ostr;
-    }
+  template <typename _Val, usize _N>
+  friend std::ostream &operator<<(std::ostream &ostr,
+                                  const Arr<_Val, _N> &arr) {
+    ostr << '[';
 
-    template<typename _Val, typename _Val2,
-            usize _N, usize _N2>
-    friend bool 
-    operator==(const Arr<_Val, _N>& left, const Arr<_Val2, _N2>& right) noexcept {
-        if __idk_constexpr(!std::is_same_v<_Val, _Val2> || (_N != _N2)) 
-            return false;
+    for (usize n = 0; n < arr.size(); ++n)
+      if (n + 1 == arr.size())
+        ostr << arr.data()[n]; // Val must overload operator<< if not known type
+      else
+        ostr << arr.data()[n] << ", ";
 
-        for(usize n = 0; n < left.size(); ++n)
-            if(left.data()[n] != right.data()[n])
-                return false;
+    ostr << ']';
+    return ostr;
+  }
 
-        return true;
-    }
+  template <typename _Val, typename _Val2, usize _N, usize _N2>
+  friend bool operator==(const Arr<_Val, _N> &left,
+                         const Arr<_Val2, _N2> &right) noexcept {
+    if constexpr (!std::is_same_v<_Val, _Val2> || (_N != _N2))
+      return false;
 
-    template<typename _Val, typename _Val2,
-            usize _N, usize _N2>
-    friend bool 
-    operator!=(const Arr<_Val, _N>& left, const Arr<_Val2, _N2>& right) noexcept {
-        return !operator==(left, right);
-    }
-
-    __idk_constexpr Val*
-    data() const noexcept {
-        return const_cast<Val*>(this->_arr);
-    }
-
-    __idk_nodiscard
-    bool 
-    change_val_at_index(const usize& index, const Val& replace) noexcept {
-        if(this->is_empty() || index >= this->size())
-            return false;
-
-        usize i = 0;
-
-        while(i != index) {
-            ++i;
-        }
-
-        this->_arr[i] = replace;
-        
-        return true;
-    }
-
-    __idk_nodiscard
-    bool 
-    change_val_at_index(usize&& index, Val&& replace) noexcept {
-        if(this->is_empty() || index >= this->size())
-            return false;
-
-        usize i = 0;
-
-        while(i != index) {
-            ++i;
-        }
-
-        this->_arr[i] = idk::move(replace);
-        
-        return true;
-    }
-
-    __idk_nodiscard
-    bool
-    contains(Val&& val) noexcept {
-        return this->contains(val);
-    }
-
-    __idk_nodiscard
-    bool
-    contains(const Val& val) noexcept {
-        for(auto& _val: *this)
-            if(_val == val)
-                return true;
-
+    for (usize n = 0; n < left.size(); ++n)
+      if (left.data()[n] != right.data()[n])
         return false;
+
+    return true;
+  }
+
+  template <typename _Val, typename _Val2, usize _N, usize _N2>
+  friend bool operator!=(const Arr<_Val, _N> &left,
+                         const Arr<_Val2, _N2> &right) noexcept {
+    return !operator==(left, right);
+  }
+
+  constexpr Val *data() const noexcept { return const_cast<Val *>(this->_arr); }
+
+  [[nodiscard]]
+  bool change_val_at_index(usize index, const Val &replace) noexcept {
+    if (this->is_empty() || index >= this->size())
+      return false;
+
+    usize i = 0;
+
+    while (i != index) {
+      ++i;
     }
 
-    __idk_nodiscard
-    isize
-    find(const Val& val) noexcept {
-        for(usize n = 0; n < N; ++n)
-            if(this->_arr[n] == val)
-                return n;
+    this->_arr[i] = replace;
 
-        return -1;
+    return true;
+  }
+
+  [[nodiscard]]
+  bool change_val_at_index(usize index, Val &&replace) noexcept {
+    if (this->is_empty() || index >= this->size())
+      return false;
+
+    usize i = 0;
+
+    while (i != index) {
+      ++i;
     }
 
-    __idk_nodiscard
-    isize
-    find(Val&& val) noexcept {
-        return this->find(val);
-    }
+    this->_arr[i] = idk::move(replace);
+
+    return true;
+  }
+
+  [[nodiscard]]
+  bool contains(Val &&val) noexcept {
+    return this->contains(val);
+  }
+
+  [[nodiscard]]
+  bool contains(const Val &val) noexcept {
+    for (auto &_val : *this)
+      if (_val == val)
+        return true;
+
+    return false;
+  }
+
+  [[nodiscard]]
+  isize find(const Val &val) noexcept {
+    for (usize n = 0; n < N; ++n)
+      if (this->_arr[n] == val)
+        return n;
+
+    return -1;
+  }
+
+  [[nodiscard]]
+  isize find(Val &&val) noexcept {
+    return this->find(val);
+  }
+
 private:
-    Val _arr[N];
-    Val _emptyarr;
+  Val _arr[N];
+  Val _emptyarr;
 };
-}
+} // namespace idk

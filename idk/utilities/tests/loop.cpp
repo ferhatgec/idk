@@ -1,24 +1,19 @@
-#include <iostream>
 #include "../loop.hpp"
+#include <iostream>
 
 class Test {
-    static __idk_constexpr idk::usize n = 3;
+  static constexpr idk::usize n = 3;
+
 public:
-    static __idk_constexpr void test() {
-        idk::Loop<n>([&](auto) {
-            std::cout << n << '\n';
-        });
-    }
+  static constexpr void test() {
+    idk::Loop<n>([&](auto) { std::cout << n << '\n'; });
+  }
 };
 
 int main() {
-    idk::Loop<2>([](auto){
-        std::cout << "Hello, world!\n";
-    });
+  idk::Loop<2>([](auto) { std::cout << "Hello, world!\n"; });
 
-    idk::Loop<3>([](idk::usize i){
-        std::cout << i << '\n';
-    });
+  idk::Loop<3>([](idk::usize i) { std::cout << i << '\n'; });
 
-    Test::test();
+  Test::test();
 }

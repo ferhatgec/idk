@@ -1,13 +1,13 @@
-#include <iostream>
 #include "../factorial.hpp"
+#include <iostream>
 
 int main() {
-    __idk_constexpr auto x = idk::FactorialGenerator<12>::generate();
+  constexpr auto x = idk::FactorialGenerator<12>::generate();
 
-    std::cout << "12! = " << x << '\n';
+  std::cout << "12! = " << x << '\n';
 
-    if(x != idk::generate_factorial(12))
-        std::cerr << "[FAIL] x != idk::generate_factorial(12)\n";
-    else
-        std::cout << "[OK] x != idk::generate_factorial(12)\n";
+  if (x != idk::generate_factorial(12))
+    std::cerr << "[FAIL] x != idk::generate_factorial(12)\n";
+  else
+    std::cout << "[OK] x != idk::generate_factorial(12)\n";
 }
